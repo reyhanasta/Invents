@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,19 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
                 'email_verified_at' => now(),
             ]
+        );
+
+        Category::firstOrCreate(
+            ['serial_number' => 'CAT-001'],
+            ['name' => 'Electronics']
+        );
+        Category::firstOrCreate(
+            ['serial_number' => 'CAT-002'],
+            ['name' => 'Furniture']
+        );
+        Category::firstOrCreate(
+            ['serial_number' => 'CAT-003'],
+            ['name' => 'Clothing']
         );
     }
 }
