@@ -11,7 +11,7 @@ import AppLayout from '@/layouts/app-layout';
 import { categories } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { Eye, Pencil, Trash } from 'lucide-react';
+import { Eye, Pencil, Plus, Trash } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Category list',
@@ -31,9 +31,21 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Category list" />
+            <div className="flex max-w-max justify-between p-4">
+                <Button
+                    size="lg"
+                    className="rounded-full bg-primary text-white hover:bg-primary/90 hover:shadow-md"
+                >
+                    <Plus />
+                    Add Category
+                </Button>
+            </div>
             <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
                 {categories.map((category) => (
-                    <Card key={category.id}>
+                    <Card
+                        key={category.id}
+                        className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
                         <CardHeader>
                             <CardTitle>{category.name}</CardTitle>
                             <CardDescription>
@@ -46,19 +58,23 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             </div>
                         </CardContent>
                         <CardFooter className="flex gap-2">
-                            <Button className="text-sm" size="sm">
+                            <Button
+                                className="cursor-pointer text-sm hover:shadow-sm"
+                                size="sm"
+                                variant="outline"
+                            >
                                 <Eye />
                                 View
                             </Button>
                             <Button
-                                className="bg-amber-500 text-sm text-white hover:bg-amber-400 hover:shadow-md"
+                                className="cursor-pointer bg-amber-500 text-sm text-white hover:bg-amber-400 hover:shadow-md"
                                 size="sm"
                             >
                                 <Pencil />
                                 Edit
                             </Button>
                             <Button
-                                className="bg-destructive-foreground text-sm text-white hover:bg-red-400 hover:shadow-md"
+                                className="cursor-pointer bg-destructive text-sm text-white hover:bg-destructive/90 hover:shadow-md"
                                 size="sm"
                             >
                                 <Trash />
