@@ -26,15 +26,12 @@ class DatabaseSeeder extends Seeder
         );
 
         Category::firstOrCreate(
-            ['serial_number' => 'CAT-001'],
             ['name' => 'Electronics']
         );
         Category::firstOrCreate(
-            ['serial_number' => 'CAT-002'],
             ['name' => 'Furniture']
         );
         Category::firstOrCreate(
-            ['serial_number' => 'CAT-003'],
             ['name' => 'Clothing']
         );
     }

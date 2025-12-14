@@ -29,7 +29,7 @@ type CategoryIndexProps = {
     categories: Array<{
         id: number;
         name: string;
-        serial_number: string;
+        serial_number_needed: boolean;
     }>;
 };
 
@@ -56,12 +56,17 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                         <CardHeader>
                             <CardTitle>{category.name}</CardTitle>
                             <CardDescription>
-                                Serial Number: {category.serial_number}
+                                <p>Category ID: {category.id}</p>
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="text-sm text-muted-foreground">
-                                <p>Category ID: {category.id}</p>
+                                <p>
+                                    {' '}
+                                    {category.serial_number_needed
+                                        ? 'Yes'
+                                        : 'No'}
+                                </p>
                             </div>
                         </CardContent>
                         <CardFooter className="flex gap-2">

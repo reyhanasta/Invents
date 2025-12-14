@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('serial_number')->unique();
+            $table->boolean('serial_number_needed')->default(false);  
             $table->timestamps();
         });
     }
