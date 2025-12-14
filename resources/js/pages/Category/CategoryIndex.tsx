@@ -8,9 +8,15 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { categories } from '@/routes';
+import {
+    categories,
+    categoriesCreate,
+    categoriesDelete,
+    categoriesEdit,
+    categoriesShow,
+} from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Eye, Pencil, Plus, Trash } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,14 +37,15 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Category list" />
-            <div className="flex max-w-max justify-between p-4">
-                <Button
-                    size="lg"
-                    className="rounded-full bg-primary text-white hover:bg-primary/90 hover:shadow-md"
-                >
-                    <Plus />
-                    Add Category
-                </Button>
+            <div className="flex justify-end p-4">
+                <Link href={categoriesCreate().url} as="button">
+                    <Button
+                        size="lg"
+                        className="bg-primary text-white hover:bg-primary/90 hover:shadow-md"
+                    >
+                        <Plus /> Add Category
+                    </Button>
+                </Link>
             </div>
             <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
                 {categories.map((category) => (
@@ -58,28 +65,44 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             </div>
                         </CardContent>
                         <CardFooter className="flex gap-2">
-                            <Button
-                                className="cursor-pointer text-sm hover:shadow-sm"
-                                size="sm"
-                                variant="outline"
+                            <Link
+                                as="button"
+                                href={categoriesShow(category.id).url}
                             >
-                                <Eye />
-                                View
-                            </Button>
-                            <Button
-                                className="cursor-pointer bg-amber-500 text-sm text-white hover:bg-amber-400 hover:shadow-md"
-                                size="sm"
+                                <Button
+                                    className="text-sm hover:shadow-sm"
+                                    size="sm"
+                                    variant="outline"
+                                >
+                                    <Eye />
+                                    View
+                                </Button>
+                            </Link>
+                            <Link
+                                as="button"
+                                href={categoriesEdit(category.id).url}
                             >
-                                <Pencil />
-                                Edit
-                            </Button>
-                            <Button
-                                className="cursor-pointer bg-destructive text-sm text-white hover:bg-destructive/90 hover:shadow-md"
-                                size="sm"
+                                <Button
+                                    className="bg-amber-500 text-sm text-white hover:bg-amber-400 hover:shadow-md"
+                                    size="sm"
+                                >
+                                    <Pencil />
+                                    Edit
+                                </Button>
+                            </Link>
+                            <Link
+                                as="button"
+                                href={categoriesDelete(category.id).url}
+                                method="delete"
                             >
-                                <Trash />
-                                Delete
-                            </Button>
+                                <Button
+                                    className="bg-destructive text-sm text-white hover:bg-destructive/90 hover:shadow-md"
+                                    size="sm"
+                                >
+                                    <Trash />
+                                    Delete
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                 ))}
