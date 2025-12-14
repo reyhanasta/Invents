@@ -62,21 +62,31 @@ export default function CategoriesCreate() {
                                             </p>
                                         )}
                                     </div>
-                                    <div>
+                                    <div className="space-y-2">
                                         <div className="flex items-center space-x-2">
-                                            <Label
-                                                htmlFor="serial_number_needed"
-                                                className="text-sm"
-                                            >
-                                                Butuh Nomor Seri ?
-                                            </Label>
                                             <Checkbox
                                                 className="border border-green-950 hover:border-green-700"
                                                 id="serial_number_needed"
                                                 name="serial_number_needed"
+                                                value="1"
                                                 disabled={processing}
                                             />
+                                            <Label
+                                                htmlFor="serial_number_needed"
+                                                className="cursor-pointer text-sm font-normal"
+                                            >
+                                                Butuh Nomor Seri ?
+                                            </Label>
                                         </div>
+                                        {errors.serial_number_needed && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.serial_number_needed}
+                                            </p>
+                                        )}
+                                        <p className="text-xs text-muted-foreground">
+                                            Centang jika kategori ini memerlukan
+                                            nomor seri untuk setiap item
+                                        </p>
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-end gap-2">
