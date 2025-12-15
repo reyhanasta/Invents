@@ -60,14 +60,42 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        dd('edit', $category);
+        
         return Inertia::render('Category/CategoryEdit', [
             'category' => $category,
         ]);
     }
 
+    public function update(Request $request, Category $category)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'serial_number_needed' => 'nullable|boolean',
+        ]);
+        $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
+
+        // Update the category
+        try {
+            $category->update([
+                'name' => $validatedData['name'],
+                'serial_number_needed' => $validateSerialNumber,
+            ]);
+
+            // Redirect to the categories index page with a success message
+            return to_route('categories')->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update category: ' . $e->getMessage()])->withInput();
+        }
+    }
+
     public function delete(Category $category)
     {
-        dd('delete');
+        try {
+            $category->delete();
+            return to_route('categories')->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to delete category: ' . $e->getMessage()]);
+        }
     }
 }
