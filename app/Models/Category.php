@@ -12,7 +12,7 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'serial_number',
+        'serial_number_needed',
     ];
 
 }

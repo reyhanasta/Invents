@@ -32,7 +32,6 @@ class CategoryController extends Controller
 
     public function create()
     {
-        
         return Inertia::render('Category/CategoryCreate');
     }
     public function store(Request $request)
@@ -43,13 +42,15 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name',
             'serial_number_needed' => 'nullable|boolean',
         ]);
-
+        $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
         // Create a new category
         try {
-            Category::create([
+            $cats= Category::create([
                 'name' => $validatedData['name'],
-                'serial_number_needed' => $validatedData['serial_number_needed'] ?? false,
+                'serial_number_needed' => $validateSerialNumber,
             ]);
+
+            
             // Redirect to the categories index page with a success message
             return to_route('categories')->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
