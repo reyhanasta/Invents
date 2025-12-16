@@ -16,27 +16,24 @@ class AssetController extends Controller
     {
         $search = $request->input('search');
 
-        // $query = Asset::query()->with(['category', 'location']);
-        $query = Asset::with(['category', 'location'])->latest();
+        $query = Asset::query()->with(['category', 'location'])->latest();
+        
+        // $query   = Asset::with(['category', 'location'])->latest()->paginate(10);
+      
 
-        // if ($search) {
-        //     $query->where(function ($q) use ($search) {
-        //         $q->where('asset_name', 'like', "%{$search}%")
-        //             ->orWhere('asset_code', 'like', "%{$search}%")
-        //             ->orWhereHas('category', function ($q) use ($search) {
-        //                 $q->where('category_name', 'like', "%{$search}%");
-        //             })
-        //             ->orWhereHas('location', function ($q) use ($search) {
-        //                 $q->where('location_name', 'like', "%{$search}%");
-        //             });
-        //     });
-        // }
-
-
-
-        // $assets = $query->paginate(15)->withQueryString();
-        $assets = $query->paginate(5);
-
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('asset_name', 'like', "%{$search}%")
+                    ->orWhere('asset_code', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('category_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('location', function ($q) use ($search) {
+                        $q->where('location_name', 'like', "%{$search}%");
+                    });
+            });
+        }
+        $assets = $query->paginate(10)->withQueryString();
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'categories' => Category::all(),

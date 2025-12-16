@@ -1,19 +1,13 @@
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from '@/components/ui/pagination';
+import { Link } from '@inertiajs/react';
+
+type Links = {
+    url: string | null;
+    label: string;
+    active: boolean;
+};
 
 type PaginationProps = {
-    links: Array<{
-        url: string | null;
-        label: string;
-        active: boolean;
-    }>;
+    links: Links[];
     current_page: number;
     last_page: number;
     per_page: number;
@@ -22,36 +16,21 @@ type PaginationProps = {
     to: number;
 };
 
-export const SimplePaginationExample = ({
-    links,
-    current_page,
-    last_page,
-    total,
-    from,
-    to,
-}: PaginationProps) => {
+export default function SimplePaginationExample({
+    assets,
+}: {
+    assets: PaginationProps;
+}) {
     return (
         <div>
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    {links.map((link, index) => (
-                        <PaginationItem key={index} className="">
-                            <PaginationLink href={link.url || '#'}>
-                                {link.label}
-                            </PaginationLink>
-                        </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext href="#" />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
+            {assets.links.map((link, index) => (
+                <Link
+                    key={index}
+                    href={link.url ?? '#'}
+                    className={`${link.active ? 'mx-1 underline' : 'mx-1'} rounded-md border px-3 py-2 font-bold hover:bg-gray-200`}
+                    dangerouslySetInnerHTML={{ __html: link.label }}
+                />
+            ))}
         </div>
     );
-};
+}

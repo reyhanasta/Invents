@@ -19,7 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { assets, assetsStore } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -57,11 +57,13 @@ export default function AssetCreate({
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex items-center gap-4">
-                    <Link href={assets().url}>
-                        <Button variant="ghost" size="icon">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => router.visit(assets().url)}
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                    </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
                             Add New Asset
@@ -334,15 +336,14 @@ export default function AssetCreate({
 
                                     {/* Actions */}
                                     <div className="flex justify-end gap-4 pt-4">
-                                        <Link href={assets().url}>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                disabled={processing}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </Link>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            disabled={processing}
+                                            onClick={() => router.visit(assets().url)}
+                                        >
+                                            Cancel
+                                        </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}

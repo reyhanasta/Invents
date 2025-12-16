@@ -19,7 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { assets, assetsUpdate } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -72,11 +72,13 @@ export default function AssetEdit({
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex items-center gap-4">
-                    <Link href={assets().url}>
-                        <Button variant="ghost" size="icon">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => router.visit(assets().url)}
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                    </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
                             Edit Asset
@@ -258,7 +260,7 @@ export default function AssetEdit({
                                                 id="brand"
                                                 name="brand"
                                                 type="text"
-                                                defaultValue={asset.brand}
+                                                defaultValue={asset.brand || ''}
                                                 placeholder="e.g. Dell, HP, Logitech"
                                                 aria-invalid={!!errors.brand}
                                                 disabled={processing}
@@ -279,7 +281,7 @@ export default function AssetEdit({
                                                 name="serial_number"
                                                 type="text"
                                                 defaultValue={
-                                                    asset.serial_number
+                                                    asset.serial_number || ''
                                                 }
                                                 placeholder="e.g. SN123456789"
                                                 aria-invalid={
@@ -346,7 +348,7 @@ export default function AssetEdit({
                                                 name="acquisition_date"
                                                 type="date"
                                                 defaultValue={
-                                                    asset.acquisition_date
+                                                    asset.acquisition_date || ''
                                                 }
                                                 aria-invalid={
                                                     !!errors.acquisition_date
@@ -369,7 +371,9 @@ export default function AssetEdit({
                                         <Textarea
                                             id="description"
                                             name="description"
-                                            defaultValue={asset.description}
+                                            defaultValue={
+                                                asset.description || ''
+                                            }
                                             placeholder="Additional notes or description about the asset..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
@@ -388,15 +392,14 @@ export default function AssetEdit({
 
                                     {/* Actions */}
                                     <div className="flex justify-end gap-4 pt-4">
-                                        <Link href={assets().url}>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                disabled={processing}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </Link>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            disabled={processing}
+                                            onClick={() => router.visit(assets().url)}
+                                        >
+                                            Cancel
+                                        </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}

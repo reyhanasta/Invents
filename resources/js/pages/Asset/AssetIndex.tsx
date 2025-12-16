@@ -23,6 +23,7 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
     Table,
     TableBody,
@@ -36,6 +37,7 @@ import { assets, assetsCreate, assetsDelete, assetsEdit } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
+    Loader2,
     MoreHorizontalIcon,
     Package,
     Pencil,
@@ -46,7 +48,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { SimplePaginationExample } from './SimplePaginationExample';
+import { AssetPagination } from './AssetPagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -55,48 +57,48 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+type CategoryProps = {
+    id: number;
+    category_name: string;
+    prefix_code: string;
+};
+
+type LocationProps = {
+    id: number;
+    location_name: string;
+};
+
 type Asset = {
     id: number;
     asset_name: string;
     asset_code: string;
-    category: {
-        id: number;
-        category_name: string;
-        prefix_code: string;
-    };
-    location: {
-        id: number;
-        location_name: string;
-    };
+    category: CategoryProps;
+    location: LocationProps;
     condition: string;
     serial_number?: string;
     acquisition_date?: string;
 };
 
+interface PaginationLinksProps {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+interface AssetPaginationProps {
+    data: Asset[];
+    links: PaginationLinksProps[];
+    first_page_url: string;
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    from: number;
+    to: number;
+}
+
 type AssetsIndexProps = {
-    assets: {
-        data: Asset[];
-        links: Array<{
-            url: string | null;
-            label: string;
-            active: boolean;
-        }>;
-        current_page: number;
-        first_page_url: string;
-        last_page: number;
-        per_page: number;
-        total: number;
-        from: number;
-        to: number;
-    };
-    categories: Array<{
-        id: number;
-        category_name: string;
-    }>;
-    locations: Array<{
-        id: number;
-        location_name: string;
-    }>;
+    assets: AssetPaginationProps;
     search?: string;
 };
 
@@ -122,11 +124,14 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
     const [searchQuery, setSearchQuery] = useState(search);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
-    console.log(assets);
+    const [isSearching, setIsSearching] = useState(false);
+    // const { data, setData } = useForm({ search: search || '' });
+
     // Debounce search - Inertia best practice
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (searchQuery !== search) {
+                setIsSearching(true);
                 router.get(
                     window.location.pathname,
                     { search: searchQuery || undefined },
@@ -135,6 +140,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                         preserveScroll: true,
                         replace: true,
                         only: ['assets'],
+                        onFinish: () => setIsSearching(false),
                     },
                 );
             }
@@ -145,12 +151,14 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
 
     const handleClearSearch = () => {
         setSearchQuery('');
+        setIsSearching(true);
         router.get(
             window.location.pathname,
             {},
             {
                 preserveState: true,
                 only: ['assets'],
+                onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -187,9 +195,9 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center justify-between gap-4">
-                    <div className="relative max-w-md flex-1">
-                        <InputGroup>
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
+                        <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
                                 placeholder="Search by name, code, category, location..."
@@ -197,7 +205,9 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                             <InputGroupAddon>
-                                {searchQuery ? (
+                                {isSearching ? (
+                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                ) : searchQuery ? (
                                     <button
                                         onClick={handleClearSearch}
                                         className="rounded p-0.5 hover:bg-accent"
@@ -209,25 +219,26 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 )}
                             </InputGroupAddon>
                         </InputGroup>
+                        {searchQuery && (
+                            <div className="w-lg text-sm text-muted-foreground">
+                                Found{' '}
+                                <span className="font-medium text-foreground">
+                                    {assets.total}
+                                </span>{' '}
+                                result{assets.total !== 1 ? 's' : ''}
+                            </div>
+                        )}
                     </div>
-                    {searchQuery && (
-                        <div className="text-sm text-muted-foreground">
-                            Found{' '}
-                            <span className="font-medium text-foreground">
-                                {assets.total}
-                            </span>{' '}
-                            result{assets.total !== 1 ? 's' : ''}
-                        </div>
-                    )}
-                    <Link href={assetsCreate().url}>
-                        <Button
-                            size="lg"
-                            className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
-                        >
-                            <Plus className="h-4 w-4" />
+                    <Button
+                        size="lg"
+                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        aria-label="Add Asset"
+                    >
+                        <Plus className="h-4 w-4" />
+                        <Link href={assetsCreate().url}>
                             <span className="ml-2">Add Asset</span>
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </div>
 
                 {/* Table */}
@@ -277,117 +288,138 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {assets.data.map((asset) => (
-                                    <TableRow key={asset.id}>
-                                        <TableCell className="font-mono font-medium">
-                                            {asset.asset_code}
-                                        </TableCell>
-                                        <TableCell className="font-medium">
-                                            {asset.asset_name}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Badge variant="outline">
-                                                <span className="text-xs">
-                                                    {
-                                                        asset.category
-                                                            .category_name
-                                                    }
-                                                </span>
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            {asset.location.location_name}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                variant={
-                                                    conditionConfig[
-                                                        asset.condition as keyof typeof conditionConfig
-                                                    ]?.variant
-                                                }
-                                            >
-                                                {
-                                                    conditionConfig[
-                                                        asset.condition as keyof typeof conditionConfig
-                                                    ]?.label
-                                                }
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="font-mono text-sm text-muted-foreground">
-                                            {asset.serial_number || '-'}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        className="h-8 w-8"
-                                                    >
-                                                        <MoreHorizontalIcon className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>
-                                                        Actions
-                                                    </DropdownMenuLabel>
-                                                    <Link
-                                                        href={
-                                                            assetsEdit(asset.id)
-                                                                .url
-                                                        }
-                                                    >
-                                                        <DropdownMenuItem className="cursor-pointer">
-                                                            <Pencil className="h-4 w-4" />
-                                                            <span>Edit</span>
-                                                        </DropdownMenuItem>
-                                                    </Link>
-                                                    <DropdownMenuItem
-                                                        className="cursor-pointer"
-                                                        onSelect={() => {
-                                                            setSelectedAsset(
-                                                                asset,
-                                                            );
-                                                            setShowDeleteDialog(
-                                                                true,
-                                                            );
-                                                        }}
-                                                    >
-                                                        <Trash className="h-4 w-4" />
-                                                        <span>Delete</span>
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                {isSearching
+                                    ? // Skeleton loading rows
+                                      Array.from({ length: 5 }).map(
+                                          (_, index) => (
+                                              <TableRow
+                                                  key={`skeleton-${index}`}
+                                              >
+                                                  <TableCell>
+                                                      <Skeleton className="h-4 w-24" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-4 w-32" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-5 w-20 rounded-full" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-4 w-28" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-5 w-24 rounded-full" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-4 w-20" />
+                                                  </TableCell>
+                                                  <TableCell className="text-right">
+                                                      <Skeleton className="ml-auto h-8 w-8 rounded-md" />
+                                                  </TableCell>
+                                              </TableRow>
+                                          ),
+                                      )
+                                    : assets.data.map((asset) => (
+                                          <TableRow key={asset.id}>
+                                              <TableCell className="font-mono font-medium">
+                                                  {asset.asset_code}
+                                              </TableCell>
+                                              <TableCell className="font-medium">
+                                                  {asset.asset_name}
+                                              </TableCell>
+                                              <TableCell>
+                                                  <Badge variant="outline">
+                                                      <span className="text-xs">
+                                                          {
+                                                              asset.category
+                                                                  .category_name
+                                                          }
+                                                      </span>
+                                                  </Badge>
+                                              </TableCell>
+                                              <TableCell>
+                                                  {asset.location.location_name}
+                                              </TableCell>
+                                              <TableCell>
+                                                  <Badge
+                                                      variant={
+                                                          conditionConfig[
+                                                              asset.condition as keyof typeof conditionConfig
+                                                          ]?.variant
+                                                      }
+                                                  >
+                                                      {
+                                                          conditionConfig[
+                                                              asset.condition as keyof typeof conditionConfig
+                                                          ]?.label
+                                                      }
+                                                  </Badge>
+                                              </TableCell>
+                                              <TableCell className="font-mono text-sm text-muted-foreground">
+                                                  {asset.serial_number || '-'}
+                                              </TableCell>
+                                              <TableCell className="text-right">
+                                                  <DropdownMenu>
+                                                      <DropdownMenuTrigger
+                                                          asChild
+                                                      >
+                                                          <Button
+                                                              variant="ghost"
+                                                              size="icon"
+                                                              className="h-8 w-8"
+                                                          >
+                                                              <MoreHorizontalIcon className="h-4 w-4" />
+                                                          </Button>
+                                                      </DropdownMenuTrigger>
+                                                      <DropdownMenuContent align="end">
+                                                          <DropdownMenuLabel>
+                                                              Actions
+                                                          </DropdownMenuLabel>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
+                                                                      assetsEdit(
+                                                                          asset.id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Pencil className="h-4 w-4" />
+                                                              <span>Edit</span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  setSelectedAsset(
+                                                                      asset,
+                                                                  );
+                                                                  setShowDeleteDialog(
+                                                                      true,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Trash className="h-4 w-4" />
+                                                              <span>
+                                                                  Delete
+                                                              </span>
+                                                          </DropdownMenuItem>
+                                                      </DropdownMenuContent>
+                                                  </DropdownMenu>
+                                              </TableCell>
+                                          </TableRow>
+                                      ))}
                             </TableBody>
                         </Table>
                     </div>
                 )}
 
                 {/* Pagination */}
-                {/* Pagination */}
-                {assets.data.length > 0 && assets.total > assets.per_page && (
-                    // <AssetPagination
-                    //     links={assets.links}
-                    //     current_page={assets.current_page}
-                    //     last_page={assets.last_page}
-                    //     total={assets.total}
-                    //     per_page={assets.per_page}
-                    //     from={assets.from}
-                    //     to={assets.to}
-                    // />
 
-                    <SimplePaginationExample
-                        links={assets.links}
-                        current_page={assets.current_page}
-                        last_page={assets.last_page}
-                        total={assets.total}
-                        per_page={assets.per_page}
-                        from={assets.from}
-                        to={assets.to}
-                    />
+                {assets.data.length > 0 && assets.total > assets.per_page && (
+                    <AssetPagination assets={assets} />
+
+                    // <SimplePaginationExample assets={assets} />
                 )}
             </div>
 

@@ -9,12 +9,14 @@ import {
 } from '@/components/ui/pagination';
 import { Link } from '@inertiajs/react';
 
+type Links = {
+    url: string | null;
+    label: string;
+    active: boolean;
+};
+
 type PaginationProps = {
-    links: Array<{
-        url: string | null;
-        label: string;
-        active: boolean;
-    }>;
+    links: Links[];
     current_page: number;
     last_page: number;
     per_page: number;
@@ -23,23 +25,16 @@ type PaginationProps = {
     to: number;
 };
 
-export const AssetPagination = ({
-    links,
-    current_page,
-    last_page,
-    total,
-    from,
-    to,
-}: PaginationProps) => {
+export const AssetPagination = ({ assets }: { assets: PaginationProps }) => {
     // Filter out "Previous" and "Next" text links
-    const pageLinks = links.filter(
+    const pageLinks = assets.links.filter(
         (link) =>
             link.label !== '&laquo; Previous' && link.label !== 'Next &raquo;',
     );
 
     // Get previous and next links
-    const previousLink = links[0];
-    const nextLink = links[links.length - 1];
+    const previousLink = assets.links[0];
+    const nextLink = assets.links[assets.links.length - 1];
 
     // Parse page number from label
     const getPageNumber = (label: string): number => {
@@ -53,9 +48,15 @@ export const AssetPagination = ({
             {/* Info */}
             <div className="text-sm text-muted-foreground">
                 Showing{' '}
-                <span className="font-medium text-foreground">{from}</span> to{' '}
-                <span className="font-medium text-foreground">{to}</span> of{' '}
-                <span className="font-medium text-foreground">{total}</span>{' '}
+                <span className="font-medium text-foreground">
+                    {assets.from}
+                </span>{' '}
+                to{' '}
+                <span className="font-medium text-foreground">{assets.to}</span>{' '}
+                of{' '}
+                <span className="font-medium text-foreground">
+                    {assets.total}
+                </span>{' '}
                 results
             </div>
 
@@ -78,38 +79,26 @@ export const AssetPagination = ({
                         const pageNumber = getPageNumber(link.label);
 
                         // Skip invalid page numbers
-                        if (pageNumber === 0 || pageNumber > last_page)
+                        if (pageNumber === 0 || pageNumber > assets.last_page)
                             return null;
 
                         // Smart pagination display logic
                         const shouldShow =
                             pageNumber === 1 ||
-                            pageNumber === last_page ||
-                            (pageNumber >= current_page - 1 &&
-                                pageNumber <= current_page + 1);
-
-                        // Show ellipsis before current page range
-                        const showEllipsisBefore =
-                            pageNumber === current_page - 1 &&
-                            current_page > 3 &&
-                            pageNumber !== 1;
+                            pageNumber === assets.last_page ||
+                            (pageNumber >= assets.current_page - 1 &&
+                                pageNumber <= assets.current_page + 1);
 
                         // Show ellipsis after current page range
                         const showEllipsisAfter =
-                            pageNumber === current_page + 1 &&
-                            current_page < last_page - 2 &&
-                            pageNumber !== last_page;
+                            pageNumber === assets.current_page + 1 &&
+                            assets.current_page < assets.last_page - 2 &&
+                            pageNumber !== assets.last_page;
 
                         if (!shouldShow) return null;
 
                         return (
                             <div key={index} className="flex items-center">
-                                {showEllipsisBefore && (
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                )}
-
                                 <PaginationItem>
                                     {link.url ? (
                                         <Link href={link.url} preserveScroll>

@@ -85,23 +85,25 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
 
                 {/* Search Bar */}
                 <div className="flex items-center justify-between gap-4">
-                    <InputGroup className="max-w-md flex-1">
-                        <InputGroupInput
-                            aria-label="search"
-                            placeholder="Search by name or prefix code..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <InputGroupAddon>
-                            <SearchIcon />
-                        </InputGroupAddon>
-                    </InputGroup>
-                    {searchQuery && (
-                        <div className="text-sm text-muted-foreground">
-                            {filteredCategories.length} of {categories.length}{' '}
-                            categories
-                        </div>
-                    )}
+                    <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
+                        <InputGroup className="max-w-md flex-1">
+                            <InputGroupInput
+                                aria-label="search"
+                                placeholder="Search by name or prefix code..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <InputGroupAddon>
+                                <SearchIcon />
+                            </InputGroupAddon>
+                        </InputGroup>
+                        {searchQuery && (
+                            <div className="text-sm text-muted-foreground">
+                                {filteredCategories.length} of{' '}
+                                {categories.length} categories
+                            </div>
+                        )}
+                    </div>
                     <Button
                         size="lg"
                         className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
@@ -239,7 +241,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                         <div className="flex flex-wrap items-center justify-between gap-2">
                                             <Badge
                                                 variant="outline"
-                                                className="flex-1 font-mono text-sm text-secondary-foreground"
+                                                className="text-secondar flex-1 font-mono text-sm"
                                             >
                                                 <BadgeCheckIcon className="mr-1 inline-block h-4 w-4" />
                                                 {category.prefix_code}
