@@ -14,7 +14,8 @@ import { toast } from 'sonner';
 
 type Category = {
     id: number;
-    name: string;
+    category_name: string;
+    prefix_code: string;
     items_count?: number;
 };
 
@@ -53,7 +54,7 @@ export default function CategoriesDelete({
                     <AlertDialogDescription>
                         Anda akan menghapus kategori{' '}
                         <span className="font-semibold text-foreground">
-                            "{category.name}"
+                            "{category.category_name}"
                         </span>
                         {category.items_count !== undefined &&
                             category.items_count > 0 && (

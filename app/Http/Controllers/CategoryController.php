@@ -9,7 +9,6 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     //
-
     public function index()
     {
         $categories = Category::all()->map(function ($category) {
@@ -39,14 +38,16 @@ class CategoryController extends Controller
          // Validate the request data
         $validatedData = $request->validate([
             // duplicate check on name
-            'name' => 'required|string|max:255|unique:categories,name',
+            'category_name' => 'required|string|max:255|unique:categories,category_name',
+            'prefix_code' => 'required|string|size:3|unique:categories,prefix_code',
             'serial_number_needed' => 'nullable|boolean',
         ]);
         $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
         // Create a new category
         try {
             $cats= Category::create([
-                'name' => $validatedData['name'],
+                'category_name' => $validatedData['category_name'],
+                'prefix_code' => $validatedData['prefix_code'],
                 'serial_number_needed' => $validateSerialNumber,
             ]);
 
@@ -68,9 +69,11 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+        // dd('update', $request->all(), $category);
         // Validate the request data
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'category_name' => 'required|string|max:255|unique:categories,category_name,' . $category->id,
+            'prefix_code' => 'required|string|size:3|unique:categories,prefix_code,' . $category->id,
             'serial_number_needed' => 'nullable|boolean',
         ]);
         $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
@@ -78,7 +81,8 @@ class CategoryController extends Controller
         // Update the category
         try {
             $category->update([
-                'name' => $validatedData['name'],
+                'category_name' => $validatedData['category_name'],
+                'prefix_code' => $validatedData['prefix_code'],
                 'serial_number_needed' => $validateSerialNumber,
             ]);
 

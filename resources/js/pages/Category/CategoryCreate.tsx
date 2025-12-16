@@ -53,18 +53,40 @@ export default function CategoriesCreate({
                                     Nama Kategori
                                 </FieldLabel>
                                 <Input
-                                    id="name"
-                                    name="name"
+                                    id="category_name"
+                                    name="category_name"
                                     type="text"
                                     placeholder="e.g. Elektronik, Furniture, Kendaraan"
-                                    aria-invalid={!!errors.name}
+                                    aria-invalid={!!errors.category_name}
                                     disabled={processing}
                                 />
-                                {errors.name && (
+                                {errors.category_name && (
                                     <p className="text-sm text-destructive">
-                                        {errors.name}
+                                        {errors.category_name}
                                     </p>
                                 )}
+                                <FieldLabel htmlFor="prefix_code">
+                                    Kode Prefix (3 karakter)
+                                </FieldLabel>
+                                <Input
+                                    id="prefix_code"
+                                    name="prefix_code"
+                                    type="text"
+                                    placeholder="e.g. ELK, FRN, KND"
+                                    maxLength={3}
+                                    aria-invalid={!!errors.prefix_code}
+                                    disabled={processing}
+                                    className="uppercase"
+                                />
+                                {errors.prefix_code && (
+                                    <p className="text-sm text-destructive">
+                                        {errors.prefix_code}
+                                    </p>
+                                )}
+                                <p className="text-xs text-muted-foreground">
+                                    Kode 3 huruf untuk kategori ini (otomatis
+                                    uppercase)
+                                </p>
                                 <div className="space-y-2">
                                     <div className="flex items-center space-x-2">
                                         <Checkbox

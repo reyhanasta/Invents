@@ -16,8 +16,13 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $words = $this->faker->words(2);
+        $prefix = strtoupper(substr($words[0], 0, 3));
+        
         return [
-            //
+            'category_name' => ucfirst(implode(' ', $words)),
+            'prefix_code' => $prefix,
+            'serial_number_needed' => $this->faker->boolean(),
         ];
     }
 }

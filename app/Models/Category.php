@@ -11,7 +11,8 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'category_name',
+        'prefix_code',
         'serial_number_needed',
     ];
 

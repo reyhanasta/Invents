@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('location_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('asset_code')->unique();
+            $table->string('asset_name');
+            $table->string('brand')->nullable();
+            $table->string('serial_number')->nullable();
+            $table->enum('condition', ['good', 'minor_damage', 'major_damage'])->default('good');
+            $table->date('acquisition_date')->nullable();
+            $table->text('description')->nullable();
+            $table->string('photo')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

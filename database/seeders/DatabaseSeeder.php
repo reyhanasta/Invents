@@ -25,14 +25,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Category::firstOrCreate(
-            ['name' => 'Electronics']
-        );
-        Category::firstOrCreate(
-            ['name' => 'Furniture']
-        );
-        Category::firstOrCreate(
-            ['name' => 'Clothing']
-        );
+        $this->call([
+            CategorySeeder::class,
+            LocationSeeder::class,
+        ]);
+
+       
     }
 }
