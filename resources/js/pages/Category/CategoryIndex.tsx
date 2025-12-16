@@ -70,194 +70,213 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Category list" />
-            <div className="flex justify-between gap-2 p-4">
-                <InputGroup className="w-96">
-                    <InputGroupInput
-                        aria-label="search"
-                        className=""
-                        placeholder="Search categories..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <InputGroupAddon>
-                        <SearchIcon />
-                    </InputGroupAddon>
-                </InputGroup>
-                <Button
-                    size="lg"
-                    className="bg-primary text-white hover:bg-primary/90 hover:shadow-md"
-                    onClick={() => setShowCreateDialog(true)}
-                >
-                    <Plus /> Add Category
-                </Button>
-            </div>
-            <Create
-                open={showCreateDialog}
-                onOpenChange={setShowCreateDialog}
-            />
-            <Edit
-                open={showEditDialog}
-                onOpenChange={setShowEditDialog}
-                category={selectedCategory}
-            />
-            <Delete
-                open={showDeleteDialog}
-                onOpenChange={setShowDeleteDialog}
-                category={selectedCategory}
-            />
-            {categories.length === 0 ? (
-                <CategoryEmpty onOpenChange={setShowCreateDialog} />
-            ) : filteredCategories.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-12 text-center">
-                    <div className="mb-4 rounded-full bg-muted p-6">
-                        <Package className="h-12 w-12 text-muted-foreground" />
+            <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
+                {/* Header Section */}
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1">
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Categories
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Manage your inventory categories
+                        </p>
                     </div>
-                    <h3 className="mb-2 text-2xl font-semibold">
-                        Tidak Ada Hasil
-                    </h3>
-                    <p className="mb-6 max-w-md text-muted-foreground">
-                        Tidak ada kategori yang cocok dengan pencarian "
-                        <span className="font-semibold">{searchQuery}</span>".
-                        Coba kata kunci lain.
-                    </p>
                     <Button
-                        variant="outline"
-                        onClick={() => setSearchQuery('')}
+                        size="lg"
+                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        onClick={() => setShowCreateDialog(true)}
                     >
-                        Clear Search
+                        <Plus className="h-4 w-4" />
+                        <span className="ml-2">Add Category</span>
                     </Button>
                 </div>
-            ) : (
-                <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {filteredCategories.map((category) => {
-                        const stockStatus =
-                            category.items_count === 0
-                                ? 'empty'
-                                : category.items_count < 10
-                                  ? 'low'
-                                  : category.items_count < 25
-                                    ? 'medium'
-                                    : 'good';
 
-                        const stockColor = {
-                            empty: 'bg-gray-100 text-gray-700 border-gray-200',
-                            low: 'bg-red-50 text-red-700 border-red-200',
-                            medium: 'bg-amber-50 text-amber-700 border-amber-200',
-                            good: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                        }[stockStatus];
+                {/* Search Bar */}
+                <div className="flex items-center gap-4">
+                    <InputGroup className="max-w-md flex-1">
+                        <InputGroupInput
+                            aria-label="search"
+                            placeholder="Search by name or prefix code..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <InputGroupAddon>
+                            <SearchIcon />
+                        </InputGroupAddon>
+                    </InputGroup>
+                    {searchQuery && (
+                        <div className="text-sm text-muted-foreground">
+                            {filteredCategories.length} of {categories.length}{' '}
+                            categories
+                        </div>
+                    )}
+                </div>
+                <Create
+                    open={showCreateDialog}
+                    onOpenChange={setShowCreateDialog}
+                />
+                <Edit
+                    open={showEditDialog}
+                    onOpenChange={setShowEditDialog}
+                    category={selectedCategory}
+                />
+                <Delete
+                    open={showDeleteDialog}
+                    onOpenChange={setShowDeleteDialog}
+                    category={selectedCategory}
+                />
+                {categories.length === 0 ? (
+                    <CategoryEmpty onOpenChange={setShowCreateDialog} />
+                ) : filteredCategories.length === 0 ? (
+                    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                        <div className="mb-4 rounded-full bg-muted p-6">
+                            <Package className="h-12 w-12 text-muted-foreground" />
+                        </div>
+                        <h3 className="mb-2 text-xl font-semibold">
+                            No Results Found
+                        </h3>
+                        <p className="mb-6 max-w-md text-sm text-muted-foreground">
+                            No categories match your search for{' '}
+                            <span className="font-semibold">
+                                "{searchQuery}"
+                            </span>
+                            . Try a different keyword.
+                        </p>
+                        <Button
+                            variant="outline"
+                            onClick={() => setSearchQuery('')}
+                        >
+                            Clear Search
+                        </Button>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                        {filteredCategories.map((category) => {
+                            const stockStatus =
+                                category.items_count === 0
+                                    ? 'empty'
+                                    : category.items_count < 10
+                                      ? 'low'
+                                      : category.items_count < 25
+                                        ? 'medium'
+                                        : 'good';
 
-                        return (
-                            <Card
-                                key={category.id}
-                                className="group overflow-hidden transition-all duration-200 hover:shadow-lg"
-                            >
-                                <CardHeader className="space-y-3 pb-2">
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex min-w-0 flex-1 gap-2">
-                                            {/* <div className="mb-4 flex flex-2 items-center gap-2"></div> */}
-                                            <CardTitle className="truncate text-xl font-semibold">
-                                                {category.category_name}{' '}
-                                            </CardTitle>
-                                            {/* <Badge
+                            const stockColor = {
+                                empty: 'bg-gray-100 text-gray-700 border-gray-200',
+                                low: 'bg-red-50 text-red-700 border-red-200',
+                                medium: 'bg-amber-50 text-amber-700 border-amber-200',
+                                good: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            }[stockStatus];
+
+                            return (
+                                <Card
+                                    key={category.id}
+                                    className="group overflow-hidden transition-all duration-200 hover:shadow-lg"
+                                >
+                                    <CardHeader className="space-y-3 pb-2">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex min-w-0 flex-1 gap-2">
+                                                <CardTitle className="truncate text-xl font-semibold">
+                                                    {
+                                                        category.category_name
+                                                    }{' '}
+                                                </CardTitle>
+                                            </div>
+                                            <div className="flex shrink-0 items-end">
+                                                <DropdownMenu modal={false}>
+                                                    <DropdownMenuTrigger
+                                                        asChild
+                                                    >
+                                                        <Button
+                                                            variant="ghost"
+                                                            aria-label="Open menu"
+                                                            size="sm"
+                                                        >
+                                                            <MoreVerticalIcon />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent
+                                                        className="w-fit"
+                                                        align="start"
+                                                        aria-label="Category actions"
+                                                    >
+                                                        <DropdownMenuLabel>
+                                                            File Actions
+                                                        </DropdownMenuLabel>
+                                                        <DropdownMenuGroup>
+                                                            <DropdownMenuItem
+                                                                className="cursor-pointer"
+                                                                onSelect={() => {
+                                                                    setSelectedCategory(
+                                                                        category,
+                                                                    );
+                                                                    setShowEditDialog(
+                                                                        true,
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <Pencil /> Edit
+                                                            </DropdownMenuItem>
+
+                                                            <DropdownMenuItem
+                                                                className="cursor-pointer"
+                                                                onSelect={() => {
+                                                                    setSelectedCategory(
+                                                                        category,
+                                                                    );
+                                                                    setShowDeleteDialog(
+                                                                        true,
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <Trash /> Delete
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuGroup>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-wrap items-center justify-between gap-2">
+                                            <Badge
                                                 variant="outline"
-                                                className="font-mono text-sm text-secondary-foreground"
+                                                className="flex-1 font-mono text-sm text-secondary-foreground"
                                             >
                                                 <BadgeCheckIcon className="mr-1 inline-block h-4 w-4" />
                                                 {category.prefix_code}
-                                            </Badge> */}
+                                            </Badge>
+                                            <Badge
+                                                variant={
+                                                    category.serial_number_needed
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                                className="text-xs"
+                                            >
+                                                {category.serial_number_needed
+                                                    ? 'Serial Number Required'
+                                                    : 'No Serial Number'}
+                                            </Badge>
                                         </div>
-                                        <div className="flex shrink-0 items-end">
-                                            <DropdownMenu modal={false}>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        aria-label="Open menu"
-                                                        size="sm"
-                                                    >
-                                                        <MoreVerticalIcon />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent
-                                                    className="w-fit"
-                                                    align="start"
-                                                    aria-label="Category actions"
-                                                >
-                                                    <DropdownMenuLabel>
-                                                        File Actions
-                                                    </DropdownMenuLabel>
-                                                    <DropdownMenuGroup>
-                                                        <DropdownMenuItem
-                                                            className="cursor-pointer"
-                                                            onSelect={() => {
-                                                                setSelectedCategory(
-                                                                    category,
-                                                                );
-                                                                setShowEditDialog(
-                                                                    true,
-                                                                );
-                                                            }}
-                                                        >
-                                                            <Pencil /> Edit
-                                                        </DropdownMenuItem>
-
-                                                        <DropdownMenuItem
-                                                            className="cursor-pointer"
-                                                            onSelect={() => {
-                                                                setSelectedCategory(
-                                                                    category,
-                                                                );
-                                                                setShowDeleteDialog(
-                                                                    true,
-                                                                );
-                                                            }}
-                                                        >
-                                                            <Trash /> Delete
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuGroup>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <Badge
-                                            variant="outline"
-                                            className="flex-2 font-mono text-sm text-secondary-foreground"
+                                        <div
+                                            className={`flex items-center gap-2 rounded-lg border px-3 py-2 ${stockColor}`}
                                         >
-                                            <BadgeCheckIcon className="mr-1 inline-block h-4 w-4" />
-                                            {category.prefix_code}
-                                        </Badge>
-                                        <Badge
-                                            variant={
-                                                category.serial_number_needed
-                                                    ? 'default'
-                                                    : 'outline'
-                                            }
-                                            className="text-xs"
-                                        >
-                                            {category.serial_number_needed
-                                                ? 'Serial Number Required'
-                                                : 'No Serial Number'}
-                                        </Badge>
-                                    </div>
-                                    <div
-                                        className={`flex items-center gap-2 rounded-lg border px-3 py-2 ${stockColor}`}
-                                    >
-                                        <Package className="h-4 w-4" />
-                                        <div className="flex flex-1 items-baseline gap-1">
-                                            <span className="text-2xl font-bold">
-                                                {category.items_count}
-                                            </span>
-                                            <span className="text-sm font-medium">
-                                                Items in Stock
-                                            </span>
+                                            <Package className="h-4 w-4" />
+                                            <div className="flex flex-1 items-baseline gap-1">
+                                                <span className="text-2xl font-bold">
+                                                    {category.items_count}
+                                                </span>
+                                                <span className="text-sm font-medium">
+                                                    Items in Stock
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </CardHeader>
-                            </Card>
-                        );
-                    })}
-                </div>
-            )}
+                                    </CardHeader>
+                                </Card>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
         </AppLayout>
     );
 }
