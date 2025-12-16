@@ -73,7 +73,7 @@ type Asset = {
 type AssetsIndexProps = {
     assets: {
         data: Asset[];
-        links: string[];
+        links: any[];
         current_page: number;
         last_page: number;
         per_page: number;
@@ -107,7 +107,7 @@ const conditionConfig = {
     },
 };
 
-export default function AssetIndex({ assets }: AssetsIndexProps) {
+export default function AssetsIndex({ assets }: AssetsIndexProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -152,10 +152,19 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                             Manage your inventory assets
                         </p>
                     </div>
+                    <Link href={assetsCreate().url}>
+                        <Button
+                            size="lg"
+                            className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        >
+                            <Plus className="h-4 w-4" />
+                            <span className="ml-2">Add Asset</span>
+                        </Button>
+                    </Link>
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
                     <InputGroup className="max-w-md flex-1">
                         <InputGroupInput
                             aria-label="search"
@@ -173,15 +182,6 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                             assets
                         </div>
                     )}
-                    <Link href={assetsCreate().url}>
-                        <Button
-                            size="lg"
-                            className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
-                        >
-                            <Plus className="h-4 w-4" />
-                            <span className="ml-2">Add Asset</span>
-                        </Button>
-                    </Link>
                 </div>
 
                 {/* Table */}
@@ -297,7 +297,7 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                                                         </DropdownMenuItem>
                                                     </Link>
                                                     <DropdownMenuItem
-                                                        className="cursor-pointer"
+                                                        className="cursor-pointer text-destructive focus:text-destructive"
                                                         onSelect={() => {
                                                             setSelectedAsset(
                                                                 asset,

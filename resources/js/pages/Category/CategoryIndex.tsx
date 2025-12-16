@@ -81,18 +81,10 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             Manage your inventory categories
                         </p>
                     </div>
-                    <Button
-                        size="lg"
-                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
-                        onClick={() => setShowCreateDialog(true)}
-                    >
-                        <Plus className="h-4 w-4" />
-                        <span className="ml-2">Add Category</span>
-                    </Button>
                 </div>
 
                 {/* Search Bar */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between gap-4">
                     <InputGroup className="max-w-md flex-1">
                         <InputGroupInput
                             aria-label="search"
@@ -110,6 +102,14 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             categories
                         </div>
                     )}
+                    <Button
+                        size="lg"
+                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        onClick={() => setShowCreateDialog(true)}
+                    >
+                        <Plus className="h-4 w-4" />
+                        <span className="ml-2">Add Category</span>
+                    </Button>
                 </div>
                 <Create
                     open={showCreateDialog}

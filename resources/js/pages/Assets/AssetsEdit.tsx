@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { assets, assetsStore } from '@/routes';
+import { assets, assetsUpdate } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
@@ -29,12 +29,26 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: assets().url,
     },
     {
-        title: 'Add Asset',
+        title: 'Edit Asset',
         href: '#',
     },
 ];
 
-type AssetsCreateProps = {
+type Asset = {
+    id: number;
+    asset_name: string;
+    asset_code: string;
+    category_id: number;
+    location_id: number;
+    brand?: string;
+    serial_number?: string;
+    condition: string;
+    acquisition_date?: string;
+    description?: string;
+};
+
+type AssetsEditProps = {
+    asset: Asset;
     categories: Array<{
         id: number;
         category_name: string;
@@ -46,13 +60,14 @@ type AssetsCreateProps = {
     }>;
 };
 
-export default function AssetCreate({
+export default function AssetsEdit({
+    asset,
     categories,
     locations,
-}: AssetsCreateProps) {
+}: AssetsEditProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Asset" />
+            <Head title={`Edit ${asset.asset_name}`} />
 
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
@@ -64,11 +79,11 @@ export default function AssetCreate({
                     </Link>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Add New Asset
+                            Edit Asset
                         </h1>
                         <p className="text-muted-foreground">
-                            Fill in the information below to add a new asset to
-                            your inventory
+                            Update the information for {asset.asset_name} (
+                            {asset.asset_code})
                         </p>
                     </div>
                 </div>
@@ -78,24 +93,42 @@ export default function AssetCreate({
                     <CardHeader>
                         <CardTitle>Asset Information</CardTitle>
                         <CardDescription>
-                            Enter the details of the new asset
+                            Update the details of the asset
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Form
-                            method="post"
-                            action={assetsStore().url}
+                            method="put"
+                            action={assetsUpdate(asset.id).url}
                             onSuccess={() => {
-                                toast.success('Asset created successfully!');
+                                toast.success('Asset updated successfully!');
                             }}
                             onError={() => {
                                 toast.error(
-                                    'Failed to create asset. Please check the form.',
+                                    'Failed to update asset. Please check the form.',
                                 );
                             }}
                         >
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
+                                    {/* Asset Code (Read-only) */}
+                                    <div className="space-y-2">
+                                        <Label htmlFor="asset_code">
+                                            Asset Code
+                                        </Label>
+                                        <Input
+                                            id="asset_code"
+                                            value={asset.asset_code}
+                                            className="font-mono"
+                                            disabled
+                                            readOnly
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Asset code is automatically
+                                            generated and cannot be changed
+                                        </p>
+                                    </div>
+
                                     {/* Asset Name */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_name">
@@ -108,6 +141,7 @@ export default function AssetCreate({
                                             id="asset_name"
                                             name="asset_name"
                                             type="text"
+                                            defaultValue={asset.asset_name}
                                             placeholder="e.g. Dell Laptop XPS 15"
                                             aria-invalid={!!errors.asset_name}
                                             disabled={processing}
@@ -129,7 +163,11 @@ export default function AssetCreate({
                                                     *
                                                 </span>
                                             </Label>
-                                            <Select name="category_id" required>
+                                            <Select
+                                                name="category_id"
+                                                defaultValue={asset.category_id.toString()}
+                                                required
+                                            >
                                                 <SelectTrigger
                                                     aria-invalid={
                                                         !!errors.category_id
@@ -174,7 +212,11 @@ export default function AssetCreate({
                                                     *
                                                 </span>
                                             </Label>
-                                            <Select name="location_id" required>
+                                            <Select
+                                                name="location_id"
+                                                defaultValue={asset.location_id.toString()}
+                                                required
+                                            >
                                                 <SelectTrigger
                                                     aria-invalid={
                                                         !!errors.location_id
@@ -216,6 +258,7 @@ export default function AssetCreate({
                                                 id="brand"
                                                 name="brand"
                                                 type="text"
+                                                defaultValue={asset.brand}
                                                 placeholder="e.g. Dell, HP, Logitech"
                                                 aria-invalid={!!errors.brand}
                                                 disabled={processing}
@@ -235,6 +278,9 @@ export default function AssetCreate({
                                                 id="serial_number"
                                                 name="serial_number"
                                                 type="text"
+                                                defaultValue={
+                                                    asset.serial_number
+                                                }
                                                 placeholder="e.g. SN123456789"
                                                 aria-invalid={
                                                     !!errors.serial_number
@@ -259,7 +305,11 @@ export default function AssetCreate({
                                                     *
                                                 </span>
                                             </Label>
-                                            <Select name="condition" required>
+                                            <Select
+                                                name="condition"
+                                                defaultValue={asset.condition}
+                                                required
+                                            >
                                                 <SelectTrigger
                                                     aria-invalid={
                                                         !!errors.condition
@@ -295,6 +345,9 @@ export default function AssetCreate({
                                                 id="acquisition_date"
                                                 name="acquisition_date"
                                                 type="date"
+                                                defaultValue={
+                                                    asset.acquisition_date
+                                                }
                                                 aria-invalid={
                                                     !!errors.acquisition_date
                                                 }
@@ -316,6 +369,7 @@ export default function AssetCreate({
                                         <Textarea
                                             id="description"
                                             name="description"
+                                            defaultValue={asset.description}
                                             placeholder="Additional notes or description about the asset..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
@@ -348,8 +402,8 @@ export default function AssetCreate({
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Creating...'
-                                                : 'Create Asset'}
+                                                ? 'Saving...'
+                                                : 'Save Changes'}
                                         </Button>
                                     </div>
                                 </div>

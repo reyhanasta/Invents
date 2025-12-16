@@ -25,9 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('assets', [\App\Http\Controllers\AssetController::class, 'index'])->name('assets');
     Route::get('assets/create', [\App\Http\Controllers\AssetController::class, 'create'])->name('assets-create');
     Route::post('assets', [\App\Http\Controllers\AssetController::class, 'store'])->name('assets-store');
-    Route::get('assets/edit', [\App\Http\Controllers\AssetController::class, 'edit'])->name('assets-edit');
+    Route::get('assets/{asset}/edit', [\App\Http\Controllers\AssetController::class, 'edit'])->name('assets-edit');
     Route::put('assets/{asset}', [\App\Http\Controllers\AssetController::class, 'update'])->name('assets-update');
-    Route::delete('assets/{asset}', [\App\Http\Controllers\AssetController::class, 'delete'])->name('assets-delete');
+    Route::delete('assets/{asset}', [\App\Http\Controllers\AssetController::class, 'destroy'])->name('assets-delete');
     Route::get('assets/{asset}/show', [\App\Http\Controllers\AssetController::class, 'show'])->name('assets-detail');
 });
 

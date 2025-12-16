@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Location;
-use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -21,7 +20,7 @@ class AssetController extends Controller
             ->with(['category', 'location'])
             ->paginate(15);
 
-        return Inertia::render('Assets/AssetsIndex', [
+        return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'categories' => Category::all(),
             'locations' => Location::all(),
@@ -30,7 +29,7 @@ class AssetController extends Controller
 
     public function create()
     {
-        return Inertia::render('Assets/AssetsCreate', [
+        return Inertia::render('Asset/AssetCreate', [
             'categories' => Category::all(),
             'locations' => Location::all(),
         ]);
@@ -39,6 +38,7 @@ class AssetController extends Controller
     public function show($id)
     {
         $asset = Asset::findOrFail($id);
+
         return Inertia::render('Asset/AssetShow', [
             'asset' => $asset,
         ]);
@@ -47,69 +47,65 @@ class AssetController extends Controller
     public function edit($id)
     {
         $asset = Asset::findOrFail($id);
+
         return Inertia::render('Asset/AssetEdit', [
             'asset' => $asset,
+            'categories' => Category::all(),
+            'locations' => Location::all(),
         ]);
     }
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'asset_name' => 'required|string|max:255',
-                'category_id' => 'required|exists:categories,id',
-                'brand' => 'nullable|string|max:255',
-                'serial_number' => 'nullable|string|max:255',
-                'location_id' => 'required|exists:locations,id',
-                'condition' => 'required|in:good,minor_damage,major_damage',
-                'acquisition_date' => 'nullable|date',
-                'description' => 'nullable|string',
-            ]);
-            $asset = Asset::create($validated);
-            return to_route('assets', $asset)
-            ->with('success', 'Asset berhasil ditambahkan!');
-            } catch (\Exception $e) {
-                return redirect()->back()
-                    ->withErrors(['error' => 'Failed to create asset: ' . $e->getMessage()])
-                    ->withInput();
-            }
+        $validated = $request->validate([
+            'asset_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brand' => 'nullable|string|max:255',
+            'serial_number' => 'nullable|string|max:255',
+            'location_id' => 'required|exists:locations,id',
+            'condition' => 'required|in:good,minor_damage,major_damage',
+            'acquisition_date' => 'nullable|date',
+            'description' => 'nullable|string',
+        ]);
+
+        // Generate asset code based on category prefix
+        $category = Category::findOrFail($validated['category_id']);
+        $lastAsset = Asset::where('category_id', $validated['category_id'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $nextNumber = $lastAsset ? intval(substr($lastAsset->asset_code, strlen($category->prefix_code))) + 1 : 1;
+        $validated['asset_code'] = $category->prefix_code.str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+        Asset::create($validated);
+
+        return to_route('assets')->with('success', 'Asset berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'location_id' => 'required|exists:locations,id',
+            'brand' => 'nullable|string|max:255',
             'serial_number' => 'nullable|string|max:255',
-            'purchase_date' => 'nullable|date',
-            'status' => 'required|string|in:available,checked_out,under_maintenance,retired',
+            'location_id' => 'required|exists:locations,id',
+            'condition' => 'required|in:good,minor_damage,major_damage',
+            'acquisition_date' => 'nullable|date',
+            'description' => 'nullable|string',
         ]);
 
-        // Find the asset and update it
-        try {
-            $asset = Asset::findOrFail($id);
-            $asset->update($validatedData);
+        $asset = Asset::findOrFail($id);
+        $asset->update($validated);
 
-            // Redirect to the assets index page with a success message
-            return to_route('assets')->with('success', 'Asset updated successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Failed to update asset: ' . $e->getMessage()])->withInput();
-        }
+        return to_route('assets')->with('success', 'Asset updated successfully.');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
-        // Find the asset and delete it
-        try {
-            $asset = Asset::findOrFail($id);
-            $asset->delete();
+        $asset = Asset::findOrFail($id);
+        $asset->delete();
 
-            // Redirect to the assets index page with a success message
-            return to_route('assets')->with('success', 'Asset deleted successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Failed to delete asset: ' . $e->getMessage()]);
-        }
+        return to_route('assets')->with('success', 'Asset deleted successfully.');
     }
 }

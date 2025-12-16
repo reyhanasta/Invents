@@ -46,7 +46,7 @@ type AssetsCreateProps = {
     }>;
 };
 
-export default function AssetCreate({
+export default function AssetsCreate({
     categories,
     locations,
 }: AssetsCreateProps) {

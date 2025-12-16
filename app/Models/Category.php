@@ -15,5 +15,4 @@ class Category extends Model
         'prefix_code',
         'serial_number_needed',
     ];
-
 }

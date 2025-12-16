@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('category_name')->unique();
             $table->string('prefix_code', 3); // ELK, ATK, FRN, etc
-            $table->boolean('serial_number_needed')->default(false);  
+            $table->boolean('serial_number_needed')->default(false);
             $table->timestamps();
         });
     }

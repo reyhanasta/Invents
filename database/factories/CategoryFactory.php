@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
     {
         $words = $this->faker->words(2);
         $prefix = strtoupper(substr($words[0], 0, 3));
-        
+
         return [
             'category_name' => ucfirst(implode(' ', $words)),
             'prefix_code' => $prefix,
