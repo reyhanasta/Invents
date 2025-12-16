@@ -8,6 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -41,9 +42,11 @@ import {
     Plus,
     SearchIcon,
     Trash,
+    X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { SimplePaginationExample } from './SimplePaginationExample';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -73,11 +76,18 @@ type Asset = {
 type AssetsIndexProps = {
     assets: {
         data: Asset[];
-        links: string[];
+        links: Array<{
+            url: string | null;
+            label: string;
+            active: boolean;
+        }>;
         current_page: number;
+        first_page_url: string;
         last_page: number;
         per_page: number;
         total: number;
+        from: number;
+        to: number;
     };
     categories: Array<{
         id: number;
@@ -87,6 +97,7 @@ type AssetsIndexProps = {
         id: number;
         location_name: string;
     }>;
+    search?: string;
 };
 
 const conditionConfig = {
@@ -107,20 +118,42 @@ const conditionConfig = {
     },
 };
 
-export default function AssetIndex({ assets }: AssetsIndexProps) {
-    const [searchQuery, setSearchQuery] = useState('');
+export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
+    const [searchQuery, setSearchQuery] = useState(search);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+    console.log(assets);
+    // Debounce search - Inertia best practice
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchQuery !== search) {
+                router.get(
+                    window.location.pathname,
+                    { search: searchQuery || undefined },
+                    {
+                        preserveState: true,
+                        preserveScroll: true,
+                        replace: true,
+                        only: ['assets'],
+                    },
+                );
+            }
+        }, 300);
 
-    const filteredAssets = assets.data.filter((asset) => {
-        const query = searchQuery.toLowerCase();
-        return (
-            asset.asset_name.toLowerCase().includes(query) ||
-            asset.asset_code.toLowerCase().includes(query) ||
-            asset.category.category_name.toLowerCase().includes(query) ||
-            asset.location.location_name.toLowerCase().includes(query)
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery, search]);
+
+    const handleClearSearch = () => {
+        setSearchQuery('');
+        router.get(
+            window.location.pathname,
+            {},
+            {
+                preserveState: true,
+                only: ['assets'],
+            },
         );
-    });
+    };
 
     const handleDelete = () => {
         if (!selectedAsset) return;
@@ -140,7 +173,6 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Assets" />
-
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -156,21 +188,35 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
 
                 {/* Search */}
                 <div className="flex items-center justify-between gap-4">
-                    <InputGroup className="max-w-md flex-1">
-                        <InputGroupInput
-                            aria-label="search"
-                            placeholder="Search by name, code, category..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <InputGroupAddon>
-                            <SearchIcon />
-                        </InputGroupAddon>
-                    </InputGroup>
+                    <div className="relative max-w-md flex-1">
+                        <InputGroup>
+                            <InputGroupInput
+                                aria-label="search"
+                                placeholder="Search by name, code, category, location..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <InputGroupAddon>
+                                {searchQuery ? (
+                                    <button
+                                        onClick={handleClearSearch}
+                                        className="rounded p-0.5 hover:bg-accent"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                ) : (
+                                    <SearchIcon className="h-4 w-4" />
+                                )}
+                            </InputGroupAddon>
+                        </InputGroup>
+                    </div>
                     {searchQuery && (
                         <div className="text-sm text-muted-foreground">
-                            {filteredAssets.length} of {assets.data.length}{' '}
-                            assets
+                            Found{' '}
+                            <span className="font-medium text-foreground">
+                                {assets.total}
+                            </span>{' '}
+                            result{assets.total !== 1 ? 's' : ''}
                         </div>
                     )}
                     <Link href={assetsCreate().url}>
@@ -185,7 +231,7 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                 </div>
 
                 {/* Table */}
-                {filteredAssets.length === 0 ? (
+                {assets.data.length === 0 ? (
                     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         <div className="mb-4 rounded-full bg-muted p-6">
                             <Package className="h-12 w-12 text-muted-foreground" />
@@ -195,13 +241,13 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                         </h3>
                         <p className="mb-6 max-w-md text-sm text-muted-foreground">
                             {searchQuery
-                                ? `No assets match your search for "${searchQuery}"`
+                                ? `No assets found matching "${searchQuery}". Try a different search term.`
                                 : 'Get started by adding your first asset'}
                         </p>
                         {searchQuery ? (
                             <Button
                                 variant="outline"
-                                onClick={() => setSearchQuery('')}
+                                onClick={handleClearSearch}
                             >
                                 Clear Search
                             </Button>
@@ -231,7 +277,7 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredAssets.map((asset) => (
+                                {assets.data.map((asset) => (
                                     <TableRow key={asset.id}>
                                         <TableCell className="font-mono font-medium">
                                             {asset.asset_code}
@@ -320,19 +366,28 @@ export default function AssetIndex({ assets }: AssetsIndexProps) {
                     </div>
                 )}
 
-                {/* Pagination info */}
-                {assets.data.length > 0 && (
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <div>
-                            Showing{' '}
-                            {(assets.current_page - 1) * assets.per_page + 1} to{' '}
-                            {Math.min(
-                                assets.current_page * assets.per_page,
-                                assets.total,
-                            )}{' '}
-                            of {assets.total} assets
-                        </div>
-                    </div>
+                {/* Pagination */}
+                {/* Pagination */}
+                {assets.data.length > 0 && assets.total > assets.per_page && (
+                    // <AssetPagination
+                    //     links={assets.links}
+                    //     current_page={assets.current_page}
+                    //     last_page={assets.last_page}
+                    //     total={assets.total}
+                    //     per_page={assets.per_page}
+                    //     from={assets.from}
+                    //     to={assets.to}
+                    // />
+
+                    <SimplePaginationExample
+                        links={assets.links}
+                        current_page={assets.current_page}
+                        last_page={assets.last_page}
+                        total={assets.total}
+                        per_page={assets.per_page}
+                        from={assets.from}
+                        to={assets.to}
+                    />
                 )}
             </div>
 

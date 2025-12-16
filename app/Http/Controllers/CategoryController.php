@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all()->map(function ($category) {
             // Dummy stock count - will be replaced with real data later
-            $category->items_count = rand(0, 50);
+            $category->items_count = Asset::where('category_id', $category->id)->count();
 
             return $category;
         });

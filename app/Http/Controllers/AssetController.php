@@ -7,23 +7,41 @@ use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class AssetController extends Controller
 {
     //
 
-    public function index()
+    public function index(Request $request)
     {
-        $assets = QueryBuilder::for(Asset::class)
-            ->allowedFilters(['asset_name', 'asset_code', 'category_id', 'location_id'])
-            ->with(['category', 'location'])
-            ->paginate(15);
+        $search = $request->input('search');
+
+        // $query = Asset::query()->with(['category', 'location']);
+        $query = Asset::with(['category', 'location'])->latest();
+
+        // if ($search) {
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('asset_name', 'like', "%{$search}%")
+        //             ->orWhere('asset_code', 'like', "%{$search}%")
+        //             ->orWhereHas('category', function ($q) use ($search) {
+        //                 $q->where('category_name', 'like', "%{$search}%");
+        //             })
+        //             ->orWhereHas('location', function ($q) use ($search) {
+        //                 $q->where('location_name', 'like', "%{$search}%");
+        //             });
+        //     });
+        // }
+
+
+
+        // $assets = $query->paginate(15)->withQueryString();
+        $assets = $query->paginate(5);
 
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'categories' => Category::all(),
             'locations' => Location::all(),
+            'search' => $search,
         ]);
     }
 
