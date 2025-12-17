@@ -65,6 +65,7 @@ export default function AssetEdit({
     categories,
     locations,
 }: AssetsEditProps) {
+    console.log(asset.asset_name);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit ${asset.asset_name}`} />
@@ -396,7 +397,9 @@ export default function AssetEdit({
                                             type="button"
                                             variant="outline"
                                             disabled={processing}
-                                            onClick={() => router.visit(assets().url)}
+                                            onClick={() =>
+                                                router.visit(assets().url)
+                                            }
                                         >
                                             Cancel
                                         </Button>
