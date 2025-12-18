@@ -109,7 +109,7 @@ type AssetsIndexProps = {
     search?: string;
 };
 
-const conditionConfig = {
+export const conditionConfig = {
     good: {
         label: 'Good',
         variant: 'default' as const,

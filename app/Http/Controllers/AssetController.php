@@ -52,10 +52,15 @@ class AssetController extends Controller
 
     public function show($id)
     {
-        $asset = Asset::findOrFail($id);
-
+        $assetList = Asset::findOrFail($id);
+        // $categoryName = Category::find($assetList->category_id, 'category_name')->get('category_name');
+        $categoryName = Category::where('id', $assetList->category_id)->value('category_name');
+        $locationName = Location::where('id', $assetList->location_id)->value('location_name');
+      
         return Inertia::render('Asset/AssetDetail', [
-            'asset' => $asset,
+            'asset' => $assetList,
+            'categoryName' => $categoryName,
+            'locationName' => $locationName,
         ]);
     }
 

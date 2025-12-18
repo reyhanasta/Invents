@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -6,7 +7,18 @@ import AppLayout from '@/layouts/app-layout';
 import { assets } from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { router } from '@inertiajs/react';
-import { ArrowLeft, Pencil, Printer, Tag } from 'lucide-react';
+import {
+    ArrowLeft,
+    Box,
+    Calendar,
+    Hash,
+    MapPin,
+    Pencil,
+    Printer,
+    Tag,
+} from 'lucide-react';
+import { conditionConfig } from './AssetIndex';
+import AssetLabel from './AssetLabel';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -15,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Asset = {
+export type Asset = {
     id: number;
     asset_name: string;
     asset_code: string;
@@ -30,22 +42,17 @@ type Asset = {
 
 type AssetsShowProps = {
     asset: Asset;
-    categories: Array<{
-        id: number;
-        category_name: string;
-        prefix_code: string;
-    }>;
-    locations: Array<{
-        id: number;
-        location_name: string;
-    }>;
+    categoryName: string;
+    locationName: string;
 };
 
 export default function AssetDetail({
     asset,
-    categories,
-    location,
+    categoryName,
+    locationName,
 }: AssetsShowProps) {
+    const assetBoxSize = 15;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="container mx-auto space-y-6 p-2 md:p-4 lg:p-6">
@@ -85,35 +92,35 @@ export default function AssetDetail({
                     <div id="content-information">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="border-b-2 pb-4">
+                                <CardTitle className="border-b-2 pb-4 text-2xl font-bold">
                                     {asset.asset_name} (#{asset.asset_code})
                                 </CardTitle>
-                                <CardContent className="mx-2 mt-4">
+                                <CardContent className="mx-2 mt-4 text-lg">
                                     <div
                                         id="information"
                                         className="grid grid-cols-2 justify-between space-y-6"
                                     >
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
+                                                <Box size={assetBoxSize} />
                                                 <Label className="text-muted-foreground">
                                                     Category
                                                 </Label>
                                             </div>
-                                            <span>{asset.category_id}</span>
+                                            <span>{categoryName}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
+                                                <MapPin size={assetBoxSize} />
                                                 <Label className="text-muted-foreground">
                                                     Location
                                                 </Label>
                                             </div>
-                                            <span>{asset.location_id}</span>
+                                            <span>{locationName}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
+                                                <Calendar size={assetBoxSize} />
                                                 <Label className="text-muted-foreground">
                                                     Purchase Date
                                                 </Label>
@@ -123,8 +130,8 @@ export default function AssetDetail({
                                             </span>
                                         </div>
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
+                                                <Tag size={assetBoxSize} />
                                                 <Label className="text-muted-foreground">
                                                     Brand
                                                 </Label>
@@ -132,8 +139,8 @@ export default function AssetDetail({
                                             <span>{asset.brand}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
+                                                <Hash size={assetBoxSize} />
                                                 <Label className="text-muted-foreground">
                                                     Serial Number
                                                 </Label>
@@ -141,25 +148,38 @@ export default function AssetDetail({
                                             <span>{asset.serial_number}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <div className="flex gap-2">
-                                                <Tag size={12} />
+                                            <div className="asset-information">
                                                 <Label className="text-muted-foreground">
                                                     Status
                                                 </Label>
                                             </div>
-                                            <span>{asset.condition}</span>
+                                            <Badge
+                                                variant={
+                                                    conditionConfig[
+                                                        asset.condition as keyof typeof conditionConfig
+                                                    ]?.variant
+                                                }
+                                            >
+                                                {
+                                                    conditionConfig[
+                                                        asset.condition as keyof typeof conditionConfig
+                                                    ]?.label
+                                                }
+                                            </Badge>
                                         </div>
                                     </div>
                                 </CardContent>
                             </CardHeader>
                         </Card>
                     </div>
-                    <div id="content-label">
+                    <div id="content-label" className="spcae-y-4">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Asset Information</CardTitle>
-                                <CardContent>
-                                    <p>Disini isinya semua cuy</p>
+                                <CardTitle className="text-lg">
+                                    Asset Label
+                                </CardTitle>
+                                <CardContent className="flex justify-center">
+                                    <AssetLabel asset={asset} />
                                 </CardContent>
                             </CardHeader>
                         </Card>
