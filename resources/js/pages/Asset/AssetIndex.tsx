@@ -33,10 +33,17 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { assets, assetsCreate, assetsDelete, assetsEdit } from '@/routes';
+import {
+    assets,
+    assetsCreate,
+    assetsDelete,
+    assetsDetail,
+    assetsEdit,
+} from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
+    Eye,
     Loader2,
     MoreHorizontalIcon,
     Package,
@@ -379,6 +386,19 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               className="cursor-pointer"
                                                               onSelect={() => {
                                                                   router.visit(
+                                                                      assetsDetail(
+                                                                          asset.id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Eye className="h-4 w-4" />
+                                                              <span>Show</span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
                                                                       assetsEdit(
                                                                           asset.id,
                                                                       ).url,
@@ -388,6 +408,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               <Pencil className="h-4 w-4" />
                                                               <span>Edit</span>
                                                           </DropdownMenuItem>
+
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
                                                               onSelect={() => {

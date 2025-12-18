@@ -33,7 +33,7 @@ class AssetController extends Controller
                     });
             });
         }
-        $assets = $query->paginate(10)->withQueryString();
+        $assets = $query->paginate(8)->withQueryString();
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'categories' => Category::all(),
@@ -54,7 +54,7 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($id);
 
-        return Inertia::render('Asset/AssetShow', [
+        return Inertia::render('Asset/AssetDetail', [
             'asset' => $asset,
         ]);
     }

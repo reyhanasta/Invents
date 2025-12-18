@@ -65,6 +65,7 @@ export default function AssetEdit({
     categories,
     locations,
 }: AssetsEditProps) {
+    console.log(asset.asset_name);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit ${asset.asset_name}`} />
