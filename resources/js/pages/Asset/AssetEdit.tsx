@@ -396,7 +396,9 @@ export default function AssetEdit({
                                             type="button"
                                             variant="outline"
                                             disabled={processing}
-                                            onClick={() => router.visit(assets().url)}
+                                            onClick={() =>
+                                                router.visit(assets().url)
+                                            }
                                         >
                                             Cancel
                                         </Button>
