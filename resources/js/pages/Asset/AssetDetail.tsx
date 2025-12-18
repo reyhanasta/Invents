@@ -179,7 +179,11 @@ export default function AssetDetail({
                                     Asset Label
                                 </CardTitle>
                                 <CardContent className="flex justify-center">
-                                    <AssetLabel asset={asset} />
+                                    <AssetLabel
+                                        asset={asset}
+                                        category={categoryName}
+                                        location={locationName}
+                                    />
                                 </CardContent>
                             </CardHeader>
                         </Card>
