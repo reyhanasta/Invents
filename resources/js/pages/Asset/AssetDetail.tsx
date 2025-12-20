@@ -17,8 +17,10 @@ import {
     Printer,
     Tag,
 } from 'lucide-react';
+import { useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import { conditionConfig } from './AssetIndex';
-import AssetLabel from './AssetLabel';
+import AssetQrCodeLabel from './AssetQrCodeLabel';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -36,6 +38,7 @@ export type Asset = {
     brand?: string;
     serial_number?: string;
     condition: string;
+    status: 'available' | 'in-use' | 'maintenance' | 'retired';
     acquisition_date?: string;
     description?: string;
 };
@@ -52,7 +55,27 @@ export default function AssetDetail({
     locationName,
 }: AssetsShowProps) {
     const assetBoxSize = 15;
-
+    const contentRef = useRef<HTMLDivElement>(null);
+    const reactToPrintFn = useReactToPrint({
+        contentRef,
+        documentTitle: `Asset Label - ${asset.asset_code}`,
+        pageStyle: `
+            @page {
+                size: 60mm 40mm;
+                margin: 0;
+            }
+            @media print {
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+                * {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+            }
+        `,
+    });
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="container mx-auto space-y-6 p-2 md:p-4 lg:p-6">
@@ -74,9 +97,10 @@ export default function AssetDetail({
                         <Button
                             variant="outline"
                             className="text-accent-foreground"
-                            onClick={() =>
-                                router.visit(`/assets/${asset.id}/print-label`)
-                            }
+                            // onClick={() =>
+                            //     router.visit(`/assets/${asset.id}/print-label`)
+                            // }
+                            onClick={reactToPrintFn}
                         >
                             <Printer />
                             Print Label
@@ -95,11 +119,11 @@ export default function AssetDetail({
                 </div>
                 <div
                     aria-label="content"
-                    className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+                    className="grid grid-cols-1 gap-6 md:grid-cols-4"
                 >
                     <div
                         id="content-information"
-                        className="space-y-6 lg:col-span-2"
+                        className="space-y-6 md:col-span-3"
                     >
                         <Card>
                             <CardHeader>
@@ -181,13 +205,21 @@ export default function AssetDetail({
                             </CardContent>
                         </Card>
                     </div>
-                    <div id="content-label" className="spcae-y-4">
+                    <div id="content-label" className="">
                         <Card>
+                            <CardHeader>
+                                <CardTitle className="border-b-2 pb-4 text-2xl">
+                                    Asset Label Preview
+                                </CardTitle>
+                            </CardHeader>
                             <CardContent className="flex justify-center">
-                                <AssetLabel
+                                <div ref={contentRef}>
+                                    <AssetQrCodeLabel asset={asset} />
+                                </div>
+                                {/* <AssetLabel
                                     asset={asset}
                                     location={locationName}
-                                />
+                                /> */}
                             </CardContent>
                         </Card>
                     </div>
