@@ -149,4 +149,6 @@
   .asset-information {
         @apply text-muted-foreground flex gap-2;
     }
+
+    
 }

@@ -128,4 +128,29 @@ class AssetController extends Controller
 
         return to_route('assets')->with('success', 'Asset deleted successfully.');
     }
+
+    public function qrcodeDetail($id)
+    {
+        $asset = Asset::findOrFail($id);
+        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
+        $locationName = Location::where('id', $asset->location_id)->value('location_name');
+        return Inertia::render('Asset/AssetQrcodeDetail', [
+            'asset' => $asset,
+            'categoryName' => $categoryName,
+            'locationName' => $locationName,
+        ]);
+    }
+
+    public function printLabel($id)
+    {
+        $asset = Asset::findOrFail($id);
+        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
+        $locationName = Location::where('id', $asset->location_id)->value('location_name');
+        
+        return Inertia::render('Asset/AssetPrintLabel', [
+            'asset' => $asset,
+            'categoryName' => $categoryName,
+            'locationName' => $locationName,
+        ]);
+    }
 }

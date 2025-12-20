@@ -69,12 +69,14 @@ export default function AssetDetail({
 
                     <div
                         aria-label="buttons"
-                        className="flex justify-between gap-4"
+                        className="flex justify-between gap-2"
                     >
                         <Button
                             variant="outline"
                             className="text-accent-foreground"
-                            onClick={() => router.visit(assets().url)}
+                            onClick={() =>
+                                router.visit(`/assets/${asset.id}/print-label`)
+                            }
                         >
                             <Printer />
                             Print Label
@@ -82,110 +84,111 @@ export default function AssetDetail({
                         <Button
                             variant="outline"
                             className="bg-primary text-primary-foreground"
+                            onClick={() =>
+                                router.visit(`/assets/${asset.id}/edit`)
+                            }
                         >
                             <Pencil />
                             Edit Assets
                         </Button>
                     </div>
                 </div>
-                <div aria-label="content" className="grid grid-cols-2 gap-4">
-                    <div id="content-information">
+                <div
+                    aria-label="content"
+                    className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+                >
+                    <div
+                        id="content-information"
+                        className="space-y-6 lg:col-span-2"
+                    >
                         <Card>
                             <CardHeader>
                                 <CardTitle className="border-b-2 pb-4 text-2xl font-bold">
                                     {asset.asset_name} (#{asset.asset_code})
                                 </CardTitle>
-                                <CardContent className="mx-2 mt-4 text-lg">
-                                    <div
-                                        id="information"
-                                        className="grid grid-cols-2 justify-between space-y-6"
-                                    >
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <Box size={assetBoxSize} />
-                                                <Label className="text-muted-foreground">
-                                                    Category
-                                                </Label>
-                                            </div>
-                                            <span>{categoryName}</span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <MapPin size={assetBoxSize} />
-                                                <Label className="text-muted-foreground">
-                                                    Location
-                                                </Label>
-                                            </div>
-                                            <span>{locationName}</span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <Calendar size={assetBoxSize} />
-                                                <Label className="text-muted-foreground">
-                                                    Purchase Date
-                                                </Label>
-                                            </div>
-                                            <span>
-                                                {asset.acquisition_date}
-                                            </span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <Tag size={assetBoxSize} />
-                                                <Label className="text-muted-foreground">
-                                                    Brand
-                                                </Label>
-                                            </div>
-                                            <span>{asset.brand}</span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <Hash size={assetBoxSize} />
-                                                <Label className="text-muted-foreground">
-                                                    Serial Number
-                                                </Label>
-                                            </div>
-                                            <span>{asset.serial_number}</span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <div className="asset-information">
-                                                <Label className="text-muted-foreground">
-                                                    Status
-                                                </Label>
-                                            </div>
-                                            <Badge
-                                                variant={
-                                                    conditionConfig[
-                                                        asset.condition as keyof typeof conditionConfig
-                                                    ]?.variant
-                                                }
-                                            >
-                                                {
-                                                    conditionConfig[
-                                                        asset.condition as keyof typeof conditionConfig
-                                                    ]?.label
-                                                }
-                                            </Badge>
-                                        </div>
-                                    </div>
-                                </CardContent>
                             </CardHeader>
+                            <CardContent className="mx-2 text-lg">
+                                <div
+                                    id="information"
+                                    className="grid grid-cols-2 justify-between space-y-6"
+                                >
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <Box size={assetBoxSize} />
+                                            <Label className="text-muted-foreground">
+                                                Category
+                                            </Label>
+                                        </div>
+                                        <span>{categoryName}</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <MapPin size={assetBoxSize} />
+                                            <Label className="text-muted-foreground">
+                                                Location
+                                            </Label>
+                                        </div>
+                                        <span>{locationName}</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <Calendar size={assetBoxSize} />
+                                            <Label className="text-muted-foreground">
+                                                Purchase Date
+                                            </Label>
+                                        </div>
+                                        <span>{asset.acquisition_date}</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <Tag size={assetBoxSize} />
+                                            <Label className="text-muted-foreground">
+                                                Brand
+                                            </Label>
+                                        </div>
+                                        <span>{asset.brand}</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <Hash size={assetBoxSize} />
+                                            <Label className="text-muted-foreground">
+                                                Serial Number
+                                            </Label>
+                                        </div>
+                                        <span>{asset.serial_number}</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="asset-information">
+                                            <Label className="text-muted-foreground">
+                                                Status
+                                            </Label>
+                                        </div>
+                                        <Badge
+                                            variant={
+                                                conditionConfig[
+                                                    asset.condition as keyof typeof conditionConfig
+                                                ]?.variant
+                                            }
+                                        >
+                                            {
+                                                conditionConfig[
+                                                    asset.condition as keyof typeof conditionConfig
+                                                ]?.label
+                                            }
+                                        </Badge>
+                                    </div>
+                                </div>
+                            </CardContent>
                         </Card>
                     </div>
                     <div id="content-label" className="spcae-y-4">
                         <Card>
-                            <CardHeader>
-                                <CardTitle className="text-lg">
-                                    Asset Label
-                                </CardTitle>
-                                <CardContent className="flex justify-center">
-                                    <AssetLabel
-                                        asset={asset}
-                                        category={categoryName}
-                                        location={locationName}
-                                    />
-                                </CardContent>
-                            </CardHeader>
+                            <CardContent className="flex justify-center">
+                                <AssetLabel
+                                    asset={asset}
+                                    location={locationName}
+                                />
+                            </CardContent>
                         </Card>
                     </div>
                 </div>

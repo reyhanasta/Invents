@@ -62,7 +62,7 @@ export default function AssetCreate({
                         size="icon"
                         onClick={() => router.visit(assets().url)}
                     >
-                        <ArrowLeft className="h-4 w-4" />
+                        <ArrowLeft className="h-4 w-4 text-muted-foreground" />
                     </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
@@ -340,7 +340,9 @@ export default function AssetCreate({
                                             type="button"
                                             variant="outline"
                                             disabled={processing}
-                                            onClick={() => router.visit(assets().url)}
+                                            onClick={() =>
+                                                router.visit(assets().url)
+                                            }
                                         >
                                             Cancel
                                         </Button>
