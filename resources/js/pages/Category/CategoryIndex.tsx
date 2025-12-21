@@ -78,7 +78,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             Categories
                         </h1>
                         <p className="text-muted-foreground">
-                            Manage your inventory categories
+                            Manage your asset categories
                         </p>
                     </div>
                 </div>

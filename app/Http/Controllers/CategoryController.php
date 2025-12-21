@@ -24,21 +24,6 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show($id)
-    {
-        dd('show', $id);
-        $categories = Category::findOrFail($id);
-
-        return Inertia::render('Category/CategoryIndex', [
-            'categories' => $categories,
-        ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Category/CategoryCreate');
-    }
-
     public function store(Request $request)
     {
         // Validate the request data
@@ -66,7 +51,6 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-
         return Inertia::render('Category/CategoryEdit', [
             'category' => $category,
         ]);
