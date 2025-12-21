@@ -12,13 +12,7 @@ class CategoryController extends Controller
     //
     public function index()
     {
-        $categories = Category::all()->map(function ($category) {
-            // Dummy stock count - will be replaced with real data later
-            $category->items_count = Asset::where('category_id', $category->id)->count();
-
-            return $category;
-        });
-
+        $categories = Category::withCount('assets')->get();
         return Inertia::render('Category/CategoryIndex', [
             'categories' => $categories,
         ]);

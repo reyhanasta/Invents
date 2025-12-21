@@ -45,7 +45,7 @@ type CategoryIndexProps = {
         category_name: string;
         prefix_code: string;
         serial_number_needed: boolean;
-        items_count: number;
+        assets_count: number;
     }>;
 };
 
@@ -155,11 +155,11 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         {filteredCategories.map((category) => {
                             const stockStatus =
-                                category.items_count === 0
+                                category.assets_count === 0
                                     ? 'empty'
-                                    : category.items_count < 10
+                                    : category.assets_count < 10
                                       ? 'low'
-                                      : category.items_count < 25
+                                      : category.assets_count < 25
                                         ? 'medium'
                                         : 'good';
 
@@ -265,7 +265,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                             <Package className="h-4 w-4" />
                                             <div className="flex flex-1 items-baseline gap-1">
                                                 <span className="text-2xl font-bold">
-                                                    {category.items_count}
+                                                    {category.assets_count}
                                                 </span>
                                                 <span className="text-sm font-medium">
                                                     Items in Stock

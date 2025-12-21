@@ -25,6 +25,7 @@ import { locations } from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import {
+    Box,
     MapPin,
     MoreVerticalIcon,
     Package,
@@ -50,6 +51,7 @@ type LocationIndexProps = {
         location_name: string;
         location_code: string;
         description: string;
+        assets_count: number;
     }>;
 };
 export default function LocationIndex({ locations }: LocationIndexProps) {
@@ -157,72 +159,79 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                                     className="rounded-lg border bg-card p-2 transition-all hover:border-primary/50 hover:shadow-sm"
                                 >
                                     <div className="flex flex-row">
-                                        <div className="my-auto rounded-lg bg-primary/10 p-4">
-                                            <MapPin className="h-8 w-8 text-primary" />
+                                        <div className="my-auto flex rounded-2xl bg-primary/10 p-4">
+                                            <MapPin className="h-6 w-6 text-primary" />
                                         </div>
-                                        <CardHeader className="flex-2 items-center-safe">
-                                            <CardAction>
-                                                <DropdownMenu modal={false}>
-                                                    <DropdownMenuTrigger
-                                                        asChild
-                                                    >
-                                                        <Button
-                                                            variant="ghost"
-                                                            aria-label="Open menu"
-                                                            size="sm"
-                                                        >
-                                                            <MoreVerticalIcon />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent
-                                                        className="w-fit"
-                                                        align="start"
-                                                        aria-label="Category actions"
-                                                    >
-                                                        <DropdownMenuLabel>
-                                                            File Actions
-                                                        </DropdownMenuLabel>
-                                                        <DropdownMenuGroup>
-                                                            <DropdownMenuItem
-                                                                className="cursor-pointer"
-                                                                onSelect={() => {
-                                                                    setSelectedLocation(
-                                                                        location,
-                                                                    );
-                                                                    setShowEditDialog(
-                                                                        true,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Pencil /> Edit
-                                                            </DropdownMenuItem>
-
-                                                            <DropdownMenuItem
-                                                                className="cursor-pointer"
-                                                                onSelect={() => {
-                                                                    setSelectedLocation(
-                                                                        location,
-                                                                    );
-                                                                    setShowDeleteDialog(
-                                                                        true,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash /> Delete
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuGroup>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </CardAction>
-                                            <CardContent className="p-0">
-                                                <CardTitle className="text-sm">
+                                        <div className="flex flex-1 flex-col pl-3">
+                                            <CardHeader className="flex flex-row p-0">
+                                                <CardTitle className="self-center justify-self-end text-sm">
                                                     {location.location_name}
                                                 </CardTitle>
+                                                <CardAction className="ml-auto justify-self-end">
+                                                    <DropdownMenu modal={false}>
+                                                        <DropdownMenuTrigger
+                                                            asChild
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                aria-label="Open menu"
+                                                                size="sm"
+                                                            >
+                                                                <MoreVerticalIcon />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent
+                                                            className="w-fit"
+                                                            align="start"
+                                                            aria-label="Category actions"
+                                                        >
+                                                            <DropdownMenuLabel>
+                                                                File Actions
+                                                            </DropdownMenuLabel>
+                                                            <DropdownMenuGroup>
+                                                                <DropdownMenuItem
+                                                                    className="cursor-pointer"
+                                                                    onSelect={() => {
+                                                                        setSelectedLocation(
+                                                                            location,
+                                                                        );
+                                                                        setShowEditDialog(
+                                                                            true,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Pencil />{' '}
+                                                                    Edit
+                                                                </DropdownMenuItem>
+
+                                                                <DropdownMenuItem
+                                                                    className="cursor-pointer"
+                                                                    onSelect={() => {
+                                                                        setSelectedLocation(
+                                                                            location,
+                                                                        );
+                                                                        setShowDeleteDialog(
+                                                                            true,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash />{' '}
+                                                                    Delete
+                                                                </DropdownMenuItem>
+                                                            </DropdownMenuGroup>
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </CardAction>
+                                            </CardHeader>
+
+                                            <CardContent className="justify-start p-0">
                                                 <CardDescription>
-                                                    {location.location_code}
+                                                    <Box className="mr-2 inline-block h-4 w-4 align-text-bottom" />
+                                                    {location.assets_count}{' '}
+                                                    Assets
                                                 </CardDescription>
                                             </CardContent>
-                                        </CardHeader>
+                                        </div>
                                     </div>
                                 </Card>
                             );

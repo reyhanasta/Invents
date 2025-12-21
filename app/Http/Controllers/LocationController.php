@@ -12,9 +12,9 @@ class LocationController extends Controller
     public function index()
     {
         //
-        $location = Location::all();
+        $locations = Location::withCount('assets')->get();
         return Inertia::render('Location/LocationIndex', [
-            'locations' => $location,
+            'locations' => $locations,
         ]);
     }
 

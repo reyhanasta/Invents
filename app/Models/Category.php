@@ -15,4 +15,9 @@ class Category extends Model
         'prefix_code',
         'serial_number_needed',
     ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'category_id');
+    }
 }
