@@ -36,6 +36,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import Create from './LocationCreate';
+import Delete from './LocationDelete';
+import Edit from './LocationEdit';
 import LocationEmpty from './LocationEmpty';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,14 +47,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+export type Location = {
+    id: number;
+    location_name: string;
+    location_code: string;
+    description: string;
+    assets_count: number;
+};
+
 type LocationIndexProps = {
-    locations: Array<{
-        id: number;
-        location_name: string;
-        location_code: string;
-        description: string;
-        assets_count: number;
-    }>;
+    locations: Array<Location>;
 };
 export default function LocationIndex({ locations }: LocationIndexProps) {
     const [showEditDialog, setShowEditDialog] = useState(false);
@@ -116,7 +120,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                     open={showCreateDialog}
                     onOpenChange={setShowCreateDialog}
                 />
-                {/* <Edit
+                <Edit
                     open={showEditDialog}
                     onOpenChange={setShowEditDialog}
                     location={selectedLocation}
@@ -125,7 +129,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                     open={showDeleteDialog}
                     onOpenChange={setShowDeleteDialog}
                     location={selectedLocation}
-                />  */}
+                />
                 {locations.length === 0 ? (
                     <LocationEmpty onOpenChange={setShowCreateDialog} />
                 ) : filteredLocations.length === 0 ? (

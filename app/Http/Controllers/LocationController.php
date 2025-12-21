@@ -59,7 +59,6 @@ class LocationController extends Controller
     }
 
     public function delete(Location $location){
-        
         try{
             $location->delete();
             return to_route('locations')->with('success', 'Location deleted successfully.');
