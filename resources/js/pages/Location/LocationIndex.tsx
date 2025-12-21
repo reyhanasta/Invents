@@ -1,5 +1,21 @@
 import { Button } from '@/components/ui/button';
 import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
     InputGroup,
     InputGroupAddon,
     InputGroupInput,
@@ -8,7 +24,15 @@ import AppLayout from '@/layouts/app-layout';
 import { locations } from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { Package, Plus, SearchIcon } from 'lucide-react';
+import {
+    MapPin,
+    MoreVerticalIcon,
+    Package,
+    Pencil,
+    Plus,
+    SearchIcon,
+    Trash,
+} from 'lucide-react';
 import { useState } from 'react';
 import Create from './LocationCreate';
 import LocationEmpty from './LocationEmpty';
@@ -29,13 +53,13 @@ type LocationIndexProps = {
     }>;
 };
 export default function LocationIndex({ locations }: LocationIndexProps) {
-    // const [showEditDialog, setShowEditDialog] = useState(false);
+    const [showEditDialog, setShowEditDialog] = useState(false);
     const [showCreateDialog, setShowCreateDialog] = useState(false);
-    // const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    // const [selectedLocation, setSelectedCategory] = useState<
-    //     LocationIndexProps['locations'][0] | null
-    // >(null);
+    const [selectedLocation, setSelectedLocation] = useState<
+        LocationIndexProps['locations'][0] | null
+    >(null);
     // Filter locations based on search query
     const filteredLocations = locations.filter((location) => {
         const query = searchQuery.toLowerCase();
@@ -125,7 +149,85 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                         </Button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"></div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+                        {filteredLocations.map((location) => {
+                            return (
+                                <Card
+                                    key={location.id}
+                                    className="rounded-lg border bg-card p-2 transition-all hover:border-primary/50 hover:shadow-sm"
+                                >
+                                    <div className="flex flex-row">
+                                        <div className="my-auto rounded-lg bg-primary/10 p-4">
+                                            <MapPin className="h-8 w-8 text-primary" />
+                                        </div>
+                                        <CardHeader className="flex-2 items-center-safe">
+                                            <CardAction>
+                                                <DropdownMenu modal={false}>
+                                                    <DropdownMenuTrigger
+                                                        asChild
+                                                    >
+                                                        <Button
+                                                            variant="ghost"
+                                                            aria-label="Open menu"
+                                                            size="sm"
+                                                        >
+                                                            <MoreVerticalIcon />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent
+                                                        className="w-fit"
+                                                        align="start"
+                                                        aria-label="Category actions"
+                                                    >
+                                                        <DropdownMenuLabel>
+                                                            File Actions
+                                                        </DropdownMenuLabel>
+                                                        <DropdownMenuGroup>
+                                                            <DropdownMenuItem
+                                                                className="cursor-pointer"
+                                                                onSelect={() => {
+                                                                    setSelectedLocation(
+                                                                        location,
+                                                                    );
+                                                                    setShowEditDialog(
+                                                                        true,
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <Pencil /> Edit
+                                                            </DropdownMenuItem>
+
+                                                            <DropdownMenuItem
+                                                                className="cursor-pointer"
+                                                                onSelect={() => {
+                                                                    setSelectedLocation(
+                                                                        location,
+                                                                    );
+                                                                    setShowDeleteDialog(
+                                                                        true,
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <Trash /> Delete
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuGroup>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </CardAction>
+                                            <CardContent className="p-0">
+                                                <CardTitle className="text-sm">
+                                                    {location.location_name}
+                                                </CardTitle>
+                                                <CardDescription>
+                                                    {location.location_code}
+                                                </CardDescription>
+                                            </CardContent>
+                                        </CardHeader>
+                                    </div>
+                                </Card>
+                            );
+                        })}
+                    </div>
                 )}
             </div>
         </AppLayout>
