@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MaintananceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -37,6 +38,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('locations', [\App\Http\Controllers\LocationController::class, 'store'])->name('locations-store');
     Route::put('locations/{location}', [\App\Http\Controllers\LocationController::class, 'update'])->name('locations-update');
     Route::delete('locations/{location}', [\App\Http\Controllers\LocationController::class, 'delete'])->name('locations-delete');
+
+    // Maintanance Routes
+    Route::get('maintanances',[MaintananceController::class,'index'])->name('maintanances');
+    Route::post('maintanances',[MaintananceController::class,'store'])->name('maintanances-store');
+    Route::put('maintanances/{location}',[MaintananceController::class,'update'])->name('maintanances-update');
+    Route::delete('maintanances/{location}',[MaintananceController::class,'delete'])->name('maintanances-delete');
 });
 
 require __DIR__.'/settings.php';

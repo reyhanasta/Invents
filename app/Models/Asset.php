@@ -42,4 +42,12 @@ class Asset extends Model
     {
         return $this->belongsTo(Location::class);
     }
+
+    /**
+     * Get the maintanance that owns the asset.
+     */
+    public function maintanance()
+    {
+        return $this->hasMany(Maintanance::class, 'maintanance_id');
+    }
 }
