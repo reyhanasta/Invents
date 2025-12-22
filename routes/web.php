@@ -31,6 +31,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('assets/{asset}/show', [\App\Http\Controllers\AssetController::class, 'show'])->name('assets-detail');
     Route::get('assets/{asset}/qrcode-detail', [\App\Http\Controllers\AssetController::class, 'qrcodeDetail'])->name('assets-qrcode-detail');
     Route::get('assets/{asset}/print-label', [\App\Http\Controllers\AssetController::class, 'printLabel'])->name('assets-print-label');
+
+    // Location Routes
+    Route::get('locations', [\App\Http\Controllers\LocationController::class, 'index'])->name('locations');
+    Route::post('locations', [\App\Http\Controllers\LocationController::class, 'store'])->name('locations-store');
+    Route::put('locations/{location}', [\App\Http\Controllers\LocationController::class, 'update'])->name('locations-update');
+    Route::delete('locations/{location}', [\App\Http\Controllers\LocationController::class, 'delete'])->name('locations-delete');
 });
 
 require __DIR__.'/settings.php';

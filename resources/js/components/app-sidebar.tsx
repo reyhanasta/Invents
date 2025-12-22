@@ -10,10 +10,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { assets, categories, dashboard } from '@/routes';
+import { assets, categories, dashboard, locations } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Box, Folder, LayoutGrid } from 'lucide-react';
+import { Box, Folder, LayoutGrid, MapPin } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -31,6 +31,11 @@ const mainNavItems: NavItem[] = [
         title: 'Categories',
         href: categories(),
         icon: Folder,
+    },
+    {
+        title: 'Location',
+        href: locations(),
+        icon: MapPin,
     },
 ];
 

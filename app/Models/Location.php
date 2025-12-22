@@ -9,4 +9,16 @@ class Location extends Model
 {
     /** @use HasFactory<\Database\Factories\LocationFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'location_name',
+        'location_code',
+        'description',
+    ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class,'location_id');
+    }
+
 }

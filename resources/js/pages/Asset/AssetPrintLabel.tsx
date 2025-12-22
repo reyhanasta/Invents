@@ -16,7 +16,7 @@ import { ArrowLeft, Printer } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Asset } from './AssetDetail';
-import BarcodeLabel from './BarcodeLabel';
+import AssetQrCodeLabel from './AssetQrCodeLabel';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,7 +25,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type LabelSize = '60x40' | '60x30' | '30x20';
+type LabelSize = '60x40' | '60x30';
 
 type AssetPrintLabelProps = {
     asset: Asset;
@@ -35,7 +35,6 @@ type AssetPrintLabelProps = {
 
 export default function AssetPrintLabel({
     asset,
-    categoryName,
     locationName,
 }: AssetPrintLabelProps) {
     const [selectedSize, setSelectedSize] = useState<LabelSize>('60x40');
@@ -46,7 +45,7 @@ export default function AssetPrintLabel({
         documentTitle: `Asset Label - ${asset.asset_code}`,
         pageStyle: `
         @page {
-            size: ${selectedSize === '60x40' ? '60mm 40mm' : selectedSize === '60x30' ? '60mm 30mm' : '30mm 20mm'};
+            size: ${selectedSize === '60x40' ? '60mm 40mm' : '60mm 30mm'};
             margin: 0;
         }
         @media print {
@@ -115,9 +114,6 @@ export default function AssetPrintLabel({
                                         <SelectItem value="60x30">
                                             60mm x 30mm
                                         </SelectItem>
-                                        <SelectItem value="30x20">
-                                            30mm x 20mm
-                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -146,17 +142,12 @@ export default function AssetPrintLabel({
                             <CardHeader>
                                 <CardTitle>Preview</CardTitle>
                             </CardHeader>
-                            <CardContent className="flex justify-center"></CardContent>
+                            <CardContent className="flex justify-center rounded-lg bg-muted/30 p-8">
                                 <div
                                     ref={contentRef}
                                     className="flex items-center justify-center"
                                 >
-                                    <BarcodeLabel
-                                        asset={asset}
-                                        location={locationName}
-                                        category={categoryName}
-                                        size={selectedSize}
-                                    />
+                                    <AssetQrCodeLabel asset={asset} />
                                 </div>
                             </CardContent>
                         </Card>
