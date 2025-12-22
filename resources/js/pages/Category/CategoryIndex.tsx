@@ -1,6 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -152,7 +158,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                         </Button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5">
                         {filteredCategories.map((category) => {
                             const stockStatus =
                                 category.assets_count === 0
@@ -173,75 +179,69 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             return (
                                 <Card
                                     key={category.id}
-                                    className="group overflow-hidden transition-all duration-200 hover:shadow-lg"
+                                    className="bg-card transition-all hover:border-primary/50 hover:shadow-sm"
                                 >
-                                    <CardHeader className="space-y-3 pb-2">
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex min-w-0 flex-1 gap-2">
-                                                <CardTitle className="truncate text-xl font-semibold">
-                                                    {
-                                                        category.category_name
-                                                    }{' '}
-                                                </CardTitle>
-                                            </div>
-                                            <div className="flex shrink-0 items-end">
-                                                <DropdownMenu modal={false}>
-                                                    <DropdownMenuTrigger
-                                                        asChild
+                                    <CardHeader className="flex flex-row justify-between">
+                                        <CardTitle className="justify-self-end text-xl">
+                                            {category.category_name}
+                                        </CardTitle>
+                                        <CardAction>
+                                            <DropdownMenu modal={false}>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        aria-label="Open menu"
+                                                        size="sm"
                                                     >
-                                                        <Button
-                                                            variant="ghost"
-                                                            aria-label="Open menu"
-                                                            size="sm"
+                                                        <MoreVerticalIcon />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent
+                                                    className="w-fit"
+                                                    align="start"
+                                                    aria-label="Category actions"
+                                                >
+                                                    <DropdownMenuLabel>
+                                                        File Actions
+                                                    </DropdownMenuLabel>
+                                                    <DropdownMenuGroup>
+                                                        <DropdownMenuItem
+                                                            className="cursor-pointer"
+                                                            onSelect={() => {
+                                                                setSelectedCategory(
+                                                                    category,
+                                                                );
+                                                                setShowEditDialog(
+                                                                    true,
+                                                                );
+                                                            }}
                                                         >
-                                                            <MoreVerticalIcon />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent
-                                                        className="w-fit"
-                                                        align="start"
-                                                        aria-label="Category actions"
-                                                    >
-                                                        <DropdownMenuLabel>
-                                                            File Actions
-                                                        </DropdownMenuLabel>
-                                                        <DropdownMenuGroup>
-                                                            <DropdownMenuItem
-                                                                className="cursor-pointer"
-                                                                onSelect={() => {
-                                                                    setSelectedCategory(
-                                                                        category,
-                                                                    );
-                                                                    setShowEditDialog(
-                                                                        true,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Pencil /> Edit
-                                                            </DropdownMenuItem>
+                                                            <Pencil /> Edit
+                                                        </DropdownMenuItem>
 
-                                                            <DropdownMenuItem
-                                                                className="cursor-pointer"
-                                                                onSelect={() => {
-                                                                    setSelectedCategory(
-                                                                        category,
-                                                                    );
-                                                                    setShowDeleteDialog(
-                                                                        true,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash /> Delete
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuGroup>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-wrap items-center justify-between gap-2">
+                                                        <DropdownMenuItem
+                                                            className="cursor-pointer"
+                                                            onSelect={() => {
+                                                                setSelectedCategory(
+                                                                    category,
+                                                                );
+                                                                setShowDeleteDialog(
+                                                                    true,
+                                                                );
+                                                            }}
+                                                        >
+                                                            <Trash /> Delete
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuGroup>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </CardAction>
+                                    </CardHeader>
+                                    <CardContent className="justfify-start flex flex-col gap-2">
+                                        <div className="flex flex-row gap-2">
                                             <Badge
                                                 variant="outline"
-                                                className="text-secondar flex-1 font-mono text-sm"
+                                                className="text-secondar flex shrink-0 font-mono text-sm"
                                             >
                                                 <BadgeCheckIcon className="mr-1 inline-block h-4 w-4" />
                                                 {category.prefix_code}
@@ -252,7 +252,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                                         ? 'default'
                                                         : 'outline'
                                                 }
-                                                className="text-xs"
+                                                className="flex flex-1 text-xs"
                                             >
                                                 {category.serial_number_needed
                                                     ? 'Serial Number Required'
@@ -272,7 +272,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                                 </span>
                                             </div>
                                         </div>
-                                    </CardHeader>
+                                    </CardContent>
                                 </Card>
                             );
                         })}

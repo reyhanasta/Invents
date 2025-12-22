@@ -39,6 +39,7 @@ import {
     assetsDelete,
     assetsDetail,
     assetsEdit,
+    assetsQrcodeDetail,
 } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -215,12 +216,12 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 {isSearching ? (
                                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                                 ) : searchQuery ? (
-                                    <button
+                                    <Button
                                         onClick={handleClearSearch}
                                         className="rounded p-0.5 hover:bg-accent"
                                     >
                                         <X className="h-4 w-4" />
-                                    </button>
+                                    </Button>
                                 ) : (
                                     <SearchIcon className="h-4 w-4" />
                                 )}
@@ -423,6 +424,22 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               <Trash className="h-4 w-4" />
                                                               <span>
                                                                   Delete
+                                                              </span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
+                                                                      assetsQrcodeDetail(
+                                                                          asset.id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Pencil className="h-4 w-4" />
+                                                              <span>
+                                                                  Maintanance
+                                                                  (development)
                                                               </span>
                                                           </DropdownMenuItem>
                                                       </DropdownMenuContent>

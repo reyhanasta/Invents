@@ -119,7 +119,7 @@ export default function AssetDetail({
                 </div>
                 <div
                     aria-label="content"
-                    className="grid grid-cols-1 gap-6 md:grid-cols-4"
+                    className="grid grid-cols-1 gap-2 md:grid-cols-4"
                 >
                     <div
                         id="content-information"
@@ -205,10 +205,10 @@ export default function AssetDetail({
                             </CardContent>
                         </Card>
                     </div>
-                    <div id="content-label" className="">
+                    <div id="content-label">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="border-b-2 pb-4 text-2xl">
+                                <CardTitle className="border-b-2 pb-4 text-lg">
                                     Asset Label Preview
                                 </CardTitle>
                             </CardHeader>

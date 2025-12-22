@@ -55,7 +55,7 @@ export default function LocationsCreate({
                                     id="location_name"
                                     name="location_name"
                                     type="text"
-                                    placeholder="e.g. IGD, Ruang Rekam Medis, Ruang Server, Ruang Rapat"
+                                    placeholder="e.g. IGD, Ruang Server, Ruang Rapat"
                                     aria-invalid={!!errors.location_name}
                                     disabled={processing}
                                 />
@@ -71,7 +71,7 @@ export default function LocationsCreate({
                                     id="location_code"
                                     name="location_code"
                                     type="text"
-                                    placeholder="e.g. ELK, FRN, KND"
+                                    placeholder="IGD, RKM, APT"
                                     maxLength={3}
                                     aria-invalid={!!errors.location_code}
                                     disabled={processing}

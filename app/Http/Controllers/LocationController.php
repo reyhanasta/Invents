@@ -30,7 +30,7 @@ class LocationController extends Controller
         try{
             Location::create([
                 'location_name' => $validatedData['location_name'],
-                'location_code' => $validatedData['location_code'],
+                'location_code' => strtoupper($validatedData['location_code']),
             ]);
 
             return to_route('locations')->with('success', 'Location created successfully.');
