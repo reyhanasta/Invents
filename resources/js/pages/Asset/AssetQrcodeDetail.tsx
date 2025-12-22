@@ -10,8 +10,17 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { assets } from '@/routes';
-import { Box, Info, InfoIcon, User, Verified, Wrench } from 'lucide-react';
+import {
+    Box,
+    Calendar,
+    Info,
+    InfoIcon,
+    List,
+    MapPin,
+    Verified,
+} from 'lucide-react';
 import { Asset } from './AssetDetail';
+import AssetMaintanance from './AssetMaintanance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -71,22 +80,27 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                     id="asset-information"
                     className="col-span-1 space-y-4 p-2 md:p-4 lg:p-6"
                 >
-                    <Card id="Header">
+                    <Card id="Header" className="bg-primary text-white">
                         <CardHeader className="flex flex-row items-center">
                             <Box
                                 size={60}
-                                className="rounded-full border bg-accent p-3"
+                                className="rounded-full bg-white/20 p-3"
                             />
                             <div className="flex flex-col gap-1">
-                                <span className="text-xs text-muted-foreground">
-                                    Informasi Produk
-                                </span>
-                                <CardTitle className="text-lg">
-                                    Patient Monitor
-                                </CardTitle>
+                                <div className="flex flex-col">
+                                    <span className="text-xs text-muted">
+                                        Informasi Produk
+                                    </span>
+                                    <CardTitle className="text-lg">
+                                        Patient Monitor
+                                    </CardTitle>
+                                </div>
+
                                 <CardDescription className="flex flex-row gap-2">
-                                    <Badge>AST-002</Badge>
-                                    <Badge>
+                                    <Badge className="bg-white/20">
+                                        AST-002
+                                    </Badge>
+                                    <Badge className="bg-white/20">
                                         <Verified /> Tersedia
                                     </Badge>
                                 </CardDescription>
@@ -96,21 +110,20 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
 
                     <Card>
                         <CardHeader className="flex flex-row items-center">
-                            <Info size={20} />
+                            <Info size={20} className="text-primary" />
                             <CardTitle>Informasi Umum</CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col gap-8">
-                            <CardDescription className="rounded-2xl border bg-amber-50 p-3 px-5 text-xs text-muted-foreground">
+                            <CardDescription className="rounded-2xl border bg-accent p-3 px-5 text-xs text-muted-foreground">
                                 Multi-parameter patient monitor for vital signs
                                 monitoring
                             </CardDescription>
-                            <div className="content flex flex-col gap-8">
-                                <div className="grid grid-cols-2">
+                            <div className="content flex flex-col gap-6">
+                                <div className="grid grid-cols-2 gap-8">
                                     <div className="col-span-1 flex flex-row items-center gap-2">
                                         <InfoIcon
-                                            size={40}
-                                            color="oklch(0.6 0.118 184.704)"
-                                            className="rounded-xl border bg-accent p-2"
+                                            size={35}
+                                            className="rounded-xl border bg-accent p-2 text-primary"
                                         />
                                         <div className="flex flex-col gap-1">
                                             <CardDescription className="text-xs">
@@ -122,49 +135,46 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                         </div>
                                     </div>
                                     <div className="col-span-1 flex flex-row items-center gap-2">
-                                        <InfoIcon
-                                            size={40}
-                                            color="oklch(0.6 0.118 184.704)"
-                                            className="rounded-xl border bg-accent p-2"
+                                        <List
+                                            size={35}
+                                            className="rounded-xl border bg-accent p-2 text-primary"
                                         />
                                         <div className="flex flex-col gap-1">
                                             <CardDescription className="text-xs">
-                                                Serial Number
+                                                Category
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                PM-2023-005678
+                                                Furniture
                                             </CardTitle>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2">
+                                <div className="grid grid-cols-2 gap-8">
                                     <div className="col-span-1 flex flex-row items-center gap-2">
-                                        <InfoIcon
-                                            size={40}
-                                            color="oklch(0.6 0.118 184.704)"
-                                            className="rounded-xl border bg-accent p-2"
+                                        <MapPin
+                                            size={35}
+                                            className="rounded-xl border bg-accent p-2 text-primary"
                                         />
                                         <div className="flex flex-col gap-1">
                                             <CardDescription className="text-xs">
-                                                Serial Number
+                                                Location
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                PM-2023-005678
+                                                Ruang ICU Lantai 2
                                             </CardTitle>
                                         </div>
                                     </div>
                                     <div className="col-span-1 flex flex-row items-center gap-2">
-                                        <InfoIcon
-                                            size={40}
-                                            color="oklch(0.6 0.118 184.704)"
-                                            className="rounded-xl border bg-accent p-2"
+                                        <Calendar
+                                            size={35}
+                                            className="rounded-xl border bg-accent p-2 text-primary"
                                         />
                                         <div className="flex flex-col gap-1">
                                             <CardDescription className="text-xs">
-                                                Serial Number
+                                                Purchase Date
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                PM-2023-005678
+                                                12 Maret 2023
                                             </CardTitle>
                                         </div>
                                     </div>
@@ -175,35 +185,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                 </div>
                 <div className="maintanance">
                     <div className="col-span-1 space-y-4 md:p-4 lg:p-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex flex-row gap-2">
-                                    <Wrench size={20} />
-                                    Maintanance
-                                </CardTitle>
-                                <CardDescription>
-                                    Riwaya Maintanance ada di sini
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="gap-2 rounded-lg border bg-accent p-2">
-                                    <div className="flex flex-row justify-start gap-2">
-                                        <Badge className="rounded-md">
-                                            Kalibrasi
-                                        </Badge>
-                                        <Badge className="rounded-md">
-                                            Terjadwal
-                                        </Badge>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span>Scheduled calibration check</span>
-                                        <div className="flex flex-row">
-                                            <User /> Philips Service Team Rp 350
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <AssetMaintanance />
                     </div>
                 </div>
             </div>

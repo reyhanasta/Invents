@@ -51,6 +51,7 @@ import {
     Pencil,
     Plus,
     SearchIcon,
+    Settings,
     Trash,
     X,
 } from 'lucide-react';
@@ -436,7 +437,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                                   );
                                                               }}
                                                           >
-                                                              <Pencil className="h-4 w-4" />
+                                                              <Settings className="h-4 w-4" />
                                                               <span>
                                                                   Maintanance
                                                                   (development)

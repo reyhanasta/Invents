@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('brand')->nullable();
             $table->string('serial_number')->nullable();
             $table->enum('condition', ['good', 'minor_damage', 'major_damage'])->default('good');
-            $table->enum('status', ['available', 'in-use', 'maintenance', 'retired'])->default('available')->after('condition');
+            $table->enum('status', ['available', 'in-use', 'maintenance', 'retired'])->default('available');
             $table->date('acquisition_date')->nullable();
             $table->text('description')->nullable();
             $table->string('photo')->nullable();
