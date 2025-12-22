@@ -10,7 +10,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { assets } from '@/routes';
-import { Box, Info, InfoIcon, Verified, Wrench } from 'lucide-react';
+import { Box, Info, InfoIcon, User, Verified, Wrench } from 'lucide-react';
 import { Asset } from './AssetDetail';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -100,7 +100,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                             <CardTitle>Informasi Umum</CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col gap-8">
-                            <CardDescription className="rounded-2xl border border-primary bg-amber-50 p-3 text-xs text-muted-foreground">
+                            <CardDescription className="rounded-2xl border bg-amber-50 p-3 px-5 text-xs text-muted-foreground">
                                 Multi-parameter patient monitor for vital signs
                                 monitoring
                             </CardDescription>
@@ -186,8 +186,22 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                Ini Isi dari riwayat maintanance ya (berupa
-                                tabel)
+                                <div className="gap-2 rounded-lg border bg-accent p-2">
+                                    <div className="flex flex-row justify-start gap-2">
+                                        <Badge className="rounded-md">
+                                            Kalibrasi
+                                        </Badge>
+                                        <Badge className="rounded-md">
+                                            Terjadwal
+                                        </Badge>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span>Scheduled calibration check</span>
+                                        <div className="flex flex-row">
+                                            <User /> Philips Service Team Rp 350
+                                        </div>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
