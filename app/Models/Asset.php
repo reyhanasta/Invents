@@ -44,10 +44,10 @@ class Asset extends Model
     }
 
     /**
-     * Get the maintanance that owns the asset.
+     * Get the maintanances that own the asset.
      */
-    public function maintanance()
+    public function maintanances()
     {
-        return $this->hasMany(Maintanance::class, 'maintanance_id');
+        return $this->hasMany(Maintanance::class, 'asset_id');
     }
 }

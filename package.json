@@ -61,6 +61,7 @@
         "react-qr-code": "^2.0.18",
         "react-to-pdf": "^2.0.3",
         "react-to-print": "^3.2.0",
+        "react-window": "^2.2.3",
         "sonner": "^2.0.7",
         "tailwind-merge": "^3.0.1",
         "tailwindcss": "^4.0.0",

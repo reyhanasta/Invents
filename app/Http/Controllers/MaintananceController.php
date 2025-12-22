@@ -3,10 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Maintanance;
+use Illuminate\Validation\Rule;
 
 class MaintananceController extends Controller
 {
-    public function index(){
-        return 'maintanance list page';
+    public function index(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $perPage = (int) $request->get('per_page', 15);
+
+        $query = Maintanance::with('asset')->orderBy('maintanance_date', 'desc');
+
+        $data = $query->paginate($perPage);
+
+        return response()->json($data);
+    }
+
+    public function show(int $id): \Illuminate\Http\JsonResponse
+    {
+        $maint = Maintanance::with('asset')->findOrFail($id);
+        return response()->json($maint);
+    }
+
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->validate([
+            'asset_id' => ['required', 'exists:assets,id'],
+            'type' => ['required', Rule::in(['preventive', 'corrective', 'inspection'])],
+            'maintanance_date' => ['required', 'date'],
+            'maintanance_done_date' => ['nullable', 'date', 'after_or_equal:maintanance_date'],
+            'status' => ['nullable', Rule::in(['pending', 'in_progress', 'completed', 'cancelled'])],
+            'description' => ['required', 'string'],
+            'note' => ['nullable', 'string'],
+            'technician' => ['nullable', 'string'],
+            'cost' => ['nullable', 'numeric'],
+        ]);
+
+        $maint = Maintanance::create(array_merge($data, [
+            'status' => $data['status'] ?? 'pending',
+        ]));
+
+        return response()->json($maint, 201);
     }
 }

@@ -11,13 +11,16 @@ import {
 } from '@/components/ui/card';
 import { assets } from '@/routes';
 import {
+    AlertCircle,
     Box,
     Calendar,
+    CheckCircle2,
+    Clock,
     Info,
     InfoIcon,
     List,
     MapPin,
-    Verified,
+    Wrench,
 } from 'lucide-react';
 import { Asset } from './AssetDetail';
 import AssetMaintanance from './AssetMaintanance';
@@ -29,32 +32,48 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type AssetQrCodeDetailProps = {
-    asset: Asset;
+export type Maintanance = {
+    id: number;
+    asset_id: number;
+    type: 'preventive' | 'corrective' | 'inspection';
+    description: string;
+    maintanance_date: string;
+    maintanance_done_date: string;
+    technician: string;
+    cost?: string;
+    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+    notes?: string;
 };
 
-// const statusConfig = {
-//     available: {
-//         label: 'Tersedia',
-//         variant: 'success' as const,
-//         icon: CheckCircle2,
-//     },
-//     'in-use': {
-//         label: 'Sedang Digunakan',
-//         variant: 'info' as const,
-//         icon: Clock,
-//     },
-//     maintenance: {
-//         label: 'Maintenance',
-//         variant: 'warning' as const,
-//         icon: Wrench,
-//     },
-//     retired: {
-//         label: 'Tidak Aktif',
-//         variant: 'secondary' as const,
-//         icon: AlertCircle,
-//     },
-// };
+type AssetQrCodeDetailProps = {
+    asset: Asset;
+    categoryName: string;
+    locationName: string;
+    maintanance: Maintanance;
+};
+
+const statusConfig = {
+    available: {
+        label: 'Tersedia',
+        variant: 'success' as const,
+        icon: CheckCircle2,
+    },
+    'in-use': {
+        label: 'Sedang Digunakan',
+        variant: 'info' as const,
+        icon: Clock,
+    },
+    maintenance: {
+        label: 'Maintenance',
+        variant: 'warning' as const,
+        icon: Wrench,
+    },
+    retired: {
+        label: 'Tidak Aktif',
+        variant: 'secondary' as const,
+        icon: AlertCircle,
+    },
+};
 
 // const maintenanceTypeConfig = {
 //     routine: { label: 'Rutin', color: 'bg-blue-100 text-blue-700' },
@@ -72,7 +91,21 @@ type AssetQrCodeDetailProps = {
 //     },
 // };
 
-export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
+export default function AssetQrcodeDetail({
+    asset,
+    categoryName,
+    locationName,
+    maintanance,
+}: AssetQrCodeDetailProps) {
+    const StatusIcon = statusConfig[asset.status].icon;
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="container grid grid-cols-1 sm:mx-auto lg:grid-cols-2">
@@ -92,16 +125,33 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                         Informasi Produk
                                     </span>
                                     <CardTitle className="text-lg">
-                                        Patient Monitor
+                                        {asset.asset_name}
                                     </CardTitle>
                                 </div>
 
                                 <CardDescription className="flex flex-row gap-2">
                                     <Badge className="bg-white/20">
-                                        AST-002
+                                        {asset.asset_code}
                                     </Badge>
-                                    <Badge className="bg-white/20">
-                                        <Verified /> Tersedia
+                                    {/* <Badge className="bg-white/20">
+                                        <Verified /> {asset.status}
+                                    </Badge> */}
+                                    <Badge
+                                        className={`${
+                                            statusConfig[asset.status]
+                                                .variant === 'success'
+                                                ? 'bg-white/20'
+                                                : statusConfig[asset.status]
+                                                        .variant === 'info'
+                                                  ? 'bg-blue-500'
+                                                  : statusConfig[asset.status]
+                                                          .variant === 'warning'
+                                                    ? 'bg-yellow-500'
+                                                    : 'bg-gray-500'
+                                        } border text-white`}
+                                    >
+                                        <StatusIcon className="mr-1 h-3 w-3" />
+                                        {statusConfig[asset.status].label}
                                     </Badge>
                                 </CardDescription>
                             </div>
@@ -115,8 +165,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                         </CardHeader>
                         <CardContent className="flex flex-col gap-8">
                             <CardDescription className="rounded-2xl border bg-accent p-3 px-5 text-xs text-muted-foreground">
-                                Multi-parameter patient monitor for vital signs
-                                monitoring
+                                {asset.description || 'Tidak ada deskripsi'}
                             </CardDescription>
                             <div className="content flex flex-col gap-6">
                                 <div className="grid grid-cols-2 gap-8">
@@ -130,7 +179,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                                 Serial Number
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                PM-2023-005678
+                                                {asset.serial_number}
                                             </CardTitle>
                                         </div>
                                     </div>
@@ -144,7 +193,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                                 Category
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                Furniture
+                                                {categoryName}
                                             </CardTitle>
                                         </div>
                                     </div>
@@ -160,7 +209,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                                 Location
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                Ruang ICU Lantai 2
+                                                {locationName}
                                             </CardTitle>
                                         </div>
                                     </div>
@@ -174,7 +223,10 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                                                 Purchase Date
                                             </CardDescription>
                                             <CardTitle className="text-sm">
-                                                12 Maret 2023
+                                                {formatDate(
+                                                    asset.acquisition_date ??
+                                                        '',
+                                                )}
                                             </CardTitle>
                                         </div>
                                     </div>
@@ -185,7 +237,7 @@ export default function AssetQrcodeDetail({ asset }: AssetQrCodeDetailProps) {
                 </div>
                 <div className="maintanance">
                     <div className="col-span-1 space-y-4 md:p-4 lg:p-6">
-                        <AssetMaintanance />
+                        <AssetMaintanance maintanance={maintanance} />
                     </div>
                 </div>
             </div>
