@@ -146,7 +146,7 @@ export default function AssetPrintLabel({
                             <CardHeader>
                                 <CardTitle>Preview</CardTitle>
                             </CardHeader>
-                            <CardContent className="flex justify-center p-8 bg-muted/30 rounded-lg">
+                            <CardContent className="flex justify-center"></CardContent>
                                 <div
                                     ref={contentRef}
                                     className="flex items-center justify-center"
