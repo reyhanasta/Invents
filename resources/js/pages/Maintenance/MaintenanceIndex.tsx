@@ -68,7 +68,7 @@ import {
     Wrench,
     X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type Maintenance = {
     id: number;
@@ -166,6 +166,28 @@ export default function MaintenanceIndex({
     const [isSearching, setIsSearching] = useState(false);
     const [showNewDialog, setShowNewDialog] = useState(false);
     const [showShareDialog, setShowShareDialog] = useState(false);
+    // Debounce search - Inertia best practice
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchQuery !== search) {
+                setIsSearching(true);
+                router.get(
+                    window.location.pathname,
+                    { search: searchQuery || undefined },
+                    {
+                        preserveState: true,
+                        preserveScroll: true,
+                        replace: true,
+                        only: ['maintenances'],
+                        onFinish: () => setIsSearching(false),
+                    },
+                );
+            }
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery, search]);
+
     const handleClearSearch = () => {
         setSearchQuery('');
         setIsSearching(true);
@@ -625,6 +647,13 @@ export default function MaintenanceIndex({
                         </Table>
                     </div>
                 )}
+
+                {/* {maintenance.data.length > 0 &&
+                    maintenance.total > maintenance.per_page && (
+                        <MaintenancePagination maintenance={maintenance} />
+
+                        // <SimplePaginationExample assets={assets} />
+                    )} */}
             </div>
         </AppLayout>
     );

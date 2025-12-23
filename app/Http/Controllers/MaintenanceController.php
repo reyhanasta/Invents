@@ -25,6 +25,8 @@ class MaintenanceController extends Controller
         }
         $maintenance = $query->paginate(8)->withQueryString();
 
+        
+
         return Inertia::render('Maintenance/MaintenanceIndex',[
             'maintenance' => $maintenance,
             'search' => $search
