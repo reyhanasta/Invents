@@ -15,7 +15,7 @@ import {
     categories,
     dashboard,
     locations,
-    maintanances,
+    maintenances,
 } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -45,7 +45,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Maintanance',
-        href: maintanances(),
+        href: maintenances(),
         icon: Wrench,
     },
 ];

@@ -24,8 +24,8 @@ class MaintenanceFactory extends Factory
         return [
             'asset_id' => Asset::inRandomOrder()->first()?->id ?? Asset::factory()->create()->id,
             'type' => $type,
-            'maintanance_date' => $maintDate,
-            'maintanance_done_date' => fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
+            'maintenance_date' => $maintDate,
+            'maintenance_done_date' => fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
             'status' => fake()->randomElement(['pending', 'in_progress', 'completed', 'cancelled']),
             'description' => fake()->sentence(8),
             'note' => fake()->optional()->paragraph(),

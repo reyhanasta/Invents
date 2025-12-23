@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\MaintananceController;
 use App\Http\Controllers\MaintenanceController;
-use App\Models\Maintenance;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;

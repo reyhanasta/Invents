@@ -17,8 +17,8 @@ import {
 import { memo, useMemo } from 'react';
 import { Maintenance } from '../Maintenance/MaintenanceIndex';
 
-type AssetMaintananceProps = {
-    maintanance: Maintenance[];
+type AssetmaintenanceProps = {
+    maintenance: Maintenance[];
 };
 
 const maintenanceTypeConfig = {
@@ -52,7 +52,6 @@ const maintenanceStatusConfig = {
 };
 
 const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
-    console.log(maintenanceStatusConfig[m.status]);
     return (
         <div className="rounded-lg border bg-accent p-4">
             <div className="flex justify-between">
@@ -74,7 +73,7 @@ const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
                     </Badge>
                 </div>
                 <CardDescription className="text-xs">
-                    {new Date(m.maintanance_date).toLocaleDateString()}
+                    {new Date(m.maintenance_date).toLocaleDateString()}
                 </CardDescription>
             </div>
             <div className="flex flex-col justify-between gap-2 p-1">
@@ -88,17 +87,17 @@ const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
     );
 });
 
-export default function AssetMaintanance({
-    maintanance,
-}: AssetMaintananceProps) {
+export default function Assetmaintenance({
+    maintenance,
+}: AssetmaintenanceProps) {
     const sorted = useMemo(
         () =>
-            [...(maintanance ?? [])].sort(
+            [...(maintenance ?? [])].sort(
                 (a, b) =>
-                    +new Date(b.maintanance_date) -
-                    +new Date(a.maintanance_date),
+                    +new Date(b.maintenance_date) -
+                    +new Date(a.maintenance_date),
             ),
-        [maintanance],
+        [maintenance],
     );
 
     return (
@@ -107,9 +106,9 @@ export default function AssetMaintanance({
                 <CardHeader>
                     <CardTitle className="flex flex-row items-center gap-2">
                         <Wrench size={20} className="text-primary" />
-                        Maintanance
+                        Maintenance
                     </CardTitle>
-                    <CardDescription>Riwaya Maintanance</CardDescription>
+                    <CardDescription>Riwaya Maintenance</CardDescription>
                 </CardHeader>
                 <CardContent className="mx-2 flex flex-col gap-2 border-l-4 border-primary/20 px-2">
                     {/* {sorted.map((m) => (

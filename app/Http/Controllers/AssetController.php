@@ -134,12 +134,12 @@ class AssetController extends Controller
         $asset = Asset::findOrFail($id);
         $categoryName = Category::where('id', $asset->category_id)->value('category_name');
         $locationName = Location::where('id', $asset->location_id)->value('location_name');
-        $maintanance = $asset->maintanances()->orderBy('maintanance_date', 'desc')->get();
+        $maintenance = $asset->maintenances()->orderBy('maintenance_date', 'desc')->get();
         return Inertia::render('Asset/AssetQrcodeDetail', [
             'asset' => $asset,
             'categoryName' => $categoryName,
             'locationName' => $locationName,
-            'maintanance' => $maintanance,
+            'maintenance' => $maintenance,
         ]);
     }
 

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Asset;
-use App\Models\Maintanance;
+use App\Models\Maintenance;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +20,6 @@ class MaintenanceSeeder extends Seeder
         }
 
         // Create maintanances
-        Maintanance::factory()->count(30)->create();
+        Maintenance::factory()->count(30)->create();
     }
 }

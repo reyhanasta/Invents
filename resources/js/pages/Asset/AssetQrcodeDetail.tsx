@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Maintenance } from '../Maintenance/MaintenanceIndex';
 import { Asset } from './AssetDetail';
-import AssetMaintanance from './AssetMaintanance';
+import Assetmaintenance from './AssetMaintenance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,7 +37,7 @@ type AssetQrCodeDetailProps = {
     asset: Asset;
     categoryName: string;
     locationName: string;
-    maintanance: Maintenance[];
+    maintenance: Maintenance[];
 };
 
 const statusConfig = {
@@ -71,7 +71,7 @@ export default function AssetQrcodeDetail({
     asset,
     categoryName,
     locationName,
-    maintanance,
+    maintenance,
 }: AssetQrCodeDetailProps) {
     const StatusIcon = statusConfig[asset.status].icon;
     const formatDate = (dateString: string) => {
@@ -200,9 +200,9 @@ export default function AssetQrcodeDetail({
                         </CardContent>
                     </Card>
                 </div>
-                <div className="maintanance">
+                <div className="maintenance">
                     <div className="col-span-1 space-y-4 md:p-4 lg:p-6">
-                        <AssetMaintanance maintanance={maintanance} />
+                        <Assetmaintenance maintenance={maintenance} />
                     </div>
                 </div>
             </div>
