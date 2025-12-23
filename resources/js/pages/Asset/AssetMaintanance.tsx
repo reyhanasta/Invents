@@ -15,10 +15,10 @@ import {
     Wrench,
 } from 'lucide-react';
 import { memo, useMemo } from 'react';
-import { Maintanance } from './AssetQrcodeDetail';
+import { Maintenance } from '../Maintenance/MaintenanceIndex';
 
 type AssetMaintananceProps = {
-    maintanance: Maintanance[];
+    maintanance: Maintenance[];
 };
 
 const maintenanceTypeConfig = {
@@ -51,7 +51,7 @@ const maintenanceStatusConfig = {
     },
 };
 
-const MaintItem = memo(function MaintItem({ m }: { m: Maintanance }) {
+const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
     console.log(maintenanceStatusConfig[m.status]);
     return (
         <div className="rounded-lg border bg-accent p-4">

@@ -22,6 +22,7 @@ import {
     MapPin,
     Wrench,
 } from 'lucide-react';
+import { Maintenance } from '../Maintenance/MaintenanceIndex';
 import { Asset } from './AssetDetail';
 import AssetMaintanance from './AssetMaintanance';
 
@@ -32,64 +33,39 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export type Maintanance = {
-    id: number;
-    asset_id: number;
-    type: 'routine' | 'repair' | 'inspection' | 'calibration';
-    description: string;
-    maintanance_date: string;
-    maintanance_done_date: string;
-    technician: string;
-    cost?: string;
-    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-    notes?: string;
-};
-
 type AssetQrCodeDetailProps = {
     asset: Asset;
     categoryName: string;
     locationName: string;
-    maintanance: Maintanance[];
+    maintanance: Maintenance[];
 };
 
 const statusConfig = {
     available: {
         label: 'Tersedia',
         variant: 'success' as const,
-        icon: CheckCircle2,
+        icon: <CheckCircle2 />,
+        color: 'bg-green-600',
     },
     'in-use': {
         label: 'Sedang Digunakan',
         variant: 'info' as const,
-        icon: Clock,
+        icon: <Clock />,
+        color: 'bg-blue-600',
     },
     maintenance: {
         label: 'Maintenance',
         variant: 'warning' as const,
-        icon: Wrench,
+        icon: <Wrench />,
+        color: 'bg-yellow-600',
     },
     retired: {
         label: 'Tidak Aktif',
         variant: 'secondary' as const,
-        icon: AlertCircle,
+        icon: <AlertCircle />,
+        color: 'bg-red-600',
     },
 };
-
-// const maintenanceTypeConfig = {
-//     routine: { label: 'Rutin', color: 'bg-blue-100 text-blue-700' },
-//     repair: { label: 'Perbaikan', color: 'bg-red-100 text-red-700' },
-//     calibration: { label: 'Kalibrasi', color: 'bg-purple-100 text-purple-700' },
-//     inspection: { label: 'Inspeksi', color: 'bg-green-100 text-green-700' },
-// };
-
-// const maintenanceStatusConfig = {
-//     completed: { label: 'Selesai', color: 'bg-green-100 text-green-700' },
-//     scheduled: { label: 'Terjadwal', color: 'bg-blue-100 text-blue-700' },
-//     'in_progress': {
-//         label: 'Sedang Berjalan',
-//         color: 'bg-yellow-100 text-yellow-700',
-//     },
-// };
 
 export default function AssetQrcodeDetail({
     asset,
@@ -133,24 +109,13 @@ export default function AssetQrcodeDetail({
                                     <Badge className="bg-white/20">
                                         {asset.asset_code}
                                     </Badge>
-                                    {/* <Badge className="bg-white/20">
-                                        <Verified /> {asset.status}
-                                    </Badge> */}
+
                                     <Badge
                                         className={`${
-                                            statusConfig[asset.status]
-                                                .variant === 'success'
-                                                ? 'bg-white/20'
-                                                : statusConfig[asset.status]
-                                                        .variant === 'info'
-                                                  ? 'bg-blue-500'
-                                                  : statusConfig[asset.status]
-                                                          .variant === 'warning'
-                                                    ? 'bg-yellow-500'
-                                                    : 'bg-gray-500'
-                                        } border text-white`}
+                                            statusConfig[asset.status].color
+                                        } `}
                                     >
-                                        <StatusIcon className="mr-1 h-3 w-3" />
+                                        {statusConfig[asset.status].icon}
                                         {statusConfig[asset.status].label}
                                     </Badge>
                                 </CardDescription>

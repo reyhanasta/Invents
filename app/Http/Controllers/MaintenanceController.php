@@ -7,7 +7,7 @@ use App\Models\Maintanance;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
-class MaintananceController extends Controller
+class MaintenanceController extends Controller
 {
     public function index()
     {

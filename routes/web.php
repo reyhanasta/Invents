@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\MaintananceController;
+use App\Http\Controllers\MaintenanceController;
+use App\Models\Maintenance;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -30,7 +32,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('assets/{asset}', [\App\Http\Controllers\AssetController::class, 'update'])->name('assets-update');
     Route::delete('assets/{asset}', [\App\Http\Controllers\AssetController::class, 'destroy'])->name('assets-delete');
     Route::get('assets/{asset}/show', [\App\Http\Controllers\AssetController::class, 'show'])->name('assets-detail');
-    Route::get('assets/{asset}/qrcode-detail', [\App\Http\Controllers\AssetController::class, 'qrcodeDetail'])->name('assets-qrcode-detail');
     Route::get('assets/{asset}/print-label', [\App\Http\Controllers\AssetController::class, 'printLabel'])->name('assets-print-label');
 
     // Location Routes
@@ -40,10 +41,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('locations/{location}', [\App\Http\Controllers\LocationController::class, 'delete'])->name('locations-delete');
 
     // Maintanance Routes
-    Route::get('maintanances',[MaintananceController::class,'index'])->name('maintanances');
-    Route::post('maintanances',[MaintananceController::class,'store'])->name('maintanances-store');
-    Route::put('maintanances/{location}',[MaintananceController::class,'update'])->name('maintanances-update');
-    Route::delete('maintanances/{location}',[MaintananceController::class,'delete'])->name('maintanances-delete');
+    Route::get('maintenances',[MaintenanceController::class,'index'])->name('maintenances');
+    Route::get('maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances-create');
+    Route::post('maintenances',[MaintenanceController::class,'store'])->name('maintenances-store');
+    Route::get('maintenances/{asset}/edit', [MaintenanceController::class, 'edit'])->name('maintenances-edit');
+
+    Route::put('maintenances/{location}',[MaintenanceController::class,'update'])->name('maintenances-update');
+    Route::delete('maintenances/{location}',[MaintenanceController::class,'delete'])->name('maintenances-delete');
 });
+
+Route::get('assets/{asset}/qrcode-detail', [\App\Http\Controllers\AssetController::class, 'qrcodeDetail'])->name('assets-qrcode-detail');
+
 
 require __DIR__.'/settings.php';
