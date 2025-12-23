@@ -1,10 +1,40 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
 import {
     InputGroup,
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
     Table,
@@ -14,19 +44,28 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { assets, assetsCreate, maintenancesCreate } from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
+    BadgeCheckIcon,
     Banknote,
     Box,
     Calendar,
+    CircleX,
     Clock,
+    Flag,
+    Hammer,
+    InfoIcon,
     Loader2,
+    MoreHorizontalIcon,
     Package,
     Plus,
     SearchIcon,
+    Settings,
+    Wrench,
     X,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -74,6 +113,47 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+// Type configurations
+const typeConfig = {
+    routine: {
+        label: 'Rutin',
+        color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+        icon: <Settings />,
+    },
+    repair: { label: 'Perbaikan', color: 'bg-amber-500', icon: <Wrench /> },
+
+    calibration: {
+        label: 'Kalibrasi',
+        color: 'bg-purple-500 ',
+        icon: <Wrench />,
+    },
+
+    inspection: { label: 'Inspeksi', color: 'bg-blue-500 ', icon: <Wrench /> },
+};
+
+const statusConfig = {
+    completed: {
+        label: 'Selesai',
+        color: 'bg-green-700 ',
+        icon: <BadgeCheckIcon />,
+    },
+    pending: {
+        label: 'Pending',
+        color: 'bg-blue-500 ',
+        icon: <Flag />,
+    },
+    in_progress: {
+        label: 'Sedang Berjalan',
+        color: 'bg-yellow-500 ',
+        icon: <Hammer />,
+    },
+    cancelled: {
+        label: 'Cancel',
+        color: 'bg-red-500 ',
+        icon: <CircleX />,
+    },
+};
+
 export default function MaintenanceIndex({
     maintenance,
     search,
@@ -84,6 +164,8 @@ export default function MaintenanceIndex({
         null,
     );
     const [isSearching, setIsSearching] = useState(false);
+    const [showNewDialog, setShowNewDialog] = useState(false);
+    const [showShareDialog, setShowShareDialog] = useState(false);
     const handleClearSearch = () => {
         setSearchQuery('');
         setIsSearching(true);
@@ -160,8 +242,8 @@ export default function MaintenanceIndex({
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center justify-between">
-                    <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-1 flex-row gap-4 sm:flex-row sm:items-center">
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
@@ -194,6 +276,40 @@ export default function MaintenanceIndex({
                             </div>
                         )}
                     </div>
+                    <div className="flex w-sm flex-row gap-2">
+                        <Select>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="All Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>All Status</SelectLabel>
+                                    <SelectItem value="apple">
+                                        Completed
+                                    </SelectItem>
+                                    <SelectItem value="banana">
+                                        Scheduled
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <Select>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="All Type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>All Type</SelectLabel>
+                                    <SelectItem value="apple">
+                                        Routine{' '}
+                                    </SelectItem>
+                                    <SelectItem value="banana">
+                                        Calibration
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <Button
                         size="lg"
                         className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
@@ -205,7 +321,6 @@ export default function MaintenanceIndex({
                         </Link>
                     </Button>
                 </div>
-
                 {/* Table */}
                 {maintenance.data.length === 0 ? (
                     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
@@ -241,12 +356,14 @@ export default function MaintenanceIndex({
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Asset Code</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Category</TableHead>
-                                    <TableHead>Location</TableHead>
-                                    <TableHead>Condition</TableHead>
-                                    <TableHead>Serial Number</TableHead>
+                                    <TableHead>ID</TableHead>
+                                    <TableHead>Asset</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Description</TableHead>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead>Technician</TableHead>
+                                    <TableHead>Cost</TableHead>
+                                    <TableHead>Status</TableHead>
                                     <TableHead className="text-right">
                                         Actions
                                     </TableHead>
@@ -276,6 +393,9 @@ export default function MaintenanceIndex({
                                                       <Skeleton className="h-5 w-24 rounded-full" />
                                                   </TableCell>
                                                   <TableCell>
+                                                      <Skeleton className="h-5 w-24 rounded-full" />
+                                                  </TableCell>
+                                                  <TableCell>
                                                       <Skeleton className="h-4 w-20" />
                                                   </TableCell>
                                                   <TableCell className="text-right">
@@ -285,18 +405,220 @@ export default function MaintenanceIndex({
                                           ),
                                       )
                                     : maintenance.data.map((maintenance) => (
-                                          <TableRow key={maintenance.id}>
-                                              <TableCell className="font-mono font-medium">
+                                          <TableRow
+                                              key={maintenance.id}
+                                              className="transition-colors hover:bg-muted/30"
+                                          >
+                                              <TableCell className="font-xs font-mono">
                                                   {maintenance.id}
                                               </TableCell>
-                                              <TableCell className="font-medium">
-                                                  {maintenance.description}
+                                              <TableCell className="font-medium text-foreground transition-colors hover:text-primary">
+                                                  {maintenance.asset_id}
                                               </TableCell>
 
                                               <TableCell>
-                                                  {maintenance.asset_id}
+                                                  <Badge
+                                                      variant="outline"
+                                                      className={`${typeConfig[maintenance.type].color} gap-1 border-0`}
+                                                  >
+                                                      <InfoIcon className="h-3 w-3" />
+                                                      <span className="hidden sm:inline">
+                                                          {
+                                                              typeConfig[
+                                                                  maintenance
+                                                                      .type
+                                                              ].label
+                                                          }
+                                                      </span>
+                                                  </Badge>
                                               </TableCell>
-                                              <TableCell className="font-mono text-sm text-muted-foreground"></TableCell>
+                                              <TableCell className="hidden max-w-[200px] truncate text-muted-foreground md:table-cell">
+                                                  {maintenance.description}
+                                              </TableCell>
+                                              <TableCell className="text-sm text-muted-foreground">
+                                                  {maintenance.maintenance_date}
+                                              </TableCell>
+                                              <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
+                                                  {maintenance.technician}
+                                              </TableCell>
+                                              <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
+                                                  {maintenance.cost}
+                                              </TableCell>
+                                              <TableCell>
+                                                  <Badge
+                                                      variant="outline"
+                                                      className={`${statusConfig[maintenance.status].color} gap-1 border-0 text-amber-50`}
+                                                  >
+                                                      {
+                                                          statusConfig[
+                                                              maintenance.status
+                                                          ].icon
+                                                      }
+                                                      <span className="hidden sm:inline">
+                                                          {
+                                                              statusConfig[
+                                                                  maintenance
+                                                                      .status
+                                                              ].label
+                                                          }
+                                                      </span>
+                                                  </Badge>
+                                              </TableCell>
+
+                                              <TableCell className="font-mono text-sm text-muted-foreground">
+                                                  <DropdownMenu modal={false}>
+                                                      <DropdownMenuTrigger
+                                                          asChild
+                                                      >
+                                                          <Button
+                                                              variant="ghost"
+                                                              size="icon"
+                                                              className="h-8 w-8"
+                                                          >
+                                                              <MoreHorizontalIcon />
+                                                          </Button>
+                                                      </DropdownMenuTrigger>
+                                                      <DropdownMenuContent
+                                                          className="w-40"
+                                                          align="end"
+                                                      >
+                                                          <DropdownMenuLabel>
+                                                              File Actions
+                                                          </DropdownMenuLabel>
+                                                          <DropdownMenuGroup>
+                                                              <DropdownMenuItem
+                                                                  onSelect={() =>
+                                                                      setShowNewDialog(
+                                                                          true,
+                                                                      )
+                                                                  }
+                                                              >
+                                                                  New File...
+                                                              </DropdownMenuItem>
+                                                              <DropdownMenuItem
+                                                                  onSelect={() =>
+                                                                      setShowShareDialog(
+                                                                          true,
+                                                                      )
+                                                                  }
+                                                              >
+                                                                  Share...
+                                                              </DropdownMenuItem>
+                                                              <DropdownMenuItem
+                                                                  disabled
+                                                              >
+                                                                  Download
+                                                              </DropdownMenuItem>
+                                                          </DropdownMenuGroup>
+                                                      </DropdownMenuContent>
+                                                  </DropdownMenu>
+                                                  <Dialog
+                                                      open={showNewDialog}
+                                                      onOpenChange={
+                                                          setShowNewDialog
+                                                      }
+                                                  >
+                                                      <DialogContent className="sm:max-w-[425px]">
+                                                          <DialogHeader>
+                                                              <DialogTitle>
+                                                                  Create New
+                                                                  File
+                                                              </DialogTitle>
+                                                              <DialogDescription>
+                                                                  Provide a name
+                                                                  for your new
+                                                                  file. Click
+                                                                  create when
+                                                                  you&apos;re
+                                                                  done.
+                                                              </DialogDescription>
+                                                          </DialogHeader>
+                                                          <FieldGroup className="pb-3">
+                                                              <Field>
+                                                                  <FieldLabel htmlFor="filename">
+                                                                      File Name
+                                                                  </FieldLabel>
+                                                                  <Input
+                                                                      id="filename"
+                                                                      name="filename"
+                                                                      placeholder="document.txt"
+                                                                  />
+                                                              </Field>
+                                                          </FieldGroup>
+                                                          <DialogFooter>
+                                                              <DialogClose
+                                                                  asChild
+                                                              >
+                                                                  <Button variant="outline">
+                                                                      Cancel
+                                                                  </Button>
+                                                              </DialogClose>
+                                                              <Button type="submit">
+                                                                  Create
+                                                              </Button>
+                                                          </DialogFooter>
+                                                      </DialogContent>
+                                                  </Dialog>
+                                                  <Dialog
+                                                      open={showShareDialog}
+                                                      onOpenChange={
+                                                          setShowShareDialog
+                                                      }
+                                                  >
+                                                      <DialogContent className="sm:max-w-[425px]">
+                                                          <DialogHeader>
+                                                              <DialogTitle>
+                                                                  Share File
+                                                              </DialogTitle>
+                                                              <DialogDescription>
+                                                                  Anyone with
+                                                                  the link will
+                                                                  be able to
+                                                                  view this
+                                                                  file.
+                                                              </DialogDescription>
+                                                          </DialogHeader>
+                                                          <FieldGroup className="py-3">
+                                                              <Field>
+                                                                  <Label htmlFor="email">
+                                                                      Email
+                                                                      Address
+                                                                  </Label>
+                                                                  <Input
+                                                                      id="email"
+                                                                      name="email"
+                                                                      type="email"
+                                                                      placeholder="shadcn@vercel.com"
+                                                                      autoComplete="off"
+                                                                  />
+                                                              </Field>
+                                                              <Field>
+                                                                  <FieldLabel htmlFor="message">
+                                                                      Message
+                                                                      (Optional)
+                                                                  </FieldLabel>
+                                                                  <Textarea
+                                                                      id="message"
+                                                                      name="message"
+                                                                      placeholder="Check out this file"
+                                                                  />
+                                                              </Field>
+                                                          </FieldGroup>
+                                                          <DialogFooter>
+                                                              <DialogClose
+                                                                  asChild
+                                                              >
+                                                                  <Button variant="outline">
+                                                                      Cancel
+                                                                  </Button>
+                                                              </DialogClose>
+                                                              <Button type="submit">
+                                                                  Send Invite
+                                                              </Button>
+                                                          </DialogFooter>
+                                                      </DialogContent>
+                                                  </Dialog>
+                                              </TableCell>
                                           </TableRow>
                                       ))}
                             </TableBody>
