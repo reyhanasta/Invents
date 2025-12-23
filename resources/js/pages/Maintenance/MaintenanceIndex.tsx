@@ -69,9 +69,11 @@ import {
     X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Asset } from '../Asset/AssetDetail';
 
 export type Maintenance = {
     id: number;
+    asset: Asset;
     asset_id: number;
     type: 'routine' | 'repair' | 'inspection' | 'calibration';
     description: string;
@@ -435,7 +437,7 @@ export default function MaintenanceIndex({
                                                   {maintenance.id}
                                               </TableCell>
                                               <TableCell className="font-medium text-foreground transition-colors hover:text-primary">
-                                                  {maintenance.asset_id}
+                                                  {maintenance.asset.asset_name}
                                               </TableCell>
 
                                               <TableCell>
