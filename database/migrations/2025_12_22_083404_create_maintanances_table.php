@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id')->constrained()->onDelete('cascade');
             // Tipe maintenance
-            $table->enum('type', ['preventive', 'corrective', 'inspection']);
+            $table->enum('type', ['routine', 'repair', 'calibration','inspection']);
             // Tanggal
             $table->date('maintanance_date'); // kapan dikerjakan
             $table->date('maintanance_done_date')->nullable(); // kapan selesai (bisa beda hari)

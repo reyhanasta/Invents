@@ -35,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export type Maintanance = {
     id: number;
     asset_id: number;
-    type: 'preventive' | 'corrective' | 'inspection';
+    type: 'routine' | 'repair' | 'inspection' | 'calibration';
     description: string;
     maintanance_date: string;
     maintanance_done_date: string;
@@ -49,7 +49,7 @@ type AssetQrCodeDetailProps = {
     asset: Asset;
     categoryName: string;
     locationName: string;
-    maintanance: Maintanance;
+    maintanance: Maintanance[];
 };
 
 const statusConfig = {
@@ -85,7 +85,7 @@ const statusConfig = {
 // const maintenanceStatusConfig = {
 //     completed: { label: 'Selesai', color: 'bg-green-100 text-green-700' },
 //     scheduled: { label: 'Terjadwal', color: 'bg-blue-100 text-blue-700' },
-//     'in-progress': {
+//     'in_progress': {
 //         label: 'Sedang Berjalan',
 //         color: 'bg-yellow-100 text-yellow-700',
 //     },

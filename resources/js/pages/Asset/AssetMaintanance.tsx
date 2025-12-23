@@ -6,7 +6,14 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { User, Wrench } from 'lucide-react';
+import {
+    BadgeCheckIcon,
+    CircleX,
+    Flag,
+    Hammer,
+    User,
+    Wrench,
+} from 'lucide-react';
 import { memo, useMemo } from 'react';
 import { Maintanance } from './AssetQrcodeDetail';
 
@@ -14,13 +21,57 @@ type AssetMaintananceProps = {
     maintanance: Maintanance[];
 };
 
+const maintenanceTypeConfig = {
+    routine: { label: 'Rutin', color: ' ' },
+    repair: { label: 'Perbaikan', color: 'bg-amber-500' },
+    calibration: { label: 'Kalibrasi', color: 'bg-purple-500 ' },
+    inspection: { label: 'Inspeksi', color: 'bg-blue-500 ' },
+};
+
+const maintenanceStatusConfig = {
+    completed: {
+        label: 'Selesai',
+        color: 'bg-green-700 ',
+        icon: <BadgeCheckIcon />,
+    },
+    pending: {
+        label: 'Pending',
+        color: 'bg-blue-500 ',
+        icon: <Flag />,
+    },
+    in_progress: {
+        label: 'Sedang Berjalan',
+        color: 'bg-yellow-500 ',
+        icon: <Hammer />,
+    },
+    cancelled: {
+        label: 'Cancel',
+        color: 'bg-red-500 ',
+        icon: <CircleX />,
+    },
+};
+
 const MaintItem = memo(function MaintItem({ m }: { m: Maintanance }) {
+    console.log(maintenanceStatusConfig[m.status]);
     return (
         <div className="rounded-lg border bg-accent p-4">
             <div className="flex justify-between">
                 <div className="flex flex-row justify-start gap-2 pb-1">
-                    <Badge className="rounded-md">{m.type}</Badge>
-                    <Badge className="rounded-md">{m.status}</Badge>
+                    <Badge
+                        className={`${
+                            maintenanceTypeConfig[m.type].color
+                        } rounded-md`}
+                    >
+                        {maintenanceTypeConfig[m.type].label}
+                    </Badge>
+                    <Badge
+                        className={`${
+                            maintenanceStatusConfig[m.status].color
+                        } rounded-md`}
+                    >
+                        {maintenanceStatusConfig[m.status].icon}
+                        {maintenanceStatusConfig[m.status].label}
+                    </Badge>
                 </div>
                 <CardDescription className="text-xs">
                     {new Date(m.maintanance_date).toLocaleDateString()}
@@ -30,7 +81,7 @@ const MaintItem = memo(function MaintItem({ m }: { m: Maintanance }) {
                 <CardTitle>{m.description}</CardTitle>
                 <CardDescription className="flex flex-row items-center gap-2">
                     <User size={15} />
-                    {m.technician}
+                    {m.technician ?? '-'}
                 </CardDescription>
             </div>
         </div>
@@ -49,12 +100,7 @@ export default function AssetMaintanance({
             ),
         [maintanance],
     );
-    if (!sorted.length)
-        return (
-            <div className="text-center text-sm text-muted-foreground">
-                No maintenance records.
-            </div>
-        );
+
     return (
         <div>
             <Card>
@@ -66,14 +112,16 @@ export default function AssetMaintanance({
                     <CardDescription>Riwaya Maintanance</CardDescription>
                 </CardHeader>
                 <CardContent className="mx-2 flex flex-col gap-2 border-l-4 border-primary/20 px-2">
-                    <span className="text-sm text-muted-foreground">
-                        No maintanance record found.
-                    </span>
-
-                    {sorted.map((m) => (
+                    {/* {sorted.map((m) => (
                         <MaintItem key={m.id} m={m} />
-                    ))}
-
+                    ))} */}
+                    {sorted.length === 0 ? (
+                        <div className="text-center text-sm text-muted-foreground">
+                            No maintenance records.
+                        </div>
+                    ) : (
+                        sorted.map((m) => <MaintItem key={m.id} m={m} />)
+                    )}
                     {/* <div className="rounded-lg border bg-accent p-4">
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-row justify-start gap-2 pb-1">

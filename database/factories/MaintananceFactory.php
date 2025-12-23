@@ -18,7 +18,7 @@ class MaintananceFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['preventive', 'corrective', 'inspection']);
+        $type = fake()->randomElement(['routine', 'repair', 'calibration','inspection']);
 
         $maintDate = fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d');
 
