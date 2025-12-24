@@ -1,31 +1,28 @@
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
 import {
     InputGroup,
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
-import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
@@ -44,9 +41,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { maintenances, maintenancesCreate } from '@/routes';
+import {
+    assetsQrcodeDetail,
+    maintenances,
+    maintenancesCreate,
+    maintenancesDelete,
+    maintenancesEdit,
+} from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
@@ -56,20 +58,25 @@ import {
     Calendar,
     CircleX,
     Clock,
+    Eye,
     Flag,
     Hammer,
     InfoIcon,
     Loader2,
     MoreHorizontalIcon,
     Package,
+    Pencil,
     Plus,
     SearchIcon,
     Settings,
+    Trash,
     Wrench,
     X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Asset } from '../Asset/AssetDetail';
+import MaintenancePagination from './MaintenancePagination';
 
 export type Maintenance = {
     id: number;
@@ -91,9 +98,9 @@ type PaginationLinkProps = {
     active: boolean;
 };
 
-type AssetPaginationProps = {
+export type MaintenancePaginationProps = {
     data: Maintenance[];
-    links: PaginationLinkProps;
+    links: PaginationLinkProps[];
     first_page_url: string;
     current_page: number;
     last_page: number;
@@ -104,7 +111,7 @@ type AssetPaginationProps = {
 };
 
 type MaintenanceIndexProps = {
-    maintenance: AssetPaginationProps;
+    maintenance: MaintenancePaginationProps;
     search?: string;
     type?: string;
     status?: string;
@@ -175,12 +182,26 @@ export default function MaintenanceIndex({
     const [selectedType, setSelectedType] = useState(type);
     const [selectedStatus, setSelectedStatus] = useState(status);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [selectedAsset, setSelectedAsset] = useState<Maintenance | null>(
-        null,
-    );
+    const [selectedMaintenance, setSelectedMaintenance] =
+        useState<Maintenance | null>(null);
     const [isSearching, setIsSearching] = useState(false);
-    const [showNewDialog, setShowNewDialog] = useState(false);
-    const [showShareDialog, setShowShareDialog] = useState(false);
+
+    const handleDelete = () => {
+        if (!selectedMaintenance) return;
+
+        router.delete(maintenancesDelete(selectedMaintenance.id).url, {
+            onSuccess: () => {
+                setShowDeleteDialog(false);
+                setSelectedMaintenance(null);
+                toast.success('Maintenance record deleted successfully!');
+            },
+            onError: () => {
+                toast.error(
+                    'Failed to delete maintenance record. Please try again.',
+                );
+            },
+        });
+    };
 
     // Sync state with props when they change (e.g., browser back/forward)
     useEffect(() => {
@@ -250,7 +271,7 @@ export default function MaintenanceIndex({
                 preserveScroll: true,
                 replace: true,
                 only: ['maintenance'],
-                // onFinish: () => setIsSearching(false),
+                onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -481,8 +502,7 @@ export default function MaintenanceIndex({
                                     <TableHead>Type</TableHead>
                                     <TableHead>Description</TableHead>
                                     <TableHead>Date</TableHead>
-                                    <TableHead>Technician</TableHead>
-                                    <TableHead>Cost</TableHead>
+
                                     <TableHead>Status</TableHead>
                                     <TableHead className="text-right">
                                         Actions
@@ -509,14 +529,9 @@ export default function MaintenanceIndex({
                                                   <TableCell>
                                                       <Skeleton className="h-4 w-28" />
                                                   </TableCell>
+
                                                   <TableCell>
                                                       <Skeleton className="h-5 w-24 rounded-full" />
-                                                  </TableCell>
-                                                  <TableCell>
-                                                      <Skeleton className="h-5 w-24 rounded-full" />
-                                                  </TableCell>
-                                                  <TableCell>
-                                                      <Skeleton className="h-4 w-20" />
                                                   </TableCell>
                                                   <TableCell>
                                                       <Skeleton className="h-5 w-24 rounded-full" />
@@ -563,12 +578,7 @@ export default function MaintenanceIndex({
                                                       maintenance.maintenance_date,
                                                   )}
                                               </TableCell>
-                                              <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                                                  {maintenance.technician}
-                                              </TableCell>
-                                              <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                                                  {maintenance.cost}
-                                              </TableCell>
+
                                               <TableCell>
                                                   <Badge
                                                       variant="outline"
@@ -590,7 +600,7 @@ export default function MaintenanceIndex({
                                                   </Badge>
                                               </TableCell>
 
-                                              <TableCell className="font-mono text-sm text-muted-foreground">
+                                              <TableCell className="text-right">
                                                   <DropdownMenu modal={false}>
                                                       <DropdownMenuTrigger
                                                           asChild
@@ -600,149 +610,57 @@ export default function MaintenanceIndex({
                                                               size="icon"
                                                               className="h-8 w-8"
                                                           >
-                                                              <MoreHorizontalIcon />
+                                                              <MoreHorizontalIcon className="h-4 w-4" />
                                                           </Button>
                                                       </DropdownMenuTrigger>
-                                                      <DropdownMenuContent
-                                                          className="w-40"
-                                                          align="end"
-                                                      >
+                                                      <DropdownMenuContent align="end">
                                                           <DropdownMenuLabel>
-                                                              File Actions
+                                                              Actions
                                                           </DropdownMenuLabel>
-                                                          <DropdownMenuGroup>
-                                                              <DropdownMenuItem
-                                                                  onSelect={() =>
-                                                                      setShowNewDialog(
-                                                                          true,
-                                                                      )
-                                                                  }
-                                                              >
-                                                                  New File...
-                                                              </DropdownMenuItem>
-                                                              <DropdownMenuItem
-                                                                  onSelect={() =>
-                                                                      setShowShareDialog(
-                                                                          true,
-                                                                      )
-                                                                  }
-                                                              >
-                                                                  Share...
-                                                              </DropdownMenuItem>
-                                                              <DropdownMenuItem
-                                                                  disabled
-                                                              >
-                                                                  Download
-                                                              </DropdownMenuItem>
-                                                          </DropdownMenuGroup>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
+                                                                      assetsQrcodeDetail(
+                                                                          maintenance.asset_id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Eye className="h-4 w-4" />
+                                                              <span>Show</span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
+                                                                      maintenancesEdit(
+                                                                          maintenance.id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Pencil className="h-4 w-4" />
+                                                              <span>Edit</span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  setSelectedMaintenance(
+                                                                      maintenance,
+                                                                  );
+                                                                  setShowDeleteDialog(
+                                                                      true,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Trash className="h-4 w-4" />
+                                                              <span>
+                                                                  Delete
+                                                              </span>
+                                                          </DropdownMenuItem>
                                                       </DropdownMenuContent>
                                                   </DropdownMenu>
-                                                  <Dialog
-                                                      open={showNewDialog}
-                                                      onOpenChange={
-                                                          setShowNewDialog
-                                                      }
-                                                  >
-                                                      <DialogContent className="sm:max-w-[425px]">
-                                                          <DialogHeader>
-                                                              <DialogTitle>
-                                                                  Create New
-                                                                  File
-                                                              </DialogTitle>
-                                                              <DialogDescription>
-                                                                  Provide a name
-                                                                  for your new
-                                                                  file. Click
-                                                                  create when
-                                                                  you&apos;re
-                                                                  done.
-                                                              </DialogDescription>
-                                                          </DialogHeader>
-                                                          <FieldGroup className="pb-3">
-                                                              <Field>
-                                                                  <FieldLabel htmlFor="filename">
-                                                                      File Name
-                                                                  </FieldLabel>
-                                                                  <Input
-                                                                      id="filename"
-                                                                      name="filename"
-                                                                      placeholder="document.txt"
-                                                                  />
-                                                              </Field>
-                                                          </FieldGroup>
-                                                          <DialogFooter>
-                                                              <DialogClose
-                                                                  asChild
-                                                              >
-                                                                  <Button variant="outline">
-                                                                      Cancel
-                                                                  </Button>
-                                                              </DialogClose>
-                                                              <Button type="submit">
-                                                                  Create
-                                                              </Button>
-                                                          </DialogFooter>
-                                                      </DialogContent>
-                                                  </Dialog>
-                                                  <Dialog
-                                                      open={showShareDialog}
-                                                      onOpenChange={
-                                                          setShowShareDialog
-                                                      }
-                                                  >
-                                                      <DialogContent className="sm:max-w-[425px]">
-                                                          <DialogHeader>
-                                                              <DialogTitle>
-                                                                  Share File
-                                                              </DialogTitle>
-                                                              <DialogDescription>
-                                                                  Anyone with
-                                                                  the link will
-                                                                  be able to
-                                                                  view this
-                                                                  file.
-                                                              </DialogDescription>
-                                                          </DialogHeader>
-                                                          <FieldGroup className="py-3">
-                                                              <Field>
-                                                                  <Label htmlFor="email">
-                                                                      Email
-                                                                      Address
-                                                                  </Label>
-                                                                  <Input
-                                                                      id="email"
-                                                                      name="email"
-                                                                      type="email"
-                                                                      placeholder="shadcn@vercel.com"
-                                                                      autoComplete="off"
-                                                                  />
-                                                              </Field>
-                                                              <Field>
-                                                                  <FieldLabel htmlFor="message">
-                                                                      Message
-                                                                      (Optional)
-                                                                  </FieldLabel>
-                                                                  <Textarea
-                                                                      id="message"
-                                                                      name="message"
-                                                                      placeholder="Check out this file"
-                                                                  />
-                                                              </Field>
-                                                          </FieldGroup>
-                                                          <DialogFooter>
-                                                              <DialogClose
-                                                                  asChild
-                                                              >
-                                                                  <Button variant="outline">
-                                                                      Cancel
-                                                                  </Button>
-                                                              </DialogClose>
-                                                              <Button type="submit">
-                                                                  Send Invite
-                                                              </Button>
-                                                          </DialogFooter>
-                                                      </DialogContent>
-                                                  </Dialog>
                                               </TableCell>
                                           </TableRow>
                                       ))}
@@ -751,13 +669,49 @@ export default function MaintenanceIndex({
                     </div>
                 )}
 
-                {/* {maintenance.data.length > 0 &&
+                {maintenance.data.length > 0 &&
                     maintenance.total > maintenance.per_page && (
                         <MaintenancePagination maintenance={maintenance} />
 
                         // <SimplePaginationExample assets={assets} />
-                    )} */}
+                    )}
             </div>
+            {/* Delete Confirmation Dialog */}
+            <AlertDialog
+                open={showDeleteDialog}
+                onOpenChange={setShowDeleteDialog}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>
+                            Are you sure you want to delete this maintenance
+                            record?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            You are about to delete maintenance record for{' '}
+                            <span className="font-semibold text-foreground">
+                                "{selectedMaintenance?.asset.asset_name}"
+                            </span>{' '}
+                            (ID: {selectedMaintenance?.id}). This action cannot
+                            be undone and will permanently remove this
+                            maintenance record from your system.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel
+                            onClick={() => setShowDeleteDialog(false)}
+                        >
+                            Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleDelete}
+                            className="bg-destructive text-white hover:bg-destructive/90"
+                        >
+                            Delete
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </AppLayout>
     );
 }

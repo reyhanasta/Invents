@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -45,6 +46,25 @@ class MaintenanceController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('Maintenance/MaintenanceCreate', [
+            'assets' => Asset::select('id', 'asset_name', 'asset_code')
+                ->orderBy('asset_name')
+                ->get(),
+        ]);
+    }
+
+    public function edit(Maintenance $maintenance)
+    {
+        return Inertia::render('Maintenance/MaintenanceEdit', [
+            'maintenance' => $maintenance->load('asset'),
+            'assets' => Asset::select('id', 'asset_name', 'asset_code')
+                ->orderBy('asset_name')
+                ->get(),
+        ]);
+    }
+
     public function show(int $id): \Illuminate\Http\JsonResponse
     {
         $maint = Maintenance::with('asset')->findOrFail($id);
@@ -52,24 +72,107 @@ class MaintenanceController extends Controller
         return response()->json($maint);
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         $data = $request->validate([
             'asset_id' => ['required', 'exists:assets,id'],
-            'type' => ['required', Rule::in(['preventive', 'corrective', 'inspection'])],
+            'type' => [
+                'required',
+                Rule::in(['routine', 'repair', 'inspection', 'calibration']),
+            ],
             'maintenance_date' => ['required', 'date'],
-            'maintenance_done_date' => ['nullable', 'date', 'after_or_equal:maintenance_date'],
-            'status' => ['nullable', Rule::in(['pending', 'in_progress', 'completed', 'cancelled'])],
+            'maintenance_done_date' => [
+                'nullable',
+                'date',
+                'after_or_equal:maintenance_date',
+            ],
+            'status' => [
+                'nullable',
+                Rule::in([
+                    'pending',
+                    'in_progress',
+                    'completed',
+                    'cancelled',
+                ]),
+            ],
             'description' => ['required', 'string'],
             'note' => ['nullable', 'string'],
             'technician' => ['nullable', 'string'],
-            'cost' => ['nullable', 'numeric'],
+            'cost' => ['nullable', 'numeric', 'min:0'],
         ]);
 
-        $maint = Maintenance::create(array_merge($data, [
+        $maint = Maintenance::create([
+            'asset_id' => $data['asset_id'],
+            'type' => $data['type'],
+            'maintenance_date' => $data['maintenance_date'],
+            'maintenance_done_date' => $data['maintenance_done_date'] ?? null,
             'status' => $data['status'] ?? 'pending',
-        ]));
+            'description' => $data['description'],
+            'note' => $data['note'] ?? null,
+            'technician' => $data['technician'] ?? null,
+            'cost' => $data['cost'] ?? null,
+        ]);
 
-        return response()->json($maint, 201);
+        return to_route('maintenances')->with(
+            'success',
+            'Maintenance created successfully!',
+        );
+    }
+
+    public function update(Request $request, Maintenance $maintenance)
+    {
+        $data = $request->validate([
+            'asset_id' => ['required', 'exists:assets,id'],
+            'type' => [
+                'required',
+                Rule::in(['routine', 'repair', 'inspection', 'calibration']),
+            ],
+            'maintenance_date' => ['required', 'date'],
+            'maintenance_done_date' => [
+                'nullable',
+                'date',
+                'after_or_equal:maintenance_date',
+            ],
+            'status' => [
+                'nullable',
+                Rule::in([
+                    'pending',
+                    'in_progress',
+                    'completed',
+                    'cancelled',
+                ]),
+            ],
+            'description' => ['required', 'string'],
+            'note' => ['nullable', 'string'],
+            'technician' => ['nullable', 'string'],
+            'cost' => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $maintenance->update([
+            'asset_id' => $data['asset_id'],
+            'type' => $data['type'],
+            'maintenance_date' => $data['maintenance_date'],
+            'maintenance_done_date' => $data['maintenance_done_date'] ?? null,
+            'status' => $data['status'] ?? 'pending',
+            'description' => $data['description'],
+            'note' => $data['note'] ?? null,
+            'technician' => $data['technician'] ?? null,
+            'cost' => $data['cost'] ?? null,
+        ]);
+
+        return to_route('maintenances')->with(
+            'success',
+            'Maintenance updated successfully!',
+        );
+    }
+
+    public function destroy(Maintenance $maintenance)
+    {
+        $maintenance->delete();
+
+        return to_route('maintenances')->with(
+            'success',
+            'Maintenance deleted successfully!',
+        );
     }
 }

@@ -38,17 +38,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('locations/{location}', [\App\Http\Controllers\LocationController::class, 'update'])->name('locations-update');
     Route::delete('locations/{location}', [\App\Http\Controllers\LocationController::class, 'delete'])->name('locations-delete');
 
-    // Maintanance Routes
-    Route::get('maintenances',[MaintenanceController::class,'index'])->name('maintenances');
+    // Maintenance Routes
+    Route::get('maintenances', [MaintenanceController::class, 'index'])->name('maintenances');
     Route::get('maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances-create');
-    Route::post('maintenances',[MaintenanceController::class,'store'])->name('maintenances-store');
-    Route::get('maintenances/{asset}/edit', [MaintenanceController::class, 'edit'])->name('maintenances-edit');
-
-    Route::put('maintenances/{location}',[MaintenanceController::class,'update'])->name('maintenances-update');
-    Route::delete('maintenances/{location}',[MaintenanceController::class,'delete'])->name('maintenances-delete');
+    Route::post('maintenances', [MaintenanceController::class, 'store'])->name('maintenances-store');
+    Route::get('maintenances/{maintenance}/edit', [MaintenanceController::class, 'edit'])->name('maintenances-edit');
+    Route::put('maintenances/{maintenance}', [MaintenanceController::class, 'update'])->name('maintenances-update');
+    Route::delete('maintenances/{maintenance}', [MaintenanceController::class, 'destroy'])->name('maintenances-delete');
 });
 
 Route::get('assets/{asset}/qrcode-detail', [\App\Http\Controllers\AssetController::class, 'qrcodeDetail'])->name('assets-qrcode-detail');
-
 
 require __DIR__.'/settings.php';
