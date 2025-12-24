@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Maintenance;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class MaintenanceController extends Controller
 {
     public function index(Request $request)
-{
+    {
         $search = $request->input('search');
+        $type = $request->input('type');
+        $status = $request->input('status');
+
         $query = Maintenance::query()->with(['asset'])->latest();
-        if($search){
+
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('technician', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
@@ -22,19 +26,29 @@ class MaintenanceController extends Controller
                     });
             });
         }
+
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
         $maintenance = $query->paginate(8)->withQueryString();
 
-        
-
-        return Inertia::render('Maintenance/MaintenanceIndex',[
+        return Inertia::render('Maintenance/MaintenanceIndex', [
             'maintenance' => $maintenance,
-            'search' => $search
+            'search' => $search,
+            'type' => $type,
+            'status' => $status,
         ]);
     }
 
     public function show(int $id): \Illuminate\Http\JsonResponse
     {
         $maint = Maintenance::with('asset')->findOrFail($id);
+
         return response()->json($maint);
     }
 

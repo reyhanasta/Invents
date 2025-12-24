@@ -106,6 +106,8 @@ type AssetPaginationProps = {
 type MaintenanceIndexProps = {
     maintenance: AssetPaginationProps;
     search?: string;
+    type?: string;
+    status?: string;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -159,8 +161,19 @@ const statusConfig = {
 export default function MaintenanceIndex({
     maintenance,
     search = '',
+    type = '',
+    status = '',
 }: MaintenanceIndexProps) {
+    // Ambil status unik dari data
+    const uniqueStatuses = [
+        ...new Set(maintenance.data.map((item) => item.status)),
+    ];
+    // Ambil status unik dari data
+    const uniqueTypes = [...new Set(maintenance.data.map((item) => item.type))];
+
     const [searchQuery, setSearchQuery] = useState(search);
+    const [selectedType, setSelectedType] = useState(type);
+    const [selectedStatus, setSelectedStatus] = useState(status);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Maintenance | null>(
         null,
@@ -168,15 +181,26 @@ export default function MaintenanceIndex({
     const [isSearching, setIsSearching] = useState(false);
     const [showNewDialog, setShowNewDialog] = useState(false);
     const [showShareDialog, setShowShareDialog] = useState(false);
-    // Debounce search - Inertia best practice
 
+    // Sync state with props when they change (e.g., browser back/forward)
+    useEffect(() => {
+        setSearchQuery(search);
+        setSelectedType(type);
+        setSelectedStatus(status);
+    }, [search, type, status]);
+
+    // Debounce search - Inertia best practice
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (searchQuery !== search) {
                 setIsSearching(true);
                 router.get(
                     maintenances().url,
-                    { search: searchQuery || undefined },
+                    {
+                        search: searchQuery || undefined,
+                        type: selectedType || undefined,
+                        status: selectedStatus || undefined,
+                    },
                     {
                         preserveState: true,
                         preserveScroll: true,
@@ -189,20 +213,65 @@ export default function MaintenanceIndex({
         }, 300);
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, search]);
+    }, [searchQuery, search, selectedType, selectedStatus]);
 
     const handleClearSearch = () => {
         setSearchQuery('');
         setIsSearching(true);
         router.get(
             maintenances().url,
-            {},
+            {
+                type: selectedType || undefined,
+                status: selectedStatus || undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['maintenance'],
+                onFinish: () => setIsSearching(false),
+            },
+        );
+    };
+
+    const handleTypeChange = (value: string) => {
+        const newType = value === 'all' ? '' : value;
+        setSelectedType(newType);
+        setIsSearching(true);
+        router.get(
+            maintenances().url,
+            {
+                search: searchQuery || undefined,
+                type: newType || undefined,
+                status: selectedStatus || undefined,
+            },
             {
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
                 only: ['maintenance'],
                 // onFinish: () => setIsSearching(false),
+            },
+        );
+    };
+
+    const handleStatusChange = (value: string) => {
+        const newStatus = value === 'all' ? '' : value;
+        setSelectedStatus(newStatus);
+        setIsSearching(true);
+        router.get(
+            maintenances().url,
+            {
+                search: searchQuery || undefined,
+                type: selectedType || undefined,
+                status: newStatus || undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['maintenance'],
+                onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -313,35 +382,46 @@ export default function MaintenanceIndex({
                         )} */}
                     </div>
                     <div className="flex w-sm flex-row gap-2">
-                        <Select>
+                        <Select
+                            value={selectedStatus || 'all'}
+                            onValueChange={handleStatusChange}
+                        >
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="All Status" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>All Status</SelectLabel>
-                                    <SelectItem value="apple">
-                                        Completed
+                                    <SelectLabel>Status</SelectLabel>
+                                    <SelectItem value="all">
+                                        All Status
                                     </SelectItem>
-                                    <SelectItem value="banana">
-                                        Scheduled
-                                    </SelectItem>
+                                    {uniqueStatuses.map((status) => (
+                                        <SelectItem key={status} value={status}>
+                                            {statusConfig[status]?.label ||
+                                                status}
+                                        </SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <Select>
+                        <Select
+                            value={selectedType || 'all'}
+                            onValueChange={handleTypeChange}
+                        >
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="All Type" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>All Type</SelectLabel>
-                                    <SelectItem value="apple">
-                                        Routine{' '}
+                                    <SelectLabel>Type</SelectLabel>
+                                    <SelectItem value="all">
+                                        All Type
                                     </SelectItem>
-                                    <SelectItem value="banana">
-                                        Calibration
-                                    </SelectItem>
+                                    {uniqueTypes.map((type) => (
+                                        <SelectItem key={type} value={type}>
+                                            {typeConfig[type]?.label || type}
+                                        </SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
