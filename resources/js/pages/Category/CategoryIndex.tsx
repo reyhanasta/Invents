@@ -40,7 +40,7 @@ import Edit from './CategoryEdit';
 import CategoryEmpty from './CategoryEmpty';
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Category list',
+        title: 'Category',
         href: categories().url,
     },
 ];
@@ -75,10 +75,10 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Category list" />
+            <Head title="Category" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header Section */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                {/* <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
                             Categories
@@ -87,7 +87,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             Manage your asset categories
                         </p>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Search Bar */}
                 <div className="flex items-center justify-between gap-4">

@@ -167,7 +167,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
             {
                 preserveState: true,
                 only: ['assets'],
-                onFinish: () => setIsSearching(false),
+                // onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -192,7 +192,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
             <Head title="Assets" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                {/* <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
                             Assets
@@ -201,7 +201,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                             Manage your inventory assets
                         </p>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Search */}
                 <div className="flex items-center justify-between">
@@ -213,13 +213,13 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <InputGroupAddon>
+                            <InputGroupAddon align="inline-end">
                                 {isSearching ? (
                                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                                 ) : searchQuery ? (
                                     <Button
                                         onClick={handleClearSearch}
-                                        className="rounded p-0.5 hover:bg-accent"
+                                        variant="ghost"
                                     >
                                         <X className="h-4 w-4" />
                                     </Button>
@@ -228,7 +228,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 )}
                             </InputGroupAddon>
                         </InputGroup>
-                        {searchQuery && (
+                        {/* {searchQuery && (
                             <div className="w-lg text-sm text-muted-foreground">
                                 Found{' '}
                                 <span className="font-medium text-foreground">
@@ -236,7 +236,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 </span>{' '}
                                 result{assets.total !== 1 ? 's' : ''}
                             </div>
-                        )}
+                        )} */}
                     </div>
                     <Button
                         size="lg"
@@ -251,7 +251,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                 </div>
 
                 {/* Table */}
-                {assets.data.length === 0 ? (
+                {!isSearching && assets.data.length === 0 ? (
                     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         <div className="mb-4 rounded-full bg-muted p-6">
                             <Package className="h-12 w-12 text-muted-foreground" />

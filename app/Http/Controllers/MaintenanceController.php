@@ -10,7 +10,7 @@ use Inertia\Inertia;
 class MaintenanceController extends Controller
 {
     public function index(Request $request)
-    {
+{
         $search = $request->input('search');
         $query = Maintenance::query()->with(['asset'])->latest();
         if($search){
@@ -19,8 +19,7 @@ class MaintenanceController extends Controller
                     ->orWhere('description', 'like', "%{$search}%")
                     ->orWhereHas('asset', function ($q) use ($search) {
                         $q->where('asset_name', 'like', "%{$search}%");
-                    })
-                    ;
+                    });
             });
         }
         $maintenance = $query->paginate(8)->withQueryString();

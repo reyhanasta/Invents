@@ -46,7 +46,7 @@ import {
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { assets, assetsCreate, maintenancesCreate } from '@/routes';
+import { maintenances, maintenancesCreate } from '@/routes';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
@@ -110,8 +110,8 @@ type MaintenanceIndexProps = {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets',
-        href: assets().url,
+        title: 'Maintenance',
+        href: maintenances().url,
     },
 ];
 
@@ -158,7 +158,7 @@ const statusConfig = {
 
 export default function MaintenanceIndex({
     maintenance,
-    search,
+    search = '',
 }: MaintenanceIndexProps) {
     const [searchQuery, setSearchQuery] = useState(search);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -169,18 +169,19 @@ export default function MaintenanceIndex({
     const [showNewDialog, setShowNewDialog] = useState(false);
     const [showShareDialog, setShowShareDialog] = useState(false);
     // Debounce search - Inertia best practice
+
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (searchQuery !== search) {
                 setIsSearching(true);
                 router.get(
-                    window.location.pathname,
+                    maintenances().url,
                     { search: searchQuery || undefined },
                     {
                         preserveState: true,
                         preserveScroll: true,
                         replace: true,
-                        only: ['maintenances'],
+                        only: ['maintenance'],
                         onFinish: () => setIsSearching(false),
                     },
                 );
@@ -194,15 +195,26 @@ export default function MaintenanceIndex({
         setSearchQuery('');
         setIsSearching(true);
         router.get(
-            window.location.pathname,
+            maintenances().url,
             {},
             {
                 preserveState: true,
-                only: ['maintenances'],
-                onFinish: () => setIsSearching(false),
+                preserveScroll: true,
+                replace: true,
+                only: ['maintenance'],
+                // onFinish: () => setIsSearching(false),
             },
         );
     };
+
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head />
@@ -266,7 +278,7 @@ export default function MaintenanceIndex({
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
                     <div className="flex flex-1 flex-row gap-4 sm:flex-row sm:items-center">
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
@@ -275,13 +287,13 @@ export default function MaintenanceIndex({
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <InputGroupAddon>
+                            <InputGroupAddon align="inline-end">
                                 {isSearching ? (
                                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                                 ) : searchQuery ? (
                                     <Button
                                         onClick={handleClearSearch}
-                                        className="rounded p-0.5 hover:bg-accent"
+                                        variant="ghost"
                                     >
                                         <X className="h-4 w-4" />
                                     </Button>
@@ -290,15 +302,15 @@ export default function MaintenanceIndex({
                                 )}
                             </InputGroupAddon>
                         </InputGroup>
-                        {searchQuery && (
-                            <div className="w-lg text-sm text-muted-foreground">
+                        {/* {searchQuery && (
+                            <div className="text-sm text-muted-foreground">
                                 Found{' '}
                                 <span className="font-medium text-foreground">
                                     {maintenance.total}
                                 </span>{' '}
                                 result{maintenance.total !== 1 ? 's' : ''}
                             </div>
-                        )}
+                        )} */}
                     </div>
                     <div className="flex w-sm flex-row gap-2">
                         <Select>
@@ -337,7 +349,7 @@ export default function MaintenanceIndex({
                     <Button
                         size="lg"
                         className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
-                        aria-label="Add Asset"
+                        aria-label="Add Maintenance"
                     >
                         <Plus className="h-4 w-4" />
                         <Link href={maintenancesCreate().url}>
@@ -345,19 +357,23 @@ export default function MaintenanceIndex({
                         </Link>
                     </Button>
                 </div>
+
                 {/* Table */}
-                {maintenance.data.length === 0 ? (
+                {!isSearching && maintenance.data.length === 0 ? (
                     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         <div className="mb-4 rounded-full bg-muted p-6">
                             <Package className="h-12 w-12 text-muted-foreground" />
                         </div>
+
                         <h3 className="mb-2 text-xl font-semibold">
-                            {searchQuery ? 'No Results Found' : 'No Assets Yet'}
+                            {searchQuery
+                                ? 'No Results Found'
+                                : 'No Maintenance Records Yet'}
                         </h3>
                         <p className="mb-6 max-w-md text-sm text-muted-foreground">
                             {searchQuery
-                                ? `No assets found matching "${searchQuery}". Try a different search term.`
-                                : 'Get started by adding your first asset'}
+                                ? `No maintenance records found matching "${searchQuery}". Try a different search term.`
+                                : 'Get started by adding your first maintenance record'}
                         </p>
                         {searchQuery ? (
                             <Button
@@ -367,16 +383,16 @@ export default function MaintenanceIndex({
                                 Clear Search
                             </Button>
                         ) : (
-                            <Link href={assetsCreate().url}>
+                            <Link href={maintenancesCreate().url}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Add First Asset
+                                    Add First Maintenance
                                 </Button>
                             </Link>
                         )}
                     </div>
                 ) : (
-                    <div className="rounded-lg border p-3">
+                    <div className="rounded-lg border p-3 transition-opacity duration-200">
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -422,6 +438,9 @@ export default function MaintenanceIndex({
                                                   <TableCell>
                                                       <Skeleton className="h-4 w-20" />
                                                   </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-5 w-24 rounded-full" />
+                                                  </TableCell>
                                                   <TableCell className="text-right">
                                                       <Skeleton className="ml-auto h-8 w-8 rounded-md" />
                                                   </TableCell>
@@ -460,7 +479,9 @@ export default function MaintenanceIndex({
                                                   {maintenance.description}
                                               </TableCell>
                                               <TableCell className="text-sm text-muted-foreground">
-                                                  {maintenance.maintenance_date}
+                                                  {formatDate(
+                                                      maintenance.maintenance_date,
+                                                  )}
                                               </TableCell>
                                               <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
                                                   {maintenance.technician}
