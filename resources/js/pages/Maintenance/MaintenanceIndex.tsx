@@ -304,34 +304,38 @@ export default function MaintenanceIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
-                {/* Header */}
-
                 {/* Search */}
-                <div className="flex items-center gap-2">
-                    <div className="flex flex-1 flex-row gap-4 sm:flex-row sm:items-center">
-                        <InputGroup className="max-w-md flex-1">
-                            <InputGroupInput
-                                aria-label="search"
-                                placeholder="Cari berdasarkan nama, kode, kategori, lokasi..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <InputGroupAddon align="inline-end">
-                                {isSearching ? (
-                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                ) : searchQuery ? (
-                                    <Button
-                                        onClick={handleClearSearch}
-                                        variant="ghost"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </Button>
-                                ) : (
-                                    <SearchIcon className="h-4 w-4" />
-                                )}
-                            </InputGroupAddon>
-                        </InputGroup>
-                        {/* {searchQuery && (
+                <div className="flex justify-between gap-2">
+                    <div className="flex flex-row items-center gap-4">
+                        <div
+                            id="searchbar"
+                            className="flex flex-row gap-4 sm:flex-row"
+                        >
+                            <InputGroup className="max-w-md flex-1">
+                                <InputGroupInput
+                                    aria-label="search"
+                                    placeholder="Cari berdasarkan nama, kode, kategori, lokasi..."
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                />
+                                <InputGroupAddon align="inline-end">
+                                    {isSearching ? (
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                    ) : searchQuery ? (
+                                        <Button
+                                            onClick={handleClearSearch}
+                                            variant="ghost"
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </Button>
+                                    ) : (
+                                        <SearchIcon className="h-4 w-4" />
+                                    )}
+                                </InputGroupAddon>
+                            </InputGroup>
+                            {/* {searchQuery && (
                             <div className="text-sm text-muted-foreground">
                                 Found{' '}
                                 <span className="font-medium text-foreground">
@@ -340,51 +344,56 @@ export default function MaintenanceIndex({
                                 result{maintenance.total !== 1 ? 's' : ''}
                             </div>
                         )} */}
-                    </div>
-                    <div className="flex w-sm flex-row gap-2">
-                        <Select
-                            value={selectedStatus || 'all'}
-                            onValueChange={handleStatusChange}
-                        >
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Semua Status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Status</SelectLabel>
-                                    <SelectItem value="all">
-                                        Semua Status
-                                    </SelectItem>
-                                    {uniqueStatuses.map((status) => (
-                                        <SelectItem key={status} value={status}>
-                                            {statusConfig[status]?.label ||
-                                                status}
+                        </div>
+                        <div id="filters" className="flex w-2xs flex-row gap-2">
+                            <Select
+                                value={selectedStatus || 'all'}
+                                onValueChange={handleStatusChange}
+                            >
+                                <SelectTrigger className="w-45">
+                                    <SelectValue placeholder="Semua Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Status</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Status
                                         </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                        <Select
-                            value={selectedType || 'all'}
-                            onValueChange={handleTypeChange}
-                        >
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Semua Tipe" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Type</SelectLabel>
-                                    <SelectItem value="all">
-                                        Semua Tipe
-                                    </SelectItem>
-                                    {uniqueTypes.map((type) => (
-                                        <SelectItem key={type} value={type}>
-                                            {typeConfig[type]?.label || type}
+                                        {uniqueStatuses.map((status) => (
+                                            <SelectItem
+                                                key={status}
+                                                value={status}
+                                            >
+                                                {statusConfig[status]?.label ||
+                                                    status}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            <Select
+                                value={selectedType || 'all'}
+                                onValueChange={handleTypeChange}
+                            >
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Semua Tipe" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Type</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Tipe
                                         </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                                        {uniqueTypes.map((type) => (
+                                            <SelectItem key={type} value={type}>
+                                                {typeConfig[type]?.label ||
+                                                    type}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
                     <Button
                         size="lg"
@@ -400,7 +409,7 @@ export default function MaintenanceIndex({
 
                 {/* Table */}
                 {!isSearching && maintenance.data.length === 0 ? (
-                    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                    <div className="flex min-h-100 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         <div className="mb-4 rounded-full bg-muted p-6">
                             <Package className="h-12 w-12 text-muted-foreground" />
                         </div>
