@@ -116,7 +116,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                         onClick={() => setShowCreateDialog(true)}
                     >
                         <Plus className="h-4 w-4" />
-                        <span className="ml-2">Add Category</span>
+                        <span className="ml-2">Tambah Category</span>
                     </Button>
                 </div>
                 <Create
@@ -141,14 +141,14 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                             <Package className="h-12 w-12 text-muted-foreground" />
                         </div>
                         <h3 className="mb-2 text-xl font-semibold">
-                            No Results Found
+                            Hasil tidak di temukan
                         </h3>
                         <p className="mb-6 max-w-md text-sm text-muted-foreground">
-                            No categories match your search for{' '}
+                            Kategori yang kamu cari tidak di temukan{' '}
                             <span className="font-semibold">
                                 "{searchQuery}"
                             </span>
-                            . Try a different keyword.
+                            . Gunakan kata kunci yang lain.
                         </p>
                         <Button
                             variant="outline"
@@ -216,7 +216,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                                                 );
                                                             }}
                                                         >
-                                                            <Pencil /> Edit
+                                                            <Pencil /> Ubah
                                                         </DropdownMenuItem>
 
                                                         <DropdownMenuItem
@@ -230,7 +230,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                                                 );
                                                             }}
                                                         >
-                                                            <Trash /> Delete
+                                                            <Trash /> Hapus
                                                         </DropdownMenuItem>
                                                     </DropdownMenuGroup>
                                                 </DropdownMenuContent>
@@ -255,8 +255,8 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                                 className="flex flex-1 text-xs"
                                             >
                                                 {category.serial_number_needed
-                                                    ? 'Serial Number Required'
-                                                    : 'No Serial Number'}
+                                                    ? 'Butuh Nomor Seri'
+                                                    : '-'}
                                             </Badge>
                                         </div>
                                         <div

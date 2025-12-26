@@ -154,7 +154,7 @@ const statusConfig = {
         icon: <Hammer />,
     },
     cancelled: {
-        label: 'Cancel',
+        label: 'Dibatalkan',
         color: 'bg-red-500 ',
         icon: <CircleX />,
     },
@@ -188,11 +188,11 @@ export default function MaintenanceIndex({
             onSuccess: () => {
                 setShowDeleteDialog(false);
                 setSelectedMaintenance(null);
-                toast.success('Maintenance record deleted successfully!');
+                toast.success('Data maintenance berhasil dihapus!');
             },
             onError: () => {
                 toast.error(
-                    'Failed to delete maintenance record. Please try again.',
+                    'Gagal menghapus data maintenance. Silakan coba lagi.',
                 );
             },
         });
@@ -312,7 +312,7 @@ export default function MaintenanceIndex({
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
-                                placeholder="Search by name, code, category, location..."
+                                placeholder="Cari berdasarkan nama, kode, kategori, lokasi..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -347,13 +347,13 @@ export default function MaintenanceIndex({
                             onValueChange={handleStatusChange}
                         >
                             <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="All Status" />
+                                <SelectValue placeholder="Semua Status" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Status</SelectLabel>
                                     <SelectItem value="all">
-                                        All Status
+                                        Semua Status
                                     </SelectItem>
                                     {uniqueStatuses.map((status) => (
                                         <SelectItem key={status} value={status}>
@@ -369,13 +369,13 @@ export default function MaintenanceIndex({
                             onValueChange={handleTypeChange}
                         >
                             <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="All Type" />
+                                <SelectValue placeholder="Semua Tipe" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Type</SelectLabel>
                                     <SelectItem value="all">
-                                        All Type
+                                        Semua Tipe
                                     </SelectItem>
                                     {uniqueTypes.map((type) => (
                                         <SelectItem key={type} value={type}>
@@ -393,7 +393,7 @@ export default function MaintenanceIndex({
                     >
                         <Plus className="h-4 w-4" />
                         <Link href={maintenancesCreate().url}>
-                            <span className="ml-2">Add Maintenance</span>
+                            <span className="ml-2">Tambah Maintenance</span>
                         </Link>
                     </Button>
                 </div>
@@ -407,26 +407,26 @@ export default function MaintenanceIndex({
 
                         <h3 className="mb-2 text-xl font-semibold">
                             {searchQuery
-                                ? 'No Results Found'
-                                : 'No Maintenance Records Yet'}
+                                ? 'Tidak Ada Hasil Ditemukan'
+                                : 'Belum Ada Data Maintenance'}
                         </h3>
                         <p className="mb-6 max-w-md text-sm text-muted-foreground">
                             {searchQuery
-                                ? `No maintenance records found matching "${searchQuery}". Try a different search term.`
-                                : 'Get started by adding your first maintenance record'}
+                                ? `Tidak ada data maintenance yang cocok dengan "${searchQuery}". Coba kata kunci lain.`
+                                : 'Mulai dengan menambahkan data maintenance pertama Anda'}
                         </p>
                         {searchQuery ? (
                             <Button
                                 variant="outline"
                                 onClick={handleClearSearch}
                             >
-                                Clear Search
+                                Hapus Pencarian
                             </Button>
                         ) : (
                             <Link href={maintenancesCreate().url}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Add First Maintenance
+                                    Tambah Maintenance Pertama
                                 </Button>
                             </Link>
                         )}
@@ -437,14 +437,14 @@ export default function MaintenanceIndex({
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>ID</TableHead>
-                                    <TableHead>Asset</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead>Description</TableHead>
-                                    <TableHead>Date</TableHead>
+                                    <TableHead>Aset</TableHead>
+                                    <TableHead>Tipe</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead>Tanggal</TableHead>
 
                                     <TableHead>Status</TableHead>
                                     <TableHead className="text-right">
-                                        Actions
+                                        Aksi
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -554,7 +554,7 @@ export default function MaintenanceIndex({
                                                       </DropdownMenuTrigger>
                                                       <DropdownMenuContent align="end">
                                                           <DropdownMenuLabel>
-                                                              Actions
+                                                              Aksi
                                                           </DropdownMenuLabel>
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
@@ -567,7 +567,7 @@ export default function MaintenanceIndex({
                                                               }}
                                                           >
                                                               <Eye className="h-4 w-4" />
-                                                              <span>Show</span>
+                                                              <span>Lihat</span>
                                                           </DropdownMenuItem>
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
@@ -595,7 +595,7 @@ export default function MaintenanceIndex({
                                                           >
                                                               <Trash className="h-4 w-4" />
                                                               <span>
-                                                                  Delete
+                                                                  Hapus
                                                               </span>
                                                           </DropdownMenuItem>
                                                       </DropdownMenuContent>
@@ -623,30 +623,30 @@ export default function MaintenanceIndex({
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Are you sure you want to delete this maintenance
-                            record?
+                            Apakah Anda yakin ingin menghapus data maintenance
+                            ini?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            You are about to delete maintenance record for{' '}
+                            Anda akan menghapus data maintenance untuk{' '}
                             <span className="font-semibold text-foreground">
                                 "{selectedMaintenance?.asset.asset_name}"
                             </span>{' '}
-                            (ID: {selectedMaintenance?.id}). This action cannot
-                            be undone and will permanently remove this
-                            maintenance record from your system.
+                            (ID: {selectedMaintenance?.id}). Tindakan ini tidak
+                            dapat dibatalkan dan akan menghapus data maintenance
+                            ini secara permanen dari sistem Anda.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel
                             onClick={() => setShowDeleteDialog(false)}
                         >
-                            Cancel
+                            Batal
                         </AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleDelete}
                             className="bg-destructive text-white hover:bg-destructive/90"
                         >
-                            Delete
+                            Hapus
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

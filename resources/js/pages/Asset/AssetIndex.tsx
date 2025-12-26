@@ -39,7 +39,6 @@ import {
     assetsDelete,
     assetsDetail,
     assetsEdit,
-    assetsQrcodeDetail,
 } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -51,7 +50,6 @@ import {
     Pencil,
     Plus,
     SearchIcon,
-    Settings,
     Trash,
     X,
 } from 'lucide-react';
@@ -191,18 +189,6 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Assets" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
-                {/* Header */}
-                {/* <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="space-y-1">
-                        <h1 className="text-3xl font-bold tracking-tight">
-                            Assets
-                        </h1>
-                        <p className="text-muted-foreground">
-                            Manage your inventory assets
-                        </p>
-                    </div>
-                </div> */}
-
                 {/* Search */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
@@ -245,7 +231,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                     >
                         <Plus className="h-4 w-4" />
                         <Link href={assetsCreate().url}>
-                            <span className="ml-2">Add Asset</span>
+                            <span className="ml-2">Tambah Asset</span>
                         </Link>
                     </Button>
                 </div>
@@ -285,12 +271,12 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Asset Code</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Category</TableHead>
-                                    <TableHead>Location</TableHead>
-                                    <TableHead>Condition</TableHead>
-                                    <TableHead>Serial Number</TableHead>
+                                    <TableHead>Kode Asset</TableHead>
+                                    <TableHead>Nama Asset</TableHead>
+                                    <TableHead>Kategori</TableHead>
+                                    <TableHead>Lokasi</TableHead>
+                                    <TableHead>Kondisi</TableHead>
+                                    <TableHead>Nomor Seri</TableHead>
                                     <TableHead className="text-right">
                                         Actions
                                     </TableHead>
@@ -395,7 +381,10 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               }}
                                                           >
                                                               <Eye className="h-4 w-4" />
-                                                              <span>Show</span>
+                                                              <span>
+                                                                  Detail/Cetak
+                                                                  Label
+                                                              </span>
                                                           </DropdownMenuItem>
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
@@ -408,7 +397,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               }}
                                                           >
                                                               <Pencil className="h-4 w-4" />
-                                                              <span>Edit</span>
+                                                              <span>Ubah</span>
                                                           </DropdownMenuItem>
 
                                                           <DropdownMenuItem
@@ -423,25 +412,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               }}
                                                           >
                                                               <Trash className="h-4 w-4" />
-                                                              <span>
-                                                                  Delete
-                                                              </span>
-                                                          </DropdownMenuItem>
-                                                          <DropdownMenuItem
-                                                              className="cursor-pointer"
-                                                              onSelect={() => {
-                                                                  router.visit(
-                                                                      assetsQrcodeDetail(
-                                                                          asset.id,
-                                                                      ).url,
-                                                                  );
-                                                              }}
-                                                          >
-                                                              <Settings className="h-4 w-4" />
-                                                              <span>
-                                                                  Maintanance
-                                                                  (development)
-                                                              </span>
+                                                              <span>Hapus</span>
                                                           </DropdownMenuItem>
                                                       </DropdownMenuContent>
                                                   </DropdownMenu>
@@ -457,8 +428,6 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
 
                 {assets.data.length > 0 && assets.total > assets.per_page && (
                     <AssetPagination assets={assets} />
-
-                    // <SimplePaginationExample assets={assets} />
                 )}
             </div>
 

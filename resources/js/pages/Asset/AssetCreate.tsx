@@ -66,11 +66,10 @@ export default function AssetCreate({
                     </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Add New Asset
+                            Tambah Asset Baru
                         </h1>
                         <p className="text-muted-foreground">
-                            Fill in the information below to add a new asset to
-                            your inventory
+                            Isi informasi di bawah untuk menambhkan asset baru
                         </p>
                     </div>
                 </div>
@@ -101,7 +100,7 @@ export default function AssetCreate({
                                     {/* Asset Name */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_name">
-                                            Asset Name{' '}
+                                            Nama Asset{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -126,7 +125,7 @@ export default function AssetCreate({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="category_id">
-                                                Category{' '}
+                                                Kategori{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -171,7 +170,7 @@ export default function AssetCreate({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="location_id">
-                                                Location{' '}
+                                                Lokasi{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -231,7 +230,7 @@ export default function AssetCreate({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="serial_number">
-                                                Serial Number
+                                                Nomor Seri
                                             </Label>
                                             <Input
                                                 id="serial_number"
@@ -256,7 +255,7 @@ export default function AssetCreate({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="condition">
-                                                Condition{' '}
+                                                Kondisi{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -272,13 +271,13 @@ export default function AssetCreate({
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="good">
-                                                        Good
+                                                        Bagus
                                                     </SelectItem>
                                                     <SelectItem value="minor_damage">
-                                                        Minor Damage
+                                                        Sedikit Rusak
                                                     </SelectItem>
                                                     <SelectItem value="major_damage">
-                                                        Major Damage
+                                                        Rusak Total
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -291,7 +290,7 @@ export default function AssetCreate({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="acquisition_date">
-                                                Acquisition Date
+                                                Tanggal Pembelian
                                             </Label>
                                             <Input
                                                 id="acquisition_date"
@@ -313,7 +312,7 @@ export default function AssetCreate({
                                     {/* Description */}
                                     <div className="space-y-2">
                                         <Label htmlFor="description">
-                                            Description
+                                            Deskripsi
                                         </Label>
                                         <Textarea
                                             id="description"
@@ -329,8 +328,8 @@ export default function AssetCreate({
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Optional: Add any additional
-                                            information about this asset
+                                            Optional: Tambah informasi tambahan
+                                            mengenai asset ini.
                                         </p>
                                     </div>
 
@@ -344,15 +343,15 @@ export default function AssetCreate({
                                                 router.visit(assets().url)
                                             }
                                         >
-                                            Cancel
+                                            Batal
                                         </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Creating...'
-                                                : 'Create Asset'}
+                                                ? 'Membuat...'
+                                                : 'Buat Asset'}
                                         </Button>
                                     </div>
                                 </div>

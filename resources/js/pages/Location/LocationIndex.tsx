@@ -42,7 +42,7 @@ import LocationEmpty from './LocationEmpty';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Location list',
+        title: 'Lokasi',
         href: locations().url,
     },
 ];
@@ -92,7 +92,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
-                                placeholder="Search by name or prefix code..."
+                                placeholder="Cari berdasarkan nama..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -113,7 +113,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                         onClick={() => setShowCreateDialog(true)}
                     >
                         <Plus className="h-4 w-4" />
-                        <span className="ml-2">Add Location</span>
+                        <span className="ml-2">Tambah Lokasi</span>
                     </Button>
                 </div>
                 <Create
@@ -205,7 +205,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                                                                     }}
                                                                 >
                                                                     <Pencil />{' '}
-                                                                    Edit
+                                                                    Ubah
                                                                 </DropdownMenuItem>
 
                                                                 <DropdownMenuItem
@@ -220,7 +220,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                                                                     }}
                                                                 >
                                                                     <Trash />{' '}
-                                                                    Delete
+                                                                    Hapus
                                                                 </DropdownMenuItem>
                                                             </DropdownMenuGroup>
                                                         </DropdownMenuContent>

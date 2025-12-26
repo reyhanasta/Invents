@@ -93,7 +93,7 @@ export default function MaintenanceEdit({
                             Edit Maintenance
                         </h1>
                         <p className="text-muted-foreground">
-                            Update the information for maintenance record #{maintenance.id}
+                            Perbarui informasi untuk data maintenance #{maintenance.id}
                         </p>
                     </div>
                 </div>
@@ -101,9 +101,9 @@ export default function MaintenanceEdit({
                 {/* Form Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Maintenance Information</CardTitle>
+                        <CardTitle>Informasi Maintenance</CardTitle>
                         <CardDescription>
-                            Update the details of the maintenance record
+                            Perbarui detail data maintenance
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -112,13 +112,13 @@ export default function MaintenanceEdit({
                             action={maintenancesUpdate(maintenance.id).url}
                             onSuccess={() => {
                                 toast.success(
-                                    'Maintenance updated successfully!',
+                                    'Data maintenance berhasil diperbarui!',
                                 );
                                 router.visit(maintenances().url);
                             }}
                             onError={() => {
                                 toast.error(
-                                    'Failed to update maintenance. Please check the form.',
+                                    'Gagal memperbarui data maintenance. Silakan periksa formulir.',
                                 );
                             }}
                         >
@@ -127,7 +127,7 @@ export default function MaintenanceEdit({
                                     {/* Asset Selection */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_id">
-                                            Asset{' '}
+                                            Aset{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -141,7 +141,7 @@ export default function MaintenanceEdit({
                                                 aria-invalid={!!errors.asset_id}
                                                 disabled={processing}
                                             >
-                                                <SelectValue placeholder="Select asset" />
+                                                <SelectValue placeholder="Pilih aset" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {assets.map((asset) => (
@@ -166,7 +166,7 @@ export default function MaintenanceEdit({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="type">
-                                                Maintenance Type{' '}
+                                                Tipe Maintenance{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -180,7 +180,7 @@ export default function MaintenanceEdit({
                                                     aria-invalid={!!errors.type}
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select type" />
+                                                    <SelectValue placeholder="Pilih tipe" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="routine">
@@ -218,7 +218,7 @@ export default function MaintenanceEdit({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select status" />
+                                                    <SelectValue placeholder="Pilih status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="pending">
@@ -231,7 +231,7 @@ export default function MaintenanceEdit({
                                                         Selesai
                                                     </SelectItem>
                                                     <SelectItem value="cancelled">
-                                                        Cancel
+                                                        Dibatalkan
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -247,7 +247,7 @@ export default function MaintenanceEdit({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="maintenance_date">
-                                                Maintenance Date{' '}
+                                                Tanggal Maintenance{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -274,7 +274,7 @@ export default function MaintenanceEdit({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="maintenance_done_date">
-                                                Done Date
+                                                Tanggal Selesai
                                             </Label>
                                             <Input
                                                 id="maintenance_done_date"
@@ -296,8 +296,8 @@ export default function MaintenanceEdit({
                                                 </p>
                                             )}
                                             <p className="text-xs text-muted-foreground">
-                                                Optional: Date when maintenance
-                                                was completed
+                                                Opsional: Tanggal ketika maintenance
+                                                selesai dilakukan
                                             </p>
                                         </div>
                                     </div>
@@ -306,7 +306,7 @@ export default function MaintenanceEdit({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="technician">
-                                                Technician
+                                                Teknisi
                                             </Label>
                                             <Input
                                                 id="technician"
@@ -315,7 +315,7 @@ export default function MaintenanceEdit({
                                                 defaultValue={
                                                     maintenance.technician || ''
                                                 }
-                                                placeholder="e.g. John Doe"
+                                                placeholder="contoh: Budi Santoso"
                                                 aria-invalid={
                                                     !!errors.technician
                                                 }
@@ -329,7 +329,7 @@ export default function MaintenanceEdit({
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="cost">Cost</Label>
+                                            <Label htmlFor="cost">Biaya</Label>
                                             <Input
                                                 id="cost"
                                                 name="cost"
@@ -354,7 +354,7 @@ export default function MaintenanceEdit({
                                     {/* Description */}
                                     <div className="space-y-2">
                                         <Label htmlFor="description">
-                                            Description{' '}
+                                            Deskripsi{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -363,7 +363,7 @@ export default function MaintenanceEdit({
                                             id="description"
                                             name="description"
                                             defaultValue={maintenance.description}
-                                            placeholder="Describe what maintenance work needs to be done..."
+                                            placeholder="Jelaskan pekerjaan maintenance yang perlu dilakukan..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
                                             disabled={processing}
@@ -378,12 +378,12 @@ export default function MaintenanceEdit({
 
                                     {/* Notes */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="note">Notes</Label>
+                                        <Label htmlFor="note">Catatan</Label>
                                         <Textarea
                                             id="note"
                                             name="note"
                                             defaultValue={maintenance.note || ''}
-                                            placeholder="Additional notes, findings, or results..."
+                                            placeholder="Catatan tambahan, temuan, atau hasil..."
                                             rows={3}
                                             aria-invalid={!!errors.note}
                                             disabled={processing}
@@ -394,8 +394,8 @@ export default function MaintenanceEdit({
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Optional: Add findings or results
-                                            from the maintenance
+                                            Opsional: Tambahkan temuan atau hasil
+                                            dari maintenance
                                         </p>
                                     </div>
 
@@ -409,15 +409,15 @@ export default function MaintenanceEdit({
                                                 router.visit(maintenances().url)
                                             }
                                         >
-                                            Cancel
+                                            Batal
                                         </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Saving...'
-                                                : 'Save Changes'}
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
                                 </div>

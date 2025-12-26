@@ -29,7 +29,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: maintenances().url,
     },
     {
-        title: 'Add Maintenance',
+        title: 'Tambah Maintenance',
         href: '#',
     },
 ];
@@ -47,7 +47,7 @@ type MaintenanceCreateProps = {
 export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Maintenance" />
+            <Head title="Tambah Maintenance" />
 
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
@@ -61,11 +61,11 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                     </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Add New Maintenance
+                            Tambah Maintenance Baru
                         </h1>
                         <p className="text-muted-foreground">
-                            Fill in the information below to schedule a new
-                            maintenance record
+                            Isi informasi di bawah ini untuk membuat data
+                            maintenance baru
                         </p>
                     </div>
                 </div>
@@ -73,9 +73,9 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                 {/* Form Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Maintenance Information</CardTitle>
+                        <CardTitle>Informasi Maintenance</CardTitle>
                         <CardDescription>
-                            Enter the details of the maintenance record
+                            Masukkan detail data maintenance
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -84,13 +84,13 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                             action={maintenancesStore().url}
                             onSuccess={() => {
                                 toast.success(
-                                    'Maintenance created successfully!',
+                                    'Data maintenance berhasil dibuat!',
                                 );
                                 router.visit(maintenances().url);
                             }}
                             onError={() => {
                                 toast.error(
-                                    'Failed to create maintenance. Please check the form.',
+                                    'Gagal membuat data maintenance. Silakan periksa formulir.',
                                 );
                             }}
                         >
@@ -99,7 +99,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     {/* Asset Selection */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_id">
-                                            Asset{' '}
+                                            Aset{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -109,7 +109,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 aria-invalid={!!errors.asset_id}
                                                 disabled={processing}
                                             >
-                                                <SelectValue placeholder="Select asset" />
+                                                <SelectValue placeholder="Pilih aset" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {assets.map((asset) => (
@@ -134,7 +134,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="type">
-                                                Maintenance Type{' '}
+                                                Tipe Maintenance{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -144,7 +144,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                     aria-invalid={!!errors.type}
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select type" />
+                                                    <SelectValue placeholder="Pilih tipe" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="routine">
@@ -179,7 +179,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select status" />
+                                                    <SelectValue placeholder="Pilih status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="pending">
@@ -192,7 +192,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                         Selesai
                                                     </SelectItem>
                                                     <SelectItem value="cancelled">
-                                                        Cancel
+                                                        Dibatalkan
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -208,7 +208,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="maintenance_date">
-                                                Maintenance Date{' '}
+                                                Tanggal Maintenance{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -232,7 +232,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
 
                                         <div className="space-y-2">
                                             <Label htmlFor="maintenance_done_date">
-                                                Done Date
+                                                Tanggal Selesai
                                             </Label>
                                             <Input
                                                 id="maintenance_done_date"
@@ -251,8 +251,8 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 </p>
                                             )}
                                             <p className="text-xs text-muted-foreground">
-                                                Optional: Date when maintenance
-                                                was completed
+                                                Opsional: Tanggal ketika maintenance
+                                                selesai dilakukan
                                             </p>
                                         </div>
                                     </div>
@@ -261,13 +261,13 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="technician">
-                                                Technician
+                                                Teknisi
                                             </Label>
                                             <Input
                                                 id="technician"
                                                 name="technician"
                                                 type="text"
-                                                placeholder="e.g. John Doe"
+                                                placeholder="contoh: Budi Santoso"
                                                 aria-invalid={
                                                     !!errors.technician
                                                 }
@@ -281,7 +281,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="cost">Cost</Label>
+                                            <Label htmlFor="cost">Biaya</Label>
                                             <Input
                                                 id="cost"
                                                 name="cost"
@@ -303,7 +303,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     {/* Description */}
                                     <div className="space-y-2">
                                         <Label htmlFor="description">
-                                            Description{' '}
+                                            Deskripsi{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -311,7 +311,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                         <Textarea
                                             id="description"
                                             name="description"
-                                            placeholder="Describe what maintenance work needs to be done..."
+                                            placeholder="Jelaskan pekerjaan maintenance yang perlu dilakukan..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
                                             disabled={processing}
@@ -326,11 +326,11 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
 
                                     {/* Notes */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="note">Notes</Label>
+                                        <Label htmlFor="note">Catatan</Label>
                                         <Textarea
                                             id="note"
                                             name="note"
-                                            placeholder="Additional notes, findings, or results..."
+                                            placeholder="Catatan tambahan, temuan, atau hasil..."
                                             rows={3}
                                             aria-invalid={!!errors.note}
                                             disabled={processing}
@@ -341,8 +341,8 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Optional: Add findings or results
-                                            from the maintenance
+                                            Opsional: Tambahkan temuan atau hasil
+                                            dari maintenance
                                         </p>
                                     </div>
 
@@ -356,15 +356,15 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 router.visit(maintenances().url)
                                             }
                                         >
-                                            Cancel
+                                            Batal
                                         </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Creating...'
-                                                : 'Create Maintenance'}
+                                                ? 'Membuat...'
+                                                : 'Buat Maintenance'}
                                         </Button>
                                     </div>
                                 </div>
