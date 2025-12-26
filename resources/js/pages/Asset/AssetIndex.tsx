@@ -118,12 +118,12 @@ export const conditionConfig = {
     minor_damage: {
         label: 'Minor Damage',
         variant: 'secondary' as const,
-        color: 'bg-amber-50 text-amber-700 border-amber-200',
+        color: '',
     },
     major_damage: {
         label: 'Major Damage',
         variant: 'destructive' as const,
-        color: 'bg-red-50 text-red-700 border-red-200',
+        color: '',
     },
 };
 
@@ -226,7 +226,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                     </div>
                     <Button
                         size="lg"
-                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        className="bg-primary hover:bg-primary/90 sm:w-auto"
                         aria-label="Add Asset"
                     >
                         <Plus className="h-4 w-4" />
@@ -276,7 +276,6 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                     <TableHead>Kategori</TableHead>
                                     <TableHead>Lokasi</TableHead>
                                     <TableHead>Kondisi</TableHead>
-                                    <TableHead>Nomor Seri</TableHead>
                                     <TableHead className="text-right">
                                         Actions
                                     </TableHead>
@@ -305,9 +304,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                   <TableCell>
                                                       <Skeleton className="h-5 w-24 rounded-full" />
                                                   </TableCell>
-                                                  <TableCell>
-                                                      <Skeleton className="h-4 w-20" />
-                                                  </TableCell>
+
                                                   <TableCell className="text-right">
                                                       <Skeleton className="ml-auto h-8 w-8 rounded-md" />
                                                   </TableCell>
@@ -350,9 +347,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                       }
                                                   </Badge>
                                               </TableCell>
-                                              <TableCell className="font-mono text-sm text-muted-foreground">
-                                                  {asset.serial_number || '-'}
-                                              </TableCell>
+
                                               <TableCell className="text-right">
                                                   <DropdownMenu>
                                                       <DropdownMenuTrigger

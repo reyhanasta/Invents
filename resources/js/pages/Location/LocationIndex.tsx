@@ -96,7 +96,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <InputGroupAddon>
+                            <InputGroupAddon align="inline-end">
                                 <SearchIcon />
                             </InputGroupAddon>
                         </InputGroup>
@@ -109,7 +109,7 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                     </div>
                     <Button
                         size="lg"
-                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        className="bg-primary hover:bg-primary/90 sm:w-auto"
                         onClick={() => setShowCreateDialog(true)}
                     >
                         <Plus className="h-4 w-4" />

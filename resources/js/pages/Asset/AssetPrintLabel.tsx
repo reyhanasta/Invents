@@ -54,8 +54,26 @@ export default function AssetPrintLabel({
                 padding: 0;
             }
             * {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            .print-color {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            .border-teal-600 {
+                border-color: #0d9488 !important;
+            }
+            .bg-white {
+                background-color: white !important;
+            }
+            .text-primary {
+                color: #0f172a !important;
+            }
+            .text-muted-foreground {
+                color: #64748b !important;
             }
         }
     `,

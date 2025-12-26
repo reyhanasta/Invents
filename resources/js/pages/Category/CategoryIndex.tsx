@@ -99,7 +99,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <InputGroupAddon>
+                            <InputGroupAddon align="inline-end">
                                 <SearchIcon />
                             </InputGroupAddon>
                         </InputGroup>
@@ -112,7 +112,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                     </div>
                     <Button
                         size="lg"
-                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        className="bg-primary hover:bg-primary/90 sm:w-auto"
                         onClick={() => setShowCreateDialog(true)}
                     >
                         <Plus className="h-4 w-4" />
@@ -136,7 +136,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                 {categories.length === 0 ? (
                     <CategoryEmpty onOpenChange={setShowCreateDialog} />
                 ) : filteredCategories.length === 0 ? (
-                    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                    <div className="flex min-h-100 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         <div className="mb-4 rounded-full bg-muted p-6">
                             <Package className="h-12 w-12 text-muted-foreground" />
                         </div>
@@ -158,7 +158,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                         </Button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         {filteredCategories.map((category) => {
                             const stockStatus =
                                 category.assets_count === 0

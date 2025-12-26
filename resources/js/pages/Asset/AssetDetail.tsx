@@ -58,7 +58,7 @@ export default function AssetDetail({
     const contentRef = useRef<HTMLDivElement>(null);
     const reactToPrintFn = useReactToPrint({
         contentRef,
-        documentTitle: `Asset Label - ${asset.asset_code}`,
+        documentTitle: `${asset.asset_name} - ${asset.asset_code}`,
         pageStyle: `
             @page {
                 size: 60mm 40mm;

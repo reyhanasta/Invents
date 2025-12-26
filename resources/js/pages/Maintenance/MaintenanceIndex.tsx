@@ -388,7 +388,7 @@ export default function MaintenanceIndex({
                     </div>
                     <Button
                         size="lg"
-                        className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                        className="bg-primary hover:bg-primary/90 sm:w-auto"
                         aria-label="Add Maintenance"
                     >
                         <Plus className="h-4 w-4" />
@@ -594,9 +594,7 @@ export default function MaintenanceIndex({
                                                               }}
                                                           >
                                                               <Trash className="h-4 w-4" />
-                                                              <span>
-                                                                  Hapus
-                                                              </span>
+                                                              <span>Hapus</span>
                                                           </DropdownMenuItem>
                                                       </DropdownMenuContent>
                                                   </DropdownMenu>

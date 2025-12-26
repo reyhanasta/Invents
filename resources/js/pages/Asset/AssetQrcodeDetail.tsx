@@ -73,7 +73,7 @@ export default function AssetQrcodeDetail({
     locationName,
     maintenance,
 }: AssetQrCodeDetailProps) {
-    const StatusIcon = statusConfig[asset.status].icon;
+    // const StatusIcon = statusConfig[asset.status].icon;
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('id-ID', {
             day: 'numeric',
@@ -87,7 +87,7 @@ export default function AssetQrcodeDetail({
             <div className="container grid grid-cols-1 sm:mx-auto lg:grid-cols-2">
                 <div
                     id="asset-information"
-                    className="col-span-1 space-y-4 p-2 md:p-4 lg:p-6"
+                    className="col-span-1 space-y-4 p-2"
                 >
                     <Card id="Header" className="bg-primary text-white">
                         <CardHeader className="flex flex-row items-center">
@@ -201,7 +201,7 @@ export default function AssetQrcodeDetail({
                     </Card>
                 </div>
                 <div className="maintenance">
-                    <div className="col-span-1 space-y-4 md:p-4 lg:p-6">
+                    <div className="col-span-1 space-y-4 p-2">
                         <Assetmaintenance maintenance={maintenance} />
                     </div>
                 </div>
