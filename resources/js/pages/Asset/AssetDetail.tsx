@@ -1,25 +1,14 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 
 import { assets } from '@/routes';
-import { BreadcrumbItem } from '@/types';
+import { Asset, BreadcrumbItem } from '@/types';
 import { router } from '@inertiajs/react';
-import {
-    ArrowLeft,
-    Box,
-    Calendar,
-    Hash,
-    MapPin,
-    Pencil,
-    Printer,
-    Tag,
-} from 'lucide-react';
+import { ArrowLeft, Pencil, Printer } from 'lucide-react';
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { conditionConfig } from './AssetIndex';
+import AssetInformation from './AssetInformation';
 import AssetQrCodeLabel from './AssetQrCodeLabel';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -28,20 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: assets().url,
     },
 ];
-
-export type Asset = {
-    id: number;
-    asset_name: string;
-    asset_code: string;
-    category_id: number;
-    location_id: number;
-    brand?: string;
-    serial_number?: string;
-    condition: string;
-    status: 'available' | 'in-use' | 'maintenance' | 'retired';
-    acquisition_date?: string;
-    description?: string;
-};
 
 type AssetsShowProps = {
     asset: Asset;
@@ -54,7 +29,6 @@ export default function AssetDetail({
     categoryName,
     locationName,
 }: AssetsShowProps) {
-    const assetBoxSize = 15;
     const contentRef = useRef<HTMLDivElement>(null);
     const reactToPrintFn = useReactToPrint({
         contentRef,
@@ -106,8 +80,6 @@ export default function AssetDetail({
                             Print Label
                         </Button>
                         <Button
-                            variant="outline"
-                            className="bg-primary text-primary-foreground"
                             onClick={() =>
                                 router.visit(`/assets/${asset.id}/edit`)
                             }
@@ -119,91 +91,17 @@ export default function AssetDetail({
                 </div>
                 <div
                     aria-label="content"
-                    className="grid grid-cols-1 gap-2 md:grid-cols-4"
+                    className="grid grid-cols-1 gap-2 xl:grid-cols-4"
                 >
                     <div
                         id="content-information"
-                        className="space-y-6 md:col-span-3"
+                        className="space-y-2 md:col-span-3"
                     >
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="border-b-2 pb-4 text-2xl font-bold">
-                                    {asset.asset_name} (#{asset.asset_code})
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="mx-2 text-lg">
-                                <div
-                                    id="information"
-                                    className="grid grid-cols-2 justify-between space-y-6"
-                                >
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <Box size={assetBoxSize} />
-                                            <Label className="text-muted-foreground">
-                                                Category
-                                            </Label>
-                                        </div>
-                                        <span>{categoryName}</span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <MapPin size={assetBoxSize} />
-                                            <Label className="text-muted-foreground">
-                                                Location
-                                            </Label>
-                                        </div>
-                                        <span>{locationName}</span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <Calendar size={assetBoxSize} />
-                                            <Label className="text-muted-foreground">
-                                                Purchase Date
-                                            </Label>
-                                        </div>
-                                        <span>{asset.acquisition_date}</span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <Tag size={assetBoxSize} />
-                                            <Label className="text-muted-foreground">
-                                                Brand
-                                            </Label>
-                                        </div>
-                                        <span>{asset.brand}</span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <Hash size={assetBoxSize} />
-                                            <Label className="text-muted-foreground">
-                                                Serial Number
-                                            </Label>
-                                        </div>
-                                        <span>{asset.serial_number}</span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="asset-information">
-                                            <Label className="text-muted-foreground">
-                                                Status
-                                            </Label>
-                                        </div>
-                                        <Badge
-                                            variant={
-                                                conditionConfig[
-                                                    asset.condition as keyof typeof conditionConfig
-                                                ]?.variant
-                                            }
-                                        >
-                                            {
-                                                conditionConfig[
-                                                    asset.condition as keyof typeof conditionConfig
-                                                ]?.label
-                                            }
-                                        </Badge>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <AssetInformation
+                            asset={asset}
+                            categoryName={categoryName}
+                            locationName={locationName}
+                        />
                     </div>
                     <div id="content-label">
                         <Card>

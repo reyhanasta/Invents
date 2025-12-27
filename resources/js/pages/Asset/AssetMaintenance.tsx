@@ -101,7 +101,7 @@ export default function Assetmaintenance({
     );
 
     return (
-        <div>
+        <div className="space-y-4">
             <Card>
                 <CardHeader>
                     <CardTitle className="flex flex-row items-center gap-2">

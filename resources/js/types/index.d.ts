@@ -41,3 +41,18 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type Asset = {
+    id: number;
+    asset_name: string;
+    asset_code: string;
+    category_id: number;
+    location_id: number;
+    brand?: string;
+    serial_number?: string;
+    condition: string;
+    status: 'available' | 'in-use' | 'maintenance' | 'retired';
+    acquisition_date?: string;
+    description?: string;
+};
+
