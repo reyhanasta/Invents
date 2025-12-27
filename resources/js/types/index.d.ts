@@ -67,3 +67,17 @@ export type Asset = {
     description?: string;
 };
 
+export type Maintenance = {
+    id: number;
+    asset: Asset;
+    asset_id: number;
+    type: 'routine' | 'repair' | 'inspection' | 'calibration';
+    description: string;
+    maintenance_date: string;
+    maintenance_done_date: string;
+    technician: string;
+    cost?: string;
+    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+    notes?: string;
+};
+

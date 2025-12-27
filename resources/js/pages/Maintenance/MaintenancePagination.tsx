@@ -10,11 +10,13 @@ import {
 import { Link } from '@inertiajs/react';
 import { MaintenancePaginationProps } from './MaintenanceIndex';
 
+type MtPaginationIndexPromps = {
+    maintenance: MaintenancePaginationProps;
+};
+
 export default function MaintenancePagination({
     maintenance,
-}: {
-    maintenance: MaintenancePaginationProps;
-}) {
+}: MtPaginationIndexPromps) {
     // Filter out "Previous" and "Next" text links
     const pageLinks = maintenance.links.filter(
         (link) =>

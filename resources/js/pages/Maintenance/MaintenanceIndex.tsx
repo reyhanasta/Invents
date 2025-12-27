@@ -48,7 +48,7 @@ import {
     maintenancesDelete,
     maintenancesEdit,
 } from '@/routes';
-import { Asset, BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, Maintenance } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     BadgeCheckIcon,
@@ -73,20 +73,6 @@ import { toast } from 'sonner';
 
 import MaintenancePagination from './MaintenancePagination';
 
-export type Maintenance = {
-    id: number;
-    asset: Asset;
-    asset_id: number;
-    type: 'routine' | 'repair' | 'inspection' | 'calibration';
-    description: string;
-    maintenance_date: string;
-    maintenance_done_date: string;
-    technician: string;
-    cost?: string;
-    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-    notes?: string;
-};
-
 type PaginationLinkProps = {
     url: string | null;
     label: string;
@@ -94,7 +80,7 @@ type PaginationLinkProps = {
 };
 
 export type MaintenancePaginationProps = {
-    data: Maintenance[];
+    data: Array<Maintenance>;
     links: Array<PaginationLinkProps>;
     first_page_url: string;
     current_page: number;
