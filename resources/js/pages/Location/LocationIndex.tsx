@@ -1,3 +1,4 @@
+import EmptySearch from '@/components/empty-search';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -28,7 +29,6 @@ import {
     Box,
     MapPin,
     MoreVerticalIcon,
-    Package,
     Pencil,
     Plus,
     SearchIcon,
@@ -133,27 +133,11 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
                 {locations.length === 0 ? (
                     <LocationEmpty onOpenChange={setShowCreateDialog} />
                 ) : filteredLocations.length === 0 ? (
-                    <div className="flex min-h-100 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                        <div className="mb-4 rounded-full bg-muted p-6">
-                            <Package className="h-12 w-12 text-muted-foreground" />
-                        </div>
-                        <h3 className="mb-2 text-xl font-semibold">
-                            No Results Found
-                        </h3>
-                        <p className="mb-6 max-w-md text-sm text-muted-foreground">
-                            No categories match your search for{' '}
-                            <span className="font-semibold">
-                                "{searchQuery}"
-                            </span>
-                            . Try a different keyword.
-                        </p>
-                        <Button
-                            variant="outline"
-                            onClick={() => setSearchQuery('')}
-                        >
-                            Clear Search
-                        </Button>
-                    </div>
+                    <EmptySearch
+                        searchQuery={searchQuery}
+                        params="lokasi"
+                        handleClearSearch={() => setSearchQuery('')}
+                    />
                 ) : (
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
                         {filteredLocations.map((location) => {

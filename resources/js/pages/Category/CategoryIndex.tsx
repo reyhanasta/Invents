@@ -1,3 +1,4 @@
+import EmptySearch from '@/components/empty-search';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -48,6 +49,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 type CategoryIndexProps = {
     categories: Array<{
         id: number;
+
         category_name: string;
         prefix_code: string;
         serial_number_needed: boolean;
@@ -136,27 +138,11 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                 {categories.length === 0 ? (
                     <CategoryEmpty onOpenChange={setShowCreateDialog} />
                 ) : filteredCategories.length === 0 ? (
-                    <div className="flex min-h-100 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                        <div className="mb-4 rounded-full bg-muted p-6">
-                            <Package className="h-12 w-12 text-muted-foreground" />
-                        </div>
-                        <h3 className="mb-2 text-xl font-semibold">
-                            Hasil tidak di temukan
-                        </h3>
-                        <p className="mb-6 max-w-md text-sm text-muted-foreground">
-                            Kategori yang kamu cari tidak di temukan{' '}
-                            <span className="font-semibold">
-                                "{searchQuery}"
-                            </span>
-                            . Gunakan kata kunci yang lain.
-                        </p>
-                        <Button
-                            variant="outline"
-                            onClick={() => setSearchQuery('')}
-                        >
-                            Clear Search
-                        </Button>
-                    </div>
+                    <EmptySearch
+                        searchQuery={searchQuery}
+                        params="category"
+                        handleClearSearch={() => setSearchQuery('')}
+                    />
                 ) : (
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         {filteredCategories.map((category) => {

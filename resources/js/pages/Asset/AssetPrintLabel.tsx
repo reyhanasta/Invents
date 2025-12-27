@@ -10,12 +10,11 @@ import {
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { assets, assetsDetail } from '@/routes';
-import { BreadcrumbItem } from '@/types';
+import { Asset, BreadcrumbItem } from '@/types';
 import { router } from '@inertiajs/react';
 import { ArrowLeft, Printer } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Asset } from './AssetDetail';
 import AssetQrCodeLabel from './AssetQrCodeLabel';
 
 const breadcrumbs: BreadcrumbItem[] = [

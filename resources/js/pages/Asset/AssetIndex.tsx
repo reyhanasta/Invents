@@ -9,6 +9,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
+import EmptySearch from '@/components/empty-search';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -40,13 +41,12 @@ import {
     assetsDetail,
     assetsEdit,
 } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
+import { Asset, BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     Eye,
     Loader2,
     MoreHorizontalIcon,
-    Package,
     Pencil,
     Plus,
     SearchIcon,
@@ -63,28 +63,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: assets().url,
     },
 ];
-
-type CategoryProps = {
-    id: number;
-    category_name: string;
-    prefix_code: string;
-};
-
-type LocationProps = {
-    id: number;
-    location_name: string;
-};
-
-type Asset = {
-    id: number;
-    asset_name: string;
-    asset_code: string;
-    category: CategoryProps;
-    location: LocationProps;
-    condition: string;
-    serial_number?: string;
-    acquisition_date?: string;
-};
 
 interface PaginationLinksProps {
     url: string | null;
@@ -214,15 +192,6 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 )}
                             </InputGroupAddon>
                         </InputGroup>
-                        {/* {searchQuery && (
-                            <div className="w-lg text-sm text-muted-foreground">
-                                Found{' '}
-                                <span className="font-medium text-foreground">
-                                    {assets.total}
-                                </span>{' '}
-                                result{assets.total !== 1 ? 's' : ''}
-                            </div>
-                        )} */}
                     </div>
                     <Button
                         size="lg"
@@ -238,34 +207,11 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
 
                 {/* Table */}
                 {!isSearching && assets.data.length === 0 ? (
-                    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                        <div className="mb-4 rounded-full bg-muted p-6">
-                            <Package className="h-12 w-12 text-muted-foreground" />
-                        </div>
-                        <h3 className="mb-2 text-xl font-semibold">
-                            {searchQuery ? 'No Results Found' : 'No Assets Yet'}
-                        </h3>
-                        <p className="mb-6 max-w-md text-sm text-muted-foreground">
-                            {searchQuery
-                                ? `No assets found matching "${searchQuery}". Try a different search term.`
-                                : 'Get started by adding your first asset'}
-                        </p>
-                        {searchQuery ? (
-                            <Button
-                                variant="outline"
-                                onClick={handleClearSearch}
-                            >
-                                Clear Search
-                            </Button>
-                        ) : (
-                            <Link href={assetsCreate().url}>
-                                <Button>
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add First Asset
-                                </Button>
-                            </Link>
-                        )}
-                    </div>
+                    <EmptySearch
+                        searchQuery={searchQuery}
+                        params="asset"
+                        handleClearSearch={handleClearSearch}
+                    />
                 ) : (
                     <div className="rounded-lg border p-3">
                         <Table>

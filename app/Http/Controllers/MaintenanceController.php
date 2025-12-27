@@ -46,6 +46,44 @@ class MaintenanceController extends Controller
         ]);
     }
 
+    
+    // public function index(Request $request)
+    // {
+    //     // Validate inputs (opsional tapi recommended)
+    //     $validated = $request->validate([
+    //         'search' => 'nullable|string|max:255',
+    //         'type' => 'nullable|in:routine,repair,inspection,calibration',
+    //         'status' => 'nullable|in:pending,in_progress,completed,cancelled',
+    //     ]);
+
+    //     $query = Maintenance::with('asset')->latest();
+
+    //     // Search
+    //     if ($search = $request->input('search')) {
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('technician', 'like', "%{$search}%")
+    //             ->orWhere('description', 'like', "%{$search}%")
+    //             ->orWhereHas('asset', fn($q) => 
+    //                 $q->where('asset_name', 'like', "%{$search}%")
+    //             );
+    //         });
+    //     }
+
+    //     // Filters
+    //     $query->when($request->input('type'), fn($q, $type) => 
+    //         $q->where('type', $type)
+    //     );
+        
+    //     $query->when($request->input('status'), fn($q, $status) => 
+    //         $q->where('status', $status)
+    //     );
+
+    //     return Inertia::render('Maintenance/MaintenanceIndex', [
+    //         'maintenance' => $query->paginate(8)->withQueryString(),
+    //         'filters' => $request->only(['search', 'type', 'status']),
+    //     ]);
+    // }
+    
     public function create()
     {
         return Inertia::render('Maintenance/MaintenanceCreate', [

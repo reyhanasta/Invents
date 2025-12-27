@@ -42,12 +42,23 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+export type CategoryProps = {
+    id: number;
+    category_name: string;
+    prefix_code: string;
+};
+
+export type LocationProps = {
+    id: number;
+    location_name: string;
+};
+
 export type Asset = {
     id: number;
     asset_name: string;
     asset_code: string;
-    category_id: number;
-    location_id: number;
+    category : CategoryProps;
+    location : LocationProps;
     brand?: string;
     serial_number?: string;
     condition: string;

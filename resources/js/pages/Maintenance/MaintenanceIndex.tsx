@@ -48,7 +48,7 @@ import {
     maintenancesDelete,
     maintenancesEdit,
 } from '@/routes';
-import { BreadcrumbItem } from '@/types';
+import { Asset, BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     BadgeCheckIcon,
@@ -70,7 +70,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { Asset } from '../Asset/AssetDetail';
+
 import MaintenancePagination from './MaintenancePagination';
 
 export type Maintenance = {
@@ -95,7 +95,7 @@ type PaginationLinkProps = {
 
 export type MaintenancePaginationProps = {
     data: Maintenance[];
-    links: PaginationLinkProps[];
+    links: Array<PaginationLinkProps>;
     first_page_url: string;
     current_page: number;
     last_page: number;
@@ -200,9 +200,9 @@ export default function MaintenanceIndex({
 
     // Sync state with props when they change (e.g., browser back/forward)
     useEffect(() => {
-        setSearchQuery(search);
-        setSelectedType(type);
-        setSelectedStatus(status);
+        if (search !== undefined) setSearchQuery(search);
+        if (type !== undefined) setSelectedType(type);
+        if (status !== undefined) setSelectedStatus(status);
     }, [search, type, status]);
 
     // Debounce search - Inertia best practice
@@ -245,7 +245,6 @@ export default function MaintenanceIndex({
                 preserveScroll: true,
                 replace: true,
                 only: ['maintenance'],
-                onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -375,7 +374,7 @@ export default function MaintenanceIndex({
                                 value={selectedType || 'all'}
                                 onValueChange={handleTypeChange}
                             >
-                                <SelectTrigger className="w-[180px]">
+                                <SelectTrigger className="w-45">
                                     <SelectValue placeholder="Semua Tipe" />
                                 </SelectTrigger>
                                 <SelectContent>
