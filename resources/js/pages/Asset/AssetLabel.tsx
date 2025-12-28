@@ -1,6 +1,6 @@
 import { assetsQrcodeDetail } from '@/routes';
+import { Asset } from '@/types';
 import QRcode from 'react-qr-code';
-import { Asset } from './AssetDetail';
 
 type AssetLabelProps = {
     asset: Asset;
@@ -12,7 +12,7 @@ export default function AssetLabel({ asset, location }: AssetLabelProps) {
     return (
         <div className="w-72 rounded-lg border-2 border-primary bg-card p-4 text-center">
             <div className="mb-2 text-xs font-semibold text-primary">
-                INVENTS ASSET LABEL
+                INVENTS ASSET LABEs
             </div>
             <div className="mb-1 text-sm font-bold text-foreground">
                 {asset.asset_name}

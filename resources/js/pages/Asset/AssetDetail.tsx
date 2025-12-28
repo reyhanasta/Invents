@@ -112,7 +112,10 @@ export default function AssetDetail({
                             </CardHeader>
                             <CardContent className="flex justify-center">
                                 <div ref={contentRef}>
-                                    <AssetQrCodeLabel asset={asset} />
+                                    <AssetQrCodeLabel
+                                        asset={asset}
+                                        company="Klinik Utama Bukit Raya"
+                                    />
                                 </div>
                                 {/* <AssetLabel
                                     asset={asset}

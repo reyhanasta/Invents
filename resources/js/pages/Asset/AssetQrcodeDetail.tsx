@@ -1,10 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { Maintenance, type BreadcrumbItem } from '@/types';
 
 import { assets } from '@/routes';
 import { Asset } from '@/types';
 import { AlertCircle, CheckCircle2, Clock, Wrench } from 'lucide-react';
-import { Maintenance } from '../Maintenance/MaintenanceIndex';
 import AssetInformation from './AssetInformation';
 import Assetmaintenance from './AssetMaintenance';
 

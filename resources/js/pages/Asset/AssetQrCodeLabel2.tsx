@@ -23,48 +23,48 @@ export default function AssetQrCodeLabel({
                 </div>
                 <div className="print-color h-px w-8 bg-black"></div>
             </div>
-            <div className="flex h-[22mm] w-full flex-row gap-3">
+            <div className="flex h-[28mm] w-full flex-row gap-3">
                 {/* QR Section */}
                 <div className="print-color col-span-1 flex flex-col items-center justify-center">
                     <QRCode
                         value={assetQrdetailUrl.toString()}
-                        size={80}
+                        size={70}
                         level="M"
                         viewBox="0 0 256 256"
                         className="justify-self-auto"
                     />
+                    <span className="font-mono text-lg text-black">
+                        {asset.asset_code}
+                    </span>
                 </div>
 
                 <div className="col-span-1 flex w-28 flex-col text-wrap text-black">
-                    <div className="print-color flex h-full w-full flex-col">
+                    <div className="print-color flex h-full w-full flex-col justify-center">
                         {/* Detail Alat */}
                         <span className="text-sm font-bold text-ellipsis">
                             {asset.asset_name}
                         </span>
-                        <span className="font-mono text-sm text-black">
-                            {asset.asset_code}
-                        </span>
                     </div>
-                </div>
-            </div>
-            {/* Footer */}
-            <div
-                className="print-color mt-2 w-full border-t border-dashed border-foreground/20 pt-1"
-                style={{
-                    borderTopColor: '#e2e8f0 !important',
-                    WebkitPrintColorAdjust: 'exact',
-                    printColorAdjust: 'exact',
-                }}
-            >
-                <div
-                    className={`print-color text-center text-[7px] text-muted-foreground`}
-                    style={{
-                        color: '#64748b !important',
-                        WebkitPrintColorAdjust: 'exact',
-                        printColorAdjust: 'exact',
-                    }}
-                >
-                    Scan QR code untuk melihat detail asset
+                    {/* Footer */}
+                    <div
+                        className="print-color w-full border-t border-dashed border-foreground/20 pt-1"
+                        style={{
+                            borderTopColor: '#e2e8f0 !important',
+                            WebkitPrintColorAdjust: 'exact',
+                            printColorAdjust: 'exact',
+                        }}
+                    >
+                        <div
+                            className={`print-color text-center text-[7px] text-muted-foreground`}
+                            style={{
+                                color: '#64748b !important',
+                                WebkitPrintColorAdjust: 'exact',
+                                printColorAdjust: 'exact',
+                            }}
+                        >
+                            Scan QR code untuk melihat detail asset
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
