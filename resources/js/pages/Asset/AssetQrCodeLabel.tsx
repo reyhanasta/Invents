@@ -9,14 +9,12 @@ type BarcodeLabelProps = {
 
 export default function AssetQrCodeLabel({
     asset,
-    company = 'company name',
+    company = '',
 }: BarcodeLabelProps) {
     const assetQrdetailUrl =
         window.location.origin + assetsQrcodeDetail(asset.id).url;
     return (
-        <div
-            className={`print-color box-border h-[40mm] w-[60mm] border-4 border-black bg-white p-[3mm]`}
-        >
+        <div className="print-color box-border h-[40mm] w-[60mm] border-3 border-black bg-white p-[3mm]">
             <div className="mb-2 flex w-full items-center justify-between">
                 <div className="print-color text-[8px] font-bold tracking-wider text-black uppercase">
                     {company}
@@ -48,22 +46,8 @@ export default function AssetQrCodeLabel({
                 </div>
             </div>
             {/* Footer */}
-            <div
-                className="print-color mt-2 w-full border-t border-dashed border-foreground/20 pt-1"
-                style={{
-                    borderTopColor: '#e2e8f0 !important',
-                    WebkitPrintColorAdjust: 'exact',
-                    printColorAdjust: 'exact',
-                }}
-            >
-                <div
-                    className={`print-color text-center text-[7px] text-muted-foreground`}
-                    style={{
-                        color: '#64748b !important',
-                        WebkitPrintColorAdjust: 'exact',
-                        printColorAdjust: 'exact',
-                    }}
-                >
+            <div className="print-color mt-2 w-full border-t border-dashed border-foreground/20 pt-1">
+                <div className="print-color text-center font-mono text-[7px] text-muted-foreground">
                     Scan QR code untuk melihat detail asset
                 </div>
             </div>

@@ -6,6 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Maintenance } from '@/types';
 import {
     BadgeCheckIcon,
     CircleX,
@@ -15,8 +16,6 @@ import {
     Wrench,
 } from 'lucide-react';
 import { memo, useMemo } from 'react';
-import { Maintenance } from '../Maintenance/MaintenanceIndex';
-
 type AssetmaintenanceProps = {
     maintenance: Maintenance[];
 };
@@ -52,6 +51,13 @@ const maintenanceStatusConfig = {
 };
 
 const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        });
+    };
     return (
         <div className="rounded-lg border bg-accent p-4">
             <div className="flex justify-between">
@@ -73,7 +79,8 @@ const MaintItem = memo(function MaintItem({ m }: { m: Maintenance }) {
                     </Badge>
                 </div>
                 <CardDescription className="text-xs">
-                    {new Date(m.maintenance_date).toLocaleDateString()}
+                    {/* {new Date(m.maintenance_date).toDateString()} */}
+                    {formatDate(m.maintenance_date)}
                 </CardDescription>
             </div>
             <div className="flex flex-col justify-between gap-2 p-1">
@@ -111,9 +118,6 @@ export default function Assetmaintenance({
                     <CardDescription>Riwaya Maintenance</CardDescription>
                 </CardHeader>
                 <CardContent className="mx-2 flex flex-col gap-2 border-l-4 border-primary/20 px-2">
-                    {/* {sorted.map((m) => (
-                        <MaintItem key={m.id} m={m} />
-                    ))} */}
                     {sorted.length === 0 ? (
                         <div className="text-center text-sm text-muted-foreground">
                             No maintenance records.
@@ -121,25 +125,6 @@ export default function Assetmaintenance({
                     ) : (
                         sorted.map((m) => <MaintItem key={m.id} m={m} />)
                     )}
-                    {/* <div className="rounded-lg border bg-accent p-4">
-                        <div className="flex flex-row justify-between">
-                            <div className="flex flex-row justify-start gap-2 pb-1">
-                                <Badge className="rounded-md">Kalibrasi</Badge>
-                                <Badge className="rounded-md">Terjadwal</Badge>
-                            </div>
-                            <CardDescription className="text-xs">
-                                12 March 2024
-                            </CardDescription>
-                        </div>
-                        <div className="flex flex-col justify-between gap-2 p-1">
-                            <CardTitle>Scheduled calibration check</CardTitle>
-                            <div className="flex flex-row">
-                                <CardDescription className="flex flex-row items-center gap-2">
-                                    <User size={15} /> Philips Service Team
-                                </CardDescription>
-                            </div>
-                        </div>
-                    </div> */}
                 </CardContent>
             </Card>
         </div>

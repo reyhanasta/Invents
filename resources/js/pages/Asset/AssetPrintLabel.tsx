@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { assets, assetsDetail } from '@/routes';
+import { assets } from '@/routes';
 import { Asset, BreadcrumbItem } from '@/types';
 import { router } from '@inertiajs/react';
 import { ArrowLeft, Printer } from 'lucide-react';
@@ -28,14 +28,9 @@ type LabelSize = '60x40' | '60x30';
 
 type AssetPrintLabelProps = {
     asset: Asset;
-    categoryName: string;
-    locationName: string;
 };
 
-export default function AssetPrintLabel({
-    asset,
-    locationName,
-}: AssetPrintLabelProps) {
+export default function AssetPrintLabel({ asset }: AssetPrintLabelProps) {
     const [selectedSize, setSelectedSize] = useState<LabelSize>('60x40');
 
     const contentRef = useRef<HTMLDivElement>(null);
@@ -86,7 +81,7 @@ export default function AssetPrintLabel({
                         variant="ghost"
                         size="sm"
                         className="hover:no gap-3 text-sm text-muted-foreground"
-                        onClick={() => router.visit(assetsDetail(asset.id).url)}
+                        onClick={() => router.visit(assets().url)}
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Back
@@ -145,10 +140,6 @@ export default function AssetPrintLabel({
                                         <strong>Asset Name:</strong>{' '}
                                         {asset.asset_name}
                                     </div>
-                                    <div>
-                                        <strong>Location:</strong>{' '}
-                                        {locationName}
-                                    </div>
                                 </div>
                             </div>
                         </CardContent>
@@ -164,7 +155,10 @@ export default function AssetPrintLabel({
                                     ref={contentRef}
                                     className="flex items-center justify-center"
                                 >
-                                    <AssetQrCodeLabel asset={asset} />
+                                    <AssetQrCodeLabel
+                                        asset={asset}
+                                        company="Ku Bukit Raya"
+                                    />
                                 </div>
                             </CardContent>
                         </Card>

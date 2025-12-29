@@ -38,8 +38,9 @@ import {
     assets,
     assetsCreate,
     assetsDelete,
-    assetsDetail,
     assetsEdit,
+    assetsPrintLabel,
+    assetsQrcodeDetail,
 } from '@/routes';
 import { Asset, BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -49,6 +50,7 @@ import {
     MoreHorizontalIcon,
     Pencil,
     Plus,
+    Printer,
     SearchIcon,
     Trash,
     X,
@@ -315,7 +317,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               className="cursor-pointer"
                                                               onSelect={() => {
                                                                   router.visit(
-                                                                      assetsDetail(
+                                                                      assetsQrcodeDetail(
                                                                           asset.id,
                                                                       ).url,
                                                                   );
@@ -323,8 +325,22 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                           >
                                                               <Eye className="h-4 w-4" />
                                                               <span>
-                                                                  Detail/Cetak
-                                                                  Label
+                                                                  Detail
+                                                              </span>
+                                                          </DropdownMenuItem>
+                                                          <DropdownMenuItem
+                                                              className="cursor-pointer"
+                                                              onSelect={() => {
+                                                                  router.visit(
+                                                                      assetsPrintLabel(
+                                                                          asset.id,
+                                                                      ).url,
+                                                                  );
+                                                              }}
+                                                          >
+                                                              <Printer className="h-4 w-4" />
+                                                              <span>
+                                                                  Cetak Label
                                                               </span>
                                                           </DropdownMenuItem>
                                                           <DropdownMenuItem

@@ -1,16 +1,25 @@
 import AppLayout from '@/layouts/app-layout';
 import { Maintenance, type BreadcrumbItem } from '@/types';
 
-import { assets } from '@/routes';
+import { Button } from '@/components/ui/button';
+import { assets, maintenances } from '@/routes';
 import { Asset } from '@/types';
-import { AlertCircle, CheckCircle2, Clock, Wrench } from 'lucide-react';
+import { router } from '@inertiajs/react';
+import {
+    AlertCircle,
+    ArrowLeft,
+    CheckCircle2,
+    Clock,
+    Wrench,
+} from 'lucide-react';
+import { memo } from 'react';
 import AssetInformation from './AssetInformation';
 import Assetmaintenance from './AssetMaintenance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Qr Code Detail',
-        href: assets().url,
+        href: maintenances().url,
     },
 ];
 
@@ -55,20 +64,37 @@ export default function AssetQrcodeDetail({
     maintenance,
 }: AssetQrCodeDetailProps) {
     // const StatusIcon = statusConfig[asset.status].icon;
-
+    // Di bagian bawah component, sebelum export default
+    const MemoizedAssetInformation = memo(AssetInformation);
+    const MemoizedAssetMaintenance = memo(Assetmaintenance);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="container grid grid-cols-1 gap-4 p-4 sm:mx-auto lg:grid-cols-2">
-                <div id="asset-information" className="col-span-1">
-                    <AssetInformation
-                        asset={asset}
-                        categoryName={categoryName}
-                        locationName={locationName}
-                    />
+            <div className="outer-container space-y-6 p-2 md:p-4 lg:p-6">
+                <div aria-label="header" className="flex justify-between">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="hover:no gap-3 text-sm text-muted-foreground"
+                        onClick={() => router.visit(assets().url)}
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back
+                    </Button>
                 </div>
-                <div className="maintenance">
-                    <div className="col-span-1">
-                        <Assetmaintenance maintenance={maintenance} />
+                <div className="container grid grid-cols-1 gap-4 sm:mx-auto lg:grid-cols-2">
+                    <div id="asset-information" className="col-span-1">
+                        <MemoizedAssetInformation
+                            asset={asset}
+                            categoryName={categoryName}
+                            locationName={locationName}
+                        />
+                    </div>
+                    <div className="maintenance">
+                        <div className="col-span-1">
+                            <MemoizedAssetMaintenance
+                                maintenance={maintenance}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

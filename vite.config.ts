@@ -26,7 +26,7 @@ export default defineConfig({
     },
     // server: {
     //     cors: {
-    //         origin: 'http://invents.test/'
-    //     }
+    //         origin: 'http://invents.kubr.id/',
+    //     },
     // },
 });

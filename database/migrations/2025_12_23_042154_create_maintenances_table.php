@@ -15,24 +15,26 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id')->constrained()->onDelete('cascade');
             // Tipe maintenance
-            $table->enum('type', ['routine', 'repair', 'calibration','inspection']);
+            $table->enum('type', ['routine', 'repair', 'calibration','inspection'])->index();
             // Tanggal
-            $table->date('maintenance_date'); // kapan dikerjakan
-            $table->date('maintenance_done_date')->nullable(); // kapan selesai (bisa beda hari)
+            $table->date('maintenance_date')->index(); // kapan dikerjakan
+            $table->date('maintenance_done_date')->nullable()->index(); // kapan selesai (bisa beda hari)
             
             // Status
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])
-                  ->default('pending');
+                  ->default('pending')->index();
             
             // Detail pekerjaan
-            $table->text('description'); // apa yang dikerjakan
+            $table->text('description')->nullable(); // apa yang dikerjakan
             $table->text('note')->nullable(); // hasil/findings
             
             // Teknisi & Biaya
-            $table->string('technician')->nullable(); // nama teknisi/vendor
+            $table->string('technician')->nullable()->index(); // nama teknisi/vendor
             $table->decimal('cost', 12, 2)->nullable();
             
             $table->timestamps();
+            
+
         });
     }
 

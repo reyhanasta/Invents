@@ -16,28 +16,26 @@ class AssetController extends Controller
     {
         $search = $request->input('search');
 
-        $query = Asset::query()->with(['category', 'location'])->latest();
+        $query = Asset::query()->with([
+            'category:id,category_name',
+            'location:id,location_name'
+        ])->orderByDesc('created_at');
         
         // $query   = Asset::with(['category', 'location'])->latest()->paginate(10);
       
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('asset_name', 'like', "%{$search}%")
-                    ->orWhere('asset_code', 'like', "%{$search}%")
+                $q->where('asset_name', 'like', "{$search}%")
+                    ->orWhere('asset_code', 'like', "{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('category_name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('location', function ($q) use ($search) {
-                        $q->where('location_name', 'like', "%{$search}%");
+                        $q->where('category_name', 'like', "{$search}%");
                     });
             });
         }
         $assets = $query->paginate(8)->withQueryString();
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
-            'categories' => Category::all(),
-            'locations' => Location::all(),
             'search' => $search,
         ]);
     }
@@ -131,28 +129,31 @@ class AssetController extends Controller
 
     public function qrcodeDetail($id)
     {
-        $asset = Asset::findOrFail($id);
-        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
-        $locationName = Location::where('id', $asset->location_id)->value('location_name');
-        $maintenance = $asset->maintenances()->orderBy('maintenance_date', 'desc')->get();
+        $asset = Asset::with([
+            'category:id,category_name',
+            'location:id,location_name',
+            'maintenances' => function ($q) {
+                $q->orderByDesc('maintenance_date')->limit(10);
+            }
+        ])->findOrFail($id);
         return Inertia::render('Asset/AssetQrcodeDetail', [
             'asset' => $asset,
-            'categoryName' => $categoryName,
-            'locationName' => $locationName,
-            'maintenance' => $maintenance,
+            'categoryName' => $asset->category?->category_name,
+            'locationName' => $asset->location?->location_name,
+            'maintenance' => $asset->maintenances,
         ]);
     }
 
     public function printLabel($id)
     {
-        $asset = Asset::findOrFail($id);
-        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
-        $locationName = Location::where('id', $asset->location_id)->value('location_name');
-        
+        $asset = Asset::with([
+            'category:id,category_name',
+            'location:id,location_name',
+        ])->findOrFail($id);
         return Inertia::render('Asset/AssetPrintLabel', [
             'asset' => $asset,
-            'categoryName' => $categoryName,
-            'locationName' => $locationName,
+            'categoryName' => $asset->category?->category_name,
+            'locationName' => $asset->location?->location_name,
         ]);
     }
 }

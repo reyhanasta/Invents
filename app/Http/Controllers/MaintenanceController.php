@@ -16,14 +16,13 @@ class MaintenanceController extends Controller
         $type = $request->input('type');
         $status = $request->input('status');
 
-        $query = Maintenance::query()->with(['asset'])->latest();
+        $query = Maintenance::query()->with(['asset:id,asset_name'])->orderByDesc('created_at');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('technician', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
                     ->orWhereHas('asset', function ($q) use ($search) {
-                        $q->where('asset_name', 'like', "%{$search}%");
+                        $q->where('asset_name', 'like', "{$search}%");
                     });
             });
         }
