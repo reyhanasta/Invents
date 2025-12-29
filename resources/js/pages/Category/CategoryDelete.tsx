@@ -36,7 +36,7 @@ export default function CategoriesDelete({
         router.delete(categoriesDelete(category.id).url, {
             onSuccess: () => {
                 onOpenChange(false);
-                toast.success('Category deleted successfully!');
+                toast.success('Kategori berhasil dihapus!');
             },
             onError: () => {
                 toast.error('Failed to delete category. Please try again.');

@@ -116,7 +116,7 @@ class AssetController extends Controller
         $asset = Asset::findOrFail($id);
         $asset->update($validated);
 
-        return to_route('assets')->with('success', 'Asset updated successfully.');
+        return to_route('assets')->with('success', 'Aset berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -124,7 +124,7 @@ class AssetController extends Controller
         $asset = Asset::findOrFail($id);
         $asset->delete();
 
-        return to_route('assets')->with('success', 'Asset deleted successfully.');
+        return to_route('assets')->with('success', 'Aset berhasil dihapus.');
     }
 
     public function qrcodeDetail($id)

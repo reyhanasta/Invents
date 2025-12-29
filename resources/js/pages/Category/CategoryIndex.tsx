@@ -80,16 +80,16 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
             <Head title="Category" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header Section */}
-                {/* <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Categories
+                            Kategori
                         </h1>
                         <p className="text-muted-foreground">
-                            Manage your asset categories
+                            Halaman untuk mengelola data kategori aset
                         </p>
                     </div>
-                </div> */}
+                </div>
 
                 {/* Search Bar */}
                 <div className="flex items-center justify-between gap-4">
@@ -97,7 +97,7 @@ export default function CategoryIndex({ categories }: CategoryIndexProps) {
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
-                                placeholder="Search by name or prefix code..."
+                                placeholder="Cari berdasarkan nama, kode..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />

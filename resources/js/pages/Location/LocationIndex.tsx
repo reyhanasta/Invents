@@ -76,23 +76,23 @@ export default function LocationIndex({ locations }: LocationIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Location" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
-                {/* <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Location
+                            Lokasi
                         </h1>
                         <p className="text-muted-foreground">
-                            Manage your asset location
+                            Halaman untuk mengelola data lokasi aset.
                         </p>
                     </div>
-                </div> */}
+                </div>
                 {/* Search Bar */}
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
                         <InputGroup className="max-w-md flex-1">
                             <InputGroupInput
                                 aria-label="search"
-                                placeholder="Cari berdasarkan nama..."
+                                placeholder="Cari berdasarkan nama, kode..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />

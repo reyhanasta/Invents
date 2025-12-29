@@ -33,7 +33,7 @@ class LocationController extends Controller
                 'location_code' => strtoupper($validatedData['location_code']),
             ]);
 
-            return to_route('locations')->with('success', 'Location created successfully.');
+            return to_route('locations')->with('success', 'Lokasi berhasil dibuat.');
         }catch(\Exception $e){
             return redirect()->back()->withErrors(['error' => 'Failed to create location: '.$e->getMessage()])->withInput();
         }
@@ -52,7 +52,7 @@ class LocationController extends Controller
                 'location_code' => $validatedData['location_code'],
             ]);
 
-            return to_route('locations')->with('success', 'Location updated successfully.');
+            return to_route('locations')->with('success', 'Lokasi berhasil diperbarui.');
         }catch(\Exception $e){
             return redirect()->back()->withErrors(['error' => 'Failed to update location: '.$e->getMessage()])->withInput();
         }
@@ -61,7 +61,7 @@ class LocationController extends Controller
     public function delete(Location $location){
         try{
             $location->delete();
-            return to_route('locations')->with('success', 'Location deleted successfully.');
+            return to_route('locations')->with('success', 'Lokasi berhasil dihapus.');
         }catch(\Exception $e){
             return redirect()->back()->withErrors(['error' => 'Failed to delete location: '.$e->getMessage()])->withInput();
         }

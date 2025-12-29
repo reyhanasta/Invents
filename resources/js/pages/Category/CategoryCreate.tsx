@@ -39,11 +39,11 @@ export default function CategoriesCreate({
                         action={categoriesStore().url}
                         onSuccess={() => {
                             onOpenChange(false);
-                            toast.success('Category created successfully!');
+                            toast.success('Kategori berhasil dibuat!');
                         }}
                         onError={() => {
                             toast.error(
-                                'Failed to create category. Please check the form.',
+                                'Gagal membuat kategori. Silakan periksa formulir.',
                             );
                         }}
                     >

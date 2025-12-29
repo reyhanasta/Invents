@@ -29,22 +29,22 @@ const mainNavItems: NavItem[] = [
     //     icon: LayoutGrid,
     // },
     {
-        title: 'Assets',
+        title: 'Aset',
         href: assets(),
         icon: Box,
     },
     {
-        title: 'Categories',
+        title: 'Kategori',
         href: categories(),
         icon: Folder,
     },
     {
-        title: 'Location',
+        title: 'Lokasi',
         href: locations(),
         icon: MapPin,
     },
     {
-        title: 'Maintanance',
+        title: 'Pemeliharaan',
         href: maintenances(),
         icon: Wrench,
     },

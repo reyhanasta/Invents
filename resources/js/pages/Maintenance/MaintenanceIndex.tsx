@@ -287,8 +287,21 @@ export default function MaintenanceIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head />
+            <Head title="Maintenance" />
+            {/* Header Section */}
+
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
+                {/* Header Section */}
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1">
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Maintenance
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Halaman mengelola data maintenance aset.
+                        </p>
+                    </div>
+                </div>
                 {/* Search */}
                 <div className="flex justify-between gap-2">
                     <div className="flex flex-row items-center gap-4">
@@ -299,7 +312,7 @@ export default function MaintenanceIndex({
                             <InputGroup className="max-w-md flex-1">
                                 <InputGroupInput
                                     aria-label="search"
-                                    placeholder="Cari berdasarkan nama, kode, kategori, lokasi..."
+                                    placeholder="Cari berdasarkan nama atau kode..."
                                     value={searchQuery}
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)

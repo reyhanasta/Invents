@@ -152,7 +152,7 @@ class MaintenanceController extends Controller
 
         return to_route('maintenances')->with(
             'success',
-            'Maintenance created successfully!',
+            'Pemeliharaan berhasil dibuat!',
         );
     }
 
@@ -199,7 +199,7 @@ class MaintenanceController extends Controller
 
         return to_route('maintenances')->with(
             'success',
-            'Maintenance updated successfully!',
+            'Pemeliharaan berhasil diperbarui!',
         );
     }
 
@@ -209,7 +209,7 @@ class MaintenanceController extends Controller
 
         return to_route('maintenances')->with(
             'success',
-            'Maintenance deleted successfully!',
+            'Pemeliharaan berhasil dihapus!',
         );
     }
 }

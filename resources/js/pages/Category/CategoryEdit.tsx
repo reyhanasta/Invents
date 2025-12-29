@@ -50,11 +50,11 @@ export default function CategoriesEdit({
                         action={categoriesUpdate(category.id).url}
                         onSuccess={() => {
                             onOpenChange(false);
-                            toast.success('Category updated successfully!');
+                            toast.success('Kategori berhasil diperbarui!');
                         }}
                         onError={() => {
                             toast.error(
-                                'Failed to update category. Please check the form.',
+                                'Gagal memperbarui kategori. Silakan periksa formulir.',
                             );
                         }}
                     >

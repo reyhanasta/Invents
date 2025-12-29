@@ -37,7 +37,7 @@ class CategoryController extends Controller
             ]);
 
             // Redirect to the categories index page with a success message
-            return to_route('categories')->with('success', 'Category created successfully.');
+            return to_route('categories')->with('success', 'Kategori berhasil dibuat.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to create category: '.$e->getMessage()])->withInput();
         }
@@ -70,7 +70,7 @@ class CategoryController extends Controller
             ]);
 
             // Redirect to the categories index page with a success message
-            return to_route('categories')->with('success', 'Category updated successfully.');
+            return to_route('categories')->with('success', 'Kategori berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to update category: '.$e->getMessage()])->withInput();
         }
@@ -81,7 +81,7 @@ class CategoryController extends Controller
         try {
             $category->delete();
 
-            return to_route('categories')->with('success', 'Category deleted successfully.');
+            return to_route('categories')->with('success', 'Kategori berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to delete category: '.$e->getMessage()]);
         }
