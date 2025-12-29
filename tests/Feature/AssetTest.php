@@ -65,7 +65,7 @@ describe('Asset Index', function () {
         $response->assertSuccessful();
         $response->assertInertia(fn ($page) => $page
             ->component('Asset/AssetIndex')
-            ->has('assets.data', 15) // Default per_page is 15
+            ->has('assets.data', 8) // per_page is 8 in controller
             ->where('assets.total', 20)
         );
     });
