@@ -24,7 +24,7 @@ export default function Login({
 }: LoginProps) {
     return (
         <div className="grid grid-cols-2">
-            <div className="h-full w-full content-center bg-primary px-24 pr-38 text-lg text-white">
+            <div className="h-full w-full content-center bg-primary px-26 pr-36 text-lg text-primary-foreground">
                 <div key="body" className="flex flex-col gap-5">
                     <div
                         key="judul"
@@ -32,7 +32,7 @@ export default function Login({
                     >
                         <Box
                             size={70}
-                            className="rounded-2xl border border-white/50 bg-white/20 p-4"
+                            className="rounded-2xl border border-white/50 bg-white/20 p-4 dark:border-primary-foreground/50"
                         />
                         <span className="text-4xl font-extrabold">Invents</span>
                     </div>
