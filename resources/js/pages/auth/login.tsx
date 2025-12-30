@@ -19,7 +19,7 @@ interface LoginProps {
 
 export default function Login({
     status,
-    canResetPassword,
+
     canRegister,
 }: LoginProps) {
     return (
