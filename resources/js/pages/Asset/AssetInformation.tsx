@@ -7,7 +7,17 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Asset } from '@/types';
-import { Box, Calendar, Info, InfoIcon, List, MapPin } from 'lucide-react';
+import {
+    Atom,
+    Box,
+    Calendar,
+    HeartPulse,
+    Info,
+    InfoIcon,
+    List,
+    MapPin,
+} from 'lucide-react';
+import { conditionConfig } from './AssetIndex';
 import { statusConfig } from './AssetQrcodeDetail';
 
 type AssetInformationProps = {
@@ -44,14 +54,14 @@ export default function AssetInformation({
                         </div>
 
                         <CardDescription className="flex flex-row gap-2">
-                            <Badge className="bg-white/20">
+                            <Badge className="border border-white/30 bg-white/20">
                                 {asset.asset_code}
                             </Badge>
 
                             <Badge
                                 className={`${
                                     statusConfig[asset.status].color
-                                } `}
+                                } border border-white/30`}
                             >
                                 {statusConfig[asset.status].icon}
                                 {statusConfig[asset.status].label}
@@ -70,7 +80,7 @@ export default function AssetInformation({
                         {asset.description || 'Tidak ada deskripsi'}
                     </CardDescription>
                     <div className="content flex flex-col gap-6">
-                        <div className="grid grid-cols-2 gap-8">
+                        <div className="grid grid-cols-2 gap-12">
                             <div className="col-span-1 flex flex-row items-center gap-2">
                                 <InfoIcon
                                     size={35}
@@ -81,7 +91,9 @@ export default function AssetInformation({
                                         Serial Number
                                     </CardDescription>
                                     <CardTitle className="text-sm">
-                                        {asset.serial_number}
+                                        {asset.serial_number
+                                            ? asset.serial_number
+                                            : '-'}
                                     </CardTitle>
                                 </div>
                             </div>
@@ -100,7 +112,7 @@ export default function AssetInformation({
                                 </div>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-8">
+                        <div className="grid grid-cols-2 gap-12">
                             <div className="col-span-1 flex flex-row items-center gap-2">
                                 <MapPin
                                     size={35}
@@ -110,7 +122,7 @@ export default function AssetInformation({
                                     <CardDescription className="text-xs">
                                         Location
                                     </CardDescription>
-                                    <CardTitle className="text-sm">
+                                    <CardTitle className="text-sm text-wrap">
                                         {locationName}
                                     </CardTitle>
                                 </div>
@@ -129,6 +141,46 @@ export default function AssetInformation({
                                             asset.acquisition_date ?? '',
                                         )}
                                     </CardTitle>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-12">
+                            <div className="col-span-1 flex flex-row items-center gap-2">
+                                <Atom
+                                    size={35}
+                                    className="rounded-xl border bg-accent p-2 text-primary"
+                                />
+                                <div className="flex flex-col gap-1">
+                                    <CardDescription className="text-xs">
+                                        Merek
+                                    </CardDescription>
+                                    <CardTitle className="text-sm">
+                                        {asset.brand}
+                                    </CardTitle>
+                                </div>
+                            </div>
+                            <div className="col-span-1 flex flex-row items-center gap-2">
+                                <HeartPulse
+                                    size={35}
+                                    className="rounded-xl border bg-accent p-2 text-primary"
+                                />
+                                <div className="flex flex-col gap-1">
+                                    <CardDescription className="text-xs">
+                                        Kondisi
+                                    </CardDescription>
+                                    <Badge
+                                        variant={
+                                            conditionConfig[
+                                                asset.condition as keyof typeof conditionConfig
+                                            ]?.variant
+                                        }
+                                    >
+                                        {
+                                            conditionConfig[
+                                                asset.condition as keyof typeof conditionConfig
+                                            ]?.label
+                                        }
+                                    </Badge>
                                 </div>
                             </div>
                         </div>

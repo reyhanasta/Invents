@@ -91,19 +91,19 @@ type AssetsIndexProps = {
 
 export const conditionConfig = {
     good: {
-        label: 'Good',
+        label: 'Good' as string,
         variant: 'default' as const,
-        color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        color: 'bg-emerald-50 text-emerald-700 border-emerald-200' as string,
     },
     minor_damage: {
-        label: 'Minor Damage',
+        label: 'Minor Damage' as string,
         variant: 'secondary' as const,
-        color: '',
+        color: '' as string,
     },
     major_damage: {
-        label: 'Major Damage',
+        label: 'Major Damage' as string,
         variant: 'destructive' as const,
-        color: '',
+        color: '' as string,
     },
 };
 
