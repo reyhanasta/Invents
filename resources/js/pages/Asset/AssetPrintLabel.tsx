@@ -24,7 +24,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type LabelSize = '60x40' | '60x30';
+// type LabelSize = '60x40' | '60x30';
+type LabelSize = '60x40';
 
 type AssetPrintLabelProps = {
     asset: Asset;
@@ -123,9 +124,9 @@ export default function AssetPrintLabel({ asset }: AssetPrintLabelProps) {
                                         <SelectItem value="60x40">
                                             60mm x 40mm
                                         </SelectItem>
-                                        <SelectItem value="60x30">
+                                        {/*<SelectItem value="60x30">
                                             60mm x 30mm
-                                        </SelectItem>
+                                        </SelectItem>*/}
                                     </SelectContent>
                                 </Select>
                             </div>

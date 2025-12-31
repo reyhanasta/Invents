@@ -1,17 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import { Maintenance, type BreadcrumbItem } from '@/types';
 
-import { Button } from '@/components/ui/button';
-import { assets, maintenances } from '@/routes';
+import { maintenances } from '@/routes';
 import { Asset } from '@/types';
-import { router } from '@inertiajs/react';
-import {
-    AlertCircle,
-    ArrowLeft,
-    CheckCircle2,
-    Clock,
-    Wrench,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle2, Clock, Wrench } from 'lucide-react';
 import { memo } from 'react';
 import AssetInformation from './AssetInformation';
 import Assetmaintenance from './AssetMaintenance';
@@ -70,17 +62,6 @@ export default function AssetQrcodeDetail({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="outer-container space-y-6 p-2 md:p-4 lg:p-6">
-                <div aria-label="header" className="flex justify-between">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="hover:no gap-3 text-sm text-muted-foreground"
-                        onClick={() => router.visit(assets().url)}
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                        Back
-                    </Button>
-                </div>
                 <div className="container grid grid-cols-1 gap-4 sm:mx-auto lg:grid-cols-2">
                     <div id="asset-information" className="col-span-1">
                         <MemoizedAssetInformation
