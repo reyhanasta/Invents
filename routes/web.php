@@ -22,6 +22,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('categories-update');
     Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete'])->name('categories-delete');
 
+    // Category Routes
+    Route::get('company', [\App\Http\Controllers\CompanyController::class, 'index'])->name('company');
+    Route::post('company', [\App\Http\Controllers\CompanyController::class, 'store'])->name('company-store');
+    Route::put('company/{category}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('company-update');
+    Route::delete('company/{category}', [\App\Http\Controllers\CompanyController::class, 'delete'])->name('company-delete');
+
     // Asset Routes
     Route::get('assets', [\App\Http\Controllers\AssetController::class, 'index'])->name('assets');
     Route::get('assets/create', [\App\Http\Controllers\AssetController::class, 'create'])->name('assets-create');

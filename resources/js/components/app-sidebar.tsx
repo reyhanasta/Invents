@@ -13,13 +13,14 @@ import {
 import {
     assets,
     categories,
+    company,
     dashboard,
     locations,
     maintenances,
 } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Box, Folder, MapPin, Wrench } from 'lucide-react';
+import { Box, Building2, Folder, MapPin, Wrench } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -47,6 +48,11 @@ const mainNavItems: NavItem[] = [
         title: 'Pemeliharaan',
         href: maintenances(),
         icon: Wrench,
+    },
+    {
+        title: 'Perusahaan',
+        href: company(),
+        icon: Building2,
     },
 ];
 
