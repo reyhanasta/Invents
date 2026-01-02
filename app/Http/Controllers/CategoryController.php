@@ -27,11 +27,12 @@ class CategoryController extends Controller
             'serial_number_needed' => 'nullable|boolean',
         ]);
         $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
+        
         // Create a new category
         try {
             $cats = Category::create([
                 'category_name' => $validatedData['category_name'],
-                'prefix_code' => $validatedData['prefix_code'],
+                'prefix_code' => strtoupper($validatedData['prefix_code']),
                 'serial_number_needed' => $validateSerialNumber,
             ]);
 
@@ -64,7 +65,7 @@ class CategoryController extends Controller
         try {
             $category->update([
                 'category_name' => $validatedData['category_name'],
-                'prefix_code' => $validatedData['prefix_code'],
+                'prefix_code' => strtoupper($validatedData['prefix_code']),
                 'serial_number_needed' => $validateSerialNumber,
             ]);
 

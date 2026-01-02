@@ -62,7 +62,7 @@ describe('Category Store', function () {
         $response = $this->post(route('categories-store'), $categoryData);
 
         $response->assertRedirect(route('categories'));
-        $response->assertSessionHas('success', 'Category created successfully.');
+        $response->assertSessionHas('success', 'Kategori berhasil dibuat.');
 
         $this->assertDatabaseHas('categories', [
             'category_name' => 'Furniture',
@@ -189,7 +189,7 @@ describe('Category Update', function () {
         ]);
 
         $response->assertRedirect(route('categories'));
-        $response->assertSessionHas('success', 'Category updated successfully.');
+        $response->assertSessionHas('success', 'Kategori berhasil diperbarui.');
 
         $this->assertDatabaseHas('categories', [
             'id' => $category->id,
@@ -275,7 +275,7 @@ describe('Category Delete', function () {
         $response = $this->delete(route('categories-delete', $category));
 
         $response->assertRedirect(route('categories'));
-        $response->assertSessionHas('success', 'Category deleted successfully.');
+        $response->assertSessionHas('success', 'Kategori berhasil dihapus.');
 
         $this->assertDatabaseMissing('categories', [
             'id' => $category->id,

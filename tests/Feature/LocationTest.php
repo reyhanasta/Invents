@@ -64,7 +64,7 @@ describe('Location Store', function () {
         $response = $this->post(route('locations-store'), $locationData);
 
         $response->assertRedirect(route('locations'));
-        $response->assertSessionHas('success', 'Location created successfully.');
+        $response->assertSessionHas('success', 'Lokasi berhasil dibuat.');
 
         $this->assertDatabaseHas('locations', [
             'location_name' => 'Branch Office',
@@ -185,7 +185,7 @@ describe('Location Update', function () {
         ]);
 
         $response->assertRedirect(route('locations'));
-        $response->assertSessionHas('success', 'Location updated successfully.');
+        $response->assertSessionHas('success', 'Lokasi berhasil diperbarui.');
 
         $this->assertDatabaseHas('locations', [
             'id' => $location->id,
@@ -254,7 +254,7 @@ describe('Location Delete', function () {
         $response = $this->delete(route('locations-delete', $location));
 
         $response->assertRedirect(route('locations'));
-        $response->assertSessionHas('success', 'Location deleted successfully.');
+        $response->assertSessionHas('success', 'Lokasi berhasil dihapus.');
 
         $this->assertDatabaseMissing('locations', [
             'id' => $location->id,

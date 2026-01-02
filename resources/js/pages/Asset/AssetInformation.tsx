@@ -40,9 +40,12 @@ export default function AssetInformation({
     };
     return (
         <div className="space-y-2">
-            <Card id="Header" className="bg-primary text-white">
+            <Card id="Header" className="bg-primary text-primary-foreground">
                 <CardHeader className="flex flex-row items-center">
-                    <Box size={60} className="rounded-full bg-white/20 p-3" />
+                    <Box
+                        size={60}
+                        className="rounded-full bg-white/20 p-3 dark:border dark:border-primary-foreground/50"
+                    />
                     <div className="flex flex-col gap-1">
                         <div className="flex flex-col">
                             <span className="text-xs text-muted">
