@@ -17,14 +17,10 @@ interface LoginProps {
     canRegister: boolean;
 }
 
-export default function Login({
-    status,
-
-    canRegister,
-}: LoginProps) {
+export default function Login({ status, canRegister }: LoginProps) {
     return (
-        <div className="grid grid-cols-2">
-            <div className="h-full w-full content-center bg-primary px-26 pr-36 text-lg text-primary-foreground">
+        <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
+            <div className="hidden h-full w-full content-center bg-primary px-26 pr-36 text-lg text-primary-foreground lg:block">
                 <div key="body" className="flex flex-col gap-5">
                     <div
                         key="judul"
@@ -52,7 +48,7 @@ export default function Login({
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="flex min-h-screen items-center justify-center lg:min-h-0">
                 <AuthLayout
                     title="Selamat Datang"
                     description="Masuk ke akun anda untuk melanjutkan"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,20 +11,49 @@ class CompanyController extends Controller
     //
 
     public function index(){
-       
-        return Inertia::render('Company/CompanyIndex');
+
+       $company = Company::first();
+       return Inertia::render('Company/CompanyIndex', [
+           'companyData' => $company
+       ]);
     }
-    public function store(){
+    public function store(Request $request){
        
-        return Inertia::render('Company/CompanyCreate');
+       $validate = $request->validate([
+           'complete_company_name' => 'required|string|max:255',
+       ]);
+       
+       Company::create(
+            [
+                'complete_company_name' => $validate['complete_company_name'],
+            ]
+        );
+
+        return to_route('company')->with('success','Perusahaan berhasil dibuat!');
+       
     }
-    public function update(){
+    public function update(Request $request, $id){
        
-        return Inertia::render('Company/CompanyEdit');
+       $validate = $request->validate([
+           'complete_company_name' => 'required|string|max:255',
+       ]);
+       
+       $company = Company::findOrFail($id);
+       $company->update(
+            [
+                'complete_company_name' => $validate['complete_company_name'],
+            ]
+        );
+
+        return to_route('company')->with('success','Perusahaan berhasil diupdate!');
+       
     }
-    public function delete(){
+    public function delete(Request $request, $id){
        
-        return Inertia::render('Company/CompanyDelete');
+        $company = Company::findOrFail($id);
+        $company->delete();
+
+        return to_route('company')->with('success','Perusahaan berhasil dihapus!');
     }
     
 }

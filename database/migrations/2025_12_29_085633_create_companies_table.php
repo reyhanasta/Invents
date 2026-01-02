@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('complete_company_name')->index();
             $table->string('short_company_name')->nullable()->index();
-            $table->text('address');
+            $table->text('address')->nullable();
             $table->timestamps();
         });
     }

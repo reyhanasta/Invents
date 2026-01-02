@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

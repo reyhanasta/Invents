@@ -81,3 +81,12 @@ export type Maintenance = {
     notes?: string;
 };
 
+export type Company = {
+    id:number;
+    complete_company_name:string;
+    short_company_name?:string;
+    address?:string;
+    created_at?:string;
+    updated_at?:string;
+}
+
