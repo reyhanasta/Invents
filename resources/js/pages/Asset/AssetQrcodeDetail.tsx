@@ -4,9 +4,8 @@ import { Maintenance, type BreadcrumbItem } from '@/types';
 import { maintenances } from '@/routes';
 import { Asset } from '@/types';
 import { AlertCircle, CheckCircle2, Clock, Wrench } from 'lucide-react';
-import { memo } from 'react';
 import AssetInformation from './AssetInformation';
-import Assetmaintenance from './AssetMaintenance';
+import { default as AssetMaintenance } from './AssetMaintenance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -57,14 +56,12 @@ export default function AssetQrcodeDetail({
 }: AssetQrCodeDetailProps) {
     // const StatusIcon = statusConfig[asset.status].icon;
     // Di bagian bawah component, sebelum export default
-    const MemoizedAssetInformation = memo(AssetInformation);
-    const MemoizedAssetMaintenance = memo(Assetmaintenance);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="outer-container space-y-6 p-2 md:p-4 lg:p-6">
                 <div className="container grid grid-cols-1 gap-4 sm:mx-auto lg:grid-cols-2">
                     <div id="asset-information" className="col-span-1">
-                        <MemoizedAssetInformation
+                        <AssetInformation
                             asset={asset}
                             categoryName={categoryName}
                             locationName={locationName}
@@ -72,9 +69,7 @@ export default function AssetQrcodeDetail({
                     </div>
                     <div className="maintenance">
                         <div className="col-span-1">
-                            <MemoizedAssetMaintenance
-                                maintenance={maintenance}
-                            />
+                            <AssetMaintenance maintenance={maintenance} />
                         </div>
                     </div>
                 </div>

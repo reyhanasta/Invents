@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -150,10 +151,14 @@ class AssetController extends Controller
             'category:id,category_name',
             'location:id,location_name',
         ])->findOrFail($id);
+
+        $company = Company::first()->complete_company_name;
+        
         return Inertia::render('Asset/AssetPrintLabel', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,
             'locationName' => $asset->location?->location_name,
+            'company' => $company,
         ]);
     }
 }
