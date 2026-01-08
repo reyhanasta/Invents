@@ -1,3 +1,4 @@
+import AppLogoIcon from '@/components/app-logo-icon';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,6 @@ import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { Form, Head } from '@inertiajs/react';
-import { Box } from 'lucide-react';
 
 interface LoginProps {
     status?: string;
@@ -26,10 +26,9 @@ export default function Login({ status, canRegister }: LoginProps) {
                         key="judul"
                         className="flex flex-row items-center gap-4"
                     >
-                        <Box
-                            size={70}
-                            className="rounded-2xl border border-white/50 bg-white/20 p-4 dark:border-primary-foreground/50"
-                        />
+                        <div className="h-16 w-16 rounded-xl border border-white/50 bg-white/20 p-2 dark:border-primary-foreground/50">
+                            <AppLogoIcon className="size-full fill-current text-white dark:text-black" />
+                        </div>
                         <span className="text-4xl font-extrabold">Invents</span>
                     </div>
                     <h1 className="text- font-sans text-4xl font-bold">
