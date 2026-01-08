@@ -47,7 +47,7 @@ export default function Login({ status, canRegister }: LoginProps) {
                     </div>
                 </div>
             </div>
-            <div className="flex min-h-screen items-center justify-center lg:min-h-0">
+            <div className="">
                 <AuthLayout
                     title="Selamat Datang"
                     description="Masuk ke akun anda untuk melanjutkan"
