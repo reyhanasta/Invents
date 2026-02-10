@@ -86,13 +86,20 @@ export default function AssetCreate({
                         <Form
                             method="post"
                             action={assetsStore().url}
+                            onStart={() => {
+                                toast.loading('Creating asset...');
+                            }}
                             onSuccess={() => {
+                                router.visit(assets().url);
                                 toast.success('Asset created successfully!');
                             }}
                             onError={() => {
                                 toast.error(
                                     'Failed to create asset. Please check the form.',
                                 );
+                            }}
+                            onFinish={() => {
+                                toast.dismiss();
                             }}
                         >
                             {({ errors, processing }) => (

@@ -36,6 +36,9 @@ export default function LocationsCreate({
                     <Form
                         method="post"
                         action={locationsStore().url}
+                        onStart={() => {
+                            toast.loading('Creating location...');
+                        }}
                         onSuccess={() => {
                             onOpenChange(false);
                             toast.success('Location created successfully!');
@@ -44,6 +47,9 @@ export default function LocationsCreate({
                             toast.error(
                                 'Failed to create location. Please check the form.',
                             );
+                        }}
+                        onFinish={() => {
+                            toast.dismiss();
                         }}
                     >
                         {({ errors, processing }) => (

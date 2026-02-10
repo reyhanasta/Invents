@@ -171,6 +171,9 @@ export default function MaintenanceIndex({
         if (!selectedMaintenance) return;
 
         router.delete(maintenancesDelete(selectedMaintenance.id).url, {
+            onStart: () => {
+                toast.loading('Deleting maintenance...');
+            },
             onSuccess: () => {
                 setShowDeleteDialog(false);
                 setSelectedMaintenance(null);
@@ -180,6 +183,9 @@ export default function MaintenanceIndex({
                 toast.error(
                     'Gagal menghapus data maintenance. Silakan coba lagi.',
                 );
+            },
+            onFinish: () => {
+                toast.dismiss();
             },
         });
     };
@@ -587,7 +593,9 @@ export default function MaintenanceIndex({
                                                               }}
                                                           >
                                                               <Pencil className="h-4 w-4" />
-                                                              <span>Edit</span>
+                                                              <span>
+                                                                  Update
+                                                              </span>
                                                           </DropdownMenuItem>
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"

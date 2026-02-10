@@ -141,7 +141,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
         setIsSearching(true);
         router.get(
             window.location.pathname,
-            {},
+
             {
                 preserveState: true,
                 only: ['assets'],
@@ -154,6 +154,9 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
         if (!selectedAsset) return;
 
         router.delete(assetsDelete(selectedAsset.id).url, {
+            onStart: () => {
+                toast.loading('Deleting asset...');
+            },
             onSuccess: () => {
                 setShowDeleteDialog(false);
                 setSelectedAsset(null);
@@ -161,6 +164,9 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
             },
             onError: () => {
                 toast.error('Failed to delete asset. Please try again.');
+            },
+            onFinish: () => {
+                toast.dismiss();
             },
         });
     };

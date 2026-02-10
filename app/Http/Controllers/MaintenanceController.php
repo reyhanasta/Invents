@@ -117,6 +117,10 @@ class MaintenanceController extends Controller
                 'required',
                 Rule::in(['routine', 'repair', 'inspection', 'calibration']),
             ],
+            'condition' => [
+                'required',
+                Rule::in(['good', 'minor_damage', 'major_damage']),
+            ],
             'maintenance_date' => ['required', 'date'],
             'maintenance_done_date' => [
                 'nullable',
@@ -138,7 +142,7 @@ class MaintenanceController extends Controller
             'cost' => ['nullable', 'numeric', 'min:0'],
         ]);
 
-        $maint = Maintenance::create([
+        Maintenance::create([
             'asset_id' => $data['asset_id'],
             'type' => $data['type'],
             'maintenance_date' => $data['maintenance_date'],
@@ -148,6 +152,10 @@ class MaintenanceController extends Controller
             'note' => $data['note'] ?? null,
             'technician' => $data['technician'] ?? null,
             'cost' => $data['cost'] ?? null,
+        ]);
+
+        Asset::where('id', $data['asset_id'])->update([
+            'condition' => $data['condition'],
         ]);
 
         return to_route('maintenances')->with(
@@ -195,6 +203,10 @@ class MaintenanceController extends Controller
             'note' => $data['note'] ?? null,
             'technician' => $data['technician'] ?? null,
             'cost' => $data['cost'] ?? null,
+        ]);
+
+        Asset::where('id', $data['asset_id'])->update([
+            'condition' => $data['condition'],
         ]);
 
         return to_route('maintenances')->with(

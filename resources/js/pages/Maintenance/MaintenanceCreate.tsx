@@ -93,6 +93,9 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     'Gagal membuat data maintenance. Silakan periksa formulir.',
                                 );
                             }}
+                            onFinish={() => {
+                                toast.dismiss();
+                            }}
                         >
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
@@ -131,7 +134,7 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                     </div>
 
                                     {/* Type & Status */}
-                                    <div className="grid gap-6 sm:grid-cols-2">
+                                    <div className="grid gap-6 sm:grid-cols-3">
                                         <div className="space-y-2">
                                             <Label htmlFor="type">
                                                 Tipe Maintenance{' '}
@@ -202,6 +205,41 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 </p>
                                             )}
                                         </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="condition">
+                                                Kondisi{' '}
+                                                <span className="text-destructive">
+                                                    *
+                                                </span>
+                                            </Label>
+                                            <Select name="condition" required>
+                                                <SelectTrigger
+                                                    aria-invalid={
+                                                        !!errors.condition
+                                                    }
+                                                    disabled={processing}
+                                                >
+                                                    <SelectValue placeholder="Select condition" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="good">
+                                                        Bagus
+                                                    </SelectItem>
+                                                    <SelectItem value="minor_damage">
+                                                        Sedikit Rusak
+                                                    </SelectItem>
+                                                    <SelectItem value="major_damage">
+                                                        Rusak Total
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            {errors.condition && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.condition}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Dates */}
@@ -251,8 +289,8 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 </p>
                                             )}
                                             <p className="text-xs text-muted-foreground">
-                                                Opsional: Tanggal ketika maintenance
-                                                selesai dilakukan
+                                                Opsional: Tanggal ketika
+                                                maintenance selesai dilakukan
                                             </p>
                                         </div>
                                     </div>
@@ -341,8 +379,8 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Opsional: Tambahkan temuan atau hasil
-                                            dari maintenance
+                                            Opsional: Tambahkan temuan atau
+                                            hasil dari maintenance
                                         </p>
                                     </div>
 

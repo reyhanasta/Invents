@@ -26,7 +26,7 @@ export default function CategoriesCreate({
 }: CategoriesCreateProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-106.25">
                 <DialogHeader>
                     <DialogTitle>Create Category</DialogTitle>
                     <DialogDescription>
@@ -37,6 +37,9 @@ export default function CategoriesCreate({
                     <Form
                         method="post"
                         action={categoriesStore().url}
+                        onStart={() => {
+                            toast.loading('Creating category...');
+                        }}
                         onSuccess={() => {
                             onOpenChange(false);
                             toast.success('Kategori berhasil dibuat!');
@@ -45,6 +48,9 @@ export default function CategoriesCreate({
                             toast.error(
                                 'Gagal membuat kategori. Silakan periksa formulir.',
                             );
+                        }}
+                        onFinish={() => {
+                            toast.dismiss();
                         }}
                     >
                         {({ errors, processing }) => (
