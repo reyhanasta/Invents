@@ -50,4 +50,9 @@ class Asset extends Model
     {
         return $this->hasMany(Maintenance::class, 'asset_id');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'asset_id');
+    }
 }

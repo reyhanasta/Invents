@@ -17,6 +17,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -113,7 +114,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
     // const { data, setData } = useForm({ search: search || '' });
-
+    console.log(assets.data.length);
     // Debounce search - Inertia best practice
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -216,9 +217,10 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                         size="lg"
                         className="bg-primary hover:bg-primary/90 sm:w-auto"
                         aria-label="Add Asset"
+                        asChild
                     >
-                        <Plus className="h-4 w-4" />
                         <Link href={assetsCreate().url}>
+                            <Plus className="h-4 w-4" />
                             <span className="ml-2">Tambah Asset</span>
                         </Link>
                     </Button>
@@ -232,7 +234,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                         handleClearSearch={handleClearSearch}
                     />
                 ) : (
-                    <div className="rounded-lg border p-3">
+                    <div className="overflow-hidden rounded-xl border bg-card/50 p-3 shadow-sm backdrop-blur-sm">
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -373,7 +375,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               <Pencil className="h-4 w-4" />
                                                               <span>Ubah</span>
                                                           </DropdownMenuItem>
-
+                                                          <DropdownMenuSeparator />
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
                                                               onSelect={() => {

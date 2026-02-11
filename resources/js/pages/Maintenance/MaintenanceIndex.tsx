@@ -15,6 +15,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -445,7 +446,7 @@ export default function MaintenanceIndex({
                         )}
                     </div>
                 ) : (
-                    <div className="rounded-lg border p-3 transition-opacity duration-200">
+                    <div className="overflow-hidden rounded-xl border bg-card/50 p-3 shadow-sm backdrop-blur-sm">
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -522,7 +523,7 @@ export default function MaintenanceIndex({
                                                       </span>
                                                   </Badge>
                                               </TableCell>
-                                              <TableCell className="hidden max-w-[200px] truncate text-muted-foreground md:table-cell">
+                                              <TableCell className="hidden max-w-50 truncate text-muted-foreground md:table-cell">
                                                   {maintenance.description}
                                               </TableCell>
                                               <TableCell className="text-sm text-muted-foreground">
@@ -597,6 +598,7 @@ export default function MaintenanceIndex({
                                                                   Update
                                                               </span>
                                                           </DropdownMenuItem>
+                                                          <DropdownMenuSeparator />
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
                                                               onSelect={() => {

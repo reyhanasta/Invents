@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate(
+        $admin = User::firstOrCreate(
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',
@@ -21,5 +21,16 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $admin->assignRole('admin');
+
+        $client = User::firstOrCreate(
+            ['email' => 'client@example.com'],
+            [
+                'name' => 'Client User',
+                'password' => 'password',
+                'email_verified_at' => now(),
+            ]
+        );
+        $client->assignRole('client');
     }
 }

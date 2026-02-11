@@ -24,11 +24,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('categories-update');
     Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete'])->name('categories-delete');
 
-    // Category Routes
-    Route::get('company', [\App\Http\Controllers\CompanyController::class, 'index'])->name('company');
-    Route::post('company', [\App\Http\Controllers\CompanyController::class, 'store'])->name('company-store');
-    Route::put('company/{category}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('company-update');
-    Route::delete('company/{category}', [\App\Http\Controllers\CompanyController::class, 'delete'])->name('company-delete');
+    // Admin Only Routes
+    Route::middleware(['role:admin'])->group(function () {
+        // Tickets Routes (Admin Management)
+        Route::get('tickets', [\App\Http\Controllers\TicketController::class, 'index'])->name('tickets');
+        Route::get('tickets/create', [\App\Http\Controllers\TicketController::class, 'create'])->name('tickets-create');
+        Route::post('tickets', [\App\Http\Controllers\TicketController::class, 'store'])->name('tickets-store');
+        Route::get('tickets/{ticket}', [\App\Http\Controllers\TicketController::class, 'show'])->name('tickets-show');
+        Route::get('tickets/{ticket}/edit', [\App\Http\Controllers\TicketController::class, 'edit'])->name('tickets-edit');
+        Route::put('tickets/{ticket}', [\App\Http\Controllers\TicketController::class, 'update'])->name('tickets-update');
+        Route::delete('tickets/{ticket}', [\App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets-delete');
+        Route::post('tickets/{ticket}/assign', [\App\Http\Controllers\TicketController::class, 'assign'])->name('tickets-assign');
+        Route::post('tickets/{ticket}/status', [\App\Http\Controllers\TicketController::class, 'changeStatus'])->name('tickets-status');
+        Route::post('tickets/{ticket}/comment', [\App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets-comment');
+
+        // Company Routes
+        Route::get('company', [\App\Http\Controllers\CompanyController::class, 'index'])->name('company');
+        Route::post('company', [\App\Http\Controllers\CompanyController::class, 'store'])->name('company-store');
+        Route::put('company/{category}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('company-update');
+        Route::delete('company/{category}', [\App\Http\Controllers\CompanyController::class, 'delete'])->name('company-delete');
+    });
 
     // Asset Routes
     Route::get('assets', [\App\Http\Controllers\AssetController::class, 'index'])->name('assets');
@@ -53,6 +68,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('maintenances/{maintenance}/edit', [MaintenanceController::class, 'edit'])->name('maintenances-edit');
     Route::put('maintenances/{maintenance}', [MaintenanceController::class, 'update'])->name('maintenances-update');
     Route::delete('maintenances/{maintenance}', [MaintenanceController::class, 'destroy'])->name('maintenances-delete');
+
+    // Helpdesk Routes
+    Route::get('helpdesk/tickets', [\App\Http\Controllers\HelpdeskController::class, 'index'])->name('helpdesk-index');
+    Route::get('helpdesk/tickets/create', [\App\Http\Controllers\HelpdeskController::class, 'create'])->name('helpdesk-create');
+    Route::post('helpdesk/tickets', [\App\Http\Controllers\HelpdeskController::class, 'store'])->name('helpdesk-store');
+    Route::get('helpdesk/tickets/{ticket}', [\App\Http\Controllers\HelpdeskController::class, 'show'])->name('helpdesk-show');
+    Route::post('helpdesk/tickets/{ticket}/comment', [\App\Http\Controllers\HelpdeskController::class, 'addComment'])->name('helpdesk-comment');
 });
 
 Route::get('assets/{asset}/qrcode-detail', [\App\Http\Controllers\AssetController::class, 'qrcodeDetail'])->name('assets-qrcode-detail');

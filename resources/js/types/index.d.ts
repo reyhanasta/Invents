@@ -39,6 +39,7 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    roles?: string[]; // Added roles property
     [key: string]: unknown; // This allows for additional properties...
 }
 
@@ -90,3 +91,87 @@ export type Company = {
     updated_at?:string;
 }
 
+export type TicketCategory = {
+    id: number;
+    name: string;
+    description?: string;
+    is_active: boolean;
+};
+
+export type Priority = {
+    id: number;
+    name: string;
+    level: number;
+    response_target_minutes?: number;
+    resolve_target_minutes?: number;
+};
+
+export type Department = {
+    id: number;
+    name: string;
+};
+
+export type TicketComment = {
+    id: number;
+    ticket_id: number;
+    user_id: number;
+    user?: User;
+    message: string;
+    is_internal: boolean;
+    created_at: string;
+    updated_at: string;
+};
+
+export type TicketAttachment = {
+    id: number;
+    ticket_id: number;
+    uploaded_by: number;
+    uploader?: User;
+    file_name: string;
+    file_path: string;
+    file_size?: number;
+    mime_type?: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type TicketStatusLog = {
+    id: number;
+    ticket_id: number;
+    from_status?: string | null;
+    to_status: string;
+    changed_by: number;
+    changer?: User;
+    note?: string | null;
+    created_at: string;
+    updated_at: string;
+};
+
+export type Ticket = {
+    id: number;
+    ticket_code: string;
+    title: string;
+    description: string;
+    reporter_id: number;
+    reporter?: User;
+    assigned_to?: number;
+    assignee?: User;
+    category_id: number;
+    category?: TicketCategory;
+    priority_id: number;
+    priority?: Priority;
+    department_id?: number | null;
+    department?: Department;
+    asset_id?: number; // Added
+    asset?: Asset; // Added
+    status: 'open' | 'triaged' | 'in_progress' | 'pending' | 'resolved' | 'closed' | 'rejected';
+    source: string;
+    due_at?: string | null;
+    resolved_at?: string | null;
+    closed_at?: string | null;
+    created_at: string;
+    updated_at: string;
+    comments?: TicketComment[];
+    attachments?: TicketAttachment[];
+    status_logs?: TicketStatusLog[];
+};

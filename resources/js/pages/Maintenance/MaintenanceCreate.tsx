@@ -18,7 +18,11 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { maintenances, maintenancesStore } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
+import {
+    type Asset as AssetType,
+    type BreadcrumbItem,
+    type Ticket,
+} from '@/types';
 import { Form, Head, router } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
@@ -34,17 +38,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Asset = {
-    id: number;
-    asset_name: string;
-    asset_code: string;
-};
-
 type MaintenanceCreateProps = {
-    assets: Array<Asset>;
+    assets: Array<AssetType>;
+    prefillTicket?: Ticket;
 };
 
-export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
+export default function MaintenanceCreate({
+    assets,
+    prefillTicket,
+}: MaintenanceCreateProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Maintenance" />
@@ -107,7 +109,11 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 *
                                             </span>
                                         </Label>
-                                        <Select name="asset_id" required>
+                                        <Select
+                                            name="asset_id"
+                                            defaultValue={prefillTicket?.asset_id?.toString()}
+                                            required
+                                        >
                                             <SelectTrigger
                                                 aria-invalid={!!errors.asset_id}
                                                 disabled={processing}
@@ -349,6 +355,11 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                         <Textarea
                                             id="description"
                                             name="description"
+                                            defaultValue={
+                                                prefillTicket
+                                                    ? `Maintenance based on Ticket ${prefillTicket.ticket_code}: ${prefillTicket.title}\n\n${prefillTicket.description}`
+                                                    : ''
+                                            }
                                             placeholder="Jelaskan pekerjaan maintenance yang perlu dilakukan..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
@@ -404,6 +415,12 @@ export default function MaintenanceCreate({ assets }: MaintenanceCreateProps) {
                                                 ? 'Membuat...'
                                                 : 'Buat Maintenance'}
                                         </Button>
+                                        {/* Hidden Ticket ID */}
+                                        <input
+                                            type="hidden"
+                                            name="ticket_id"
+                                            value={prefillTicket?.id || ''}
+                                        />
                                     </div>
                                 </div>
                             )}

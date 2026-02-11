@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Maintenance;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -83,12 +84,16 @@ class MaintenanceController extends Controller
     //     ]);
     // }
     
-    public function create()
+    public function create(Request $request)
     {
+        $ticketId = $request->query('ticket_id');
+        $ticket = $ticketId ? Ticket::with('asset')->find($ticketId) : null;
+
         return Inertia::render('Maintenance/MaintenanceCreate', [
             'assets' => Asset::select('id', 'asset_name', 'asset_code')
                 ->orderBy('asset_name')
                 ->get(),
+            'prefillTicket' => $ticket,
         ]);
     }
 

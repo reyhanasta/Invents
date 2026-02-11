@@ -15,12 +15,22 @@ import {
     categories,
     company,
     dashboard,
+    helpdeskIndex,
     locations,
     maintenances,
+    tickets,
 } from '@/routes';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Box, Building2, Folder, MapPin, Wrench } from 'lucide-react';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    Box,
+    Building2,
+    FileText,
+    Folder,
+    LifeBuoy,
+    MapPin,
+    Wrench,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -49,6 +59,20 @@ const mainNavItems: NavItem[] = [
         href: maintenances(),
         icon: Wrench,
     },
+
+    {
+        title: 'Ticketing',
+        href: tickets(),
+        icon: FileText,
+    },
+    {
+        title: 'Pusat Bantuan',
+        href: helpdeskIndex(),
+        icon: LifeBuoy,
+    },
+];
+
+const footerNavItems: NavItem[] = [
     {
         title: 'Perusahaan',
         href: company(),
@@ -56,16 +80,29 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const footerNavItems: NavItem[] = [];
-
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+
+    // Check if user has admin role (assuming roles array contains 'admin')
+    const isAdmin = auth.user.roles?.includes('admin');
+
+    const filteredMainNavItems = mainNavItems.filter((item) => {
+        if (item.title === 'Ticketing' && !isAdmin) return false;
+        return true;
+    });
+
+    const filteredFooterNavItems = footerNavItems.filter((item) => {
+        if (item.title === 'Perusahaan' && !isAdmin) return false;
+        return true;
+    });
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={dashboard().url} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -74,11 +111,11 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={filteredMainNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <NavFooter items={filteredFooterNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

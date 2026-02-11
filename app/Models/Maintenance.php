@@ -16,4 +16,8 @@ class Maintenance extends Model
     public function asset(): BelongsTo{
         return $this->belongsTo(Asset::class);
     }
+
+    public function ticket(): BelongsTo{
+        return $this->belongsTo(Ticket::class);
+    }
 }
