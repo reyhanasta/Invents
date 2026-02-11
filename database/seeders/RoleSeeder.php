@@ -29,20 +29,7 @@ class RoleSeeder extends Seeder
         $role = Role::firstOrCreate(['name' => 'client']);
         $role->givePermissionTo('access helpdesk');
         
-        // Find existing users and assign roles if needed
-        $user = User::find(1);
-        if ($user) {
-            $user->assignRole('admin');
-        }
-        
-        // Create a test client user if not exists
-        if (!User::where('email', 'client@example.com')->exists()) {
-            $client = User::factory()->create([
-                'name' => 'Test Client',
-                'email' => 'client@example.com',
-                'password' => bcrypt('password'),
-            ]);
-            $client->assignRole('client');
-        }
+        // Roles and permissions are now created.
+        // User role assignments are handled in UserSeeder.
     }
 }

@@ -88,6 +88,7 @@ export function AppSidebar() {
 
     const filteredMainNavItems = mainNavItems.filter((item) => {
         if (item.title === 'Ticketing' && !isAdmin) return false;
+        if (item.title === 'Pusat Bantuan' && isAdmin) return false;
         return true;
     });
 

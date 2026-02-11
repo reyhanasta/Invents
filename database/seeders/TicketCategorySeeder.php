@@ -14,28 +14,33 @@ class TicketCategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Hardware',
-                'description' => 'Masalah terkait perangkat keras seperti laptop, printer, monitor, dll.',
+                'name' => 'Jaringan',
+                'description' => 'Masalah koneksi internet, Wi-Fi, kabel LAN, dan perangkat jaringan lainnya.',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'SIMRS',
+                'description' => 'Masalah terkait penggunaan dan kendala pada Sistem Informasi Manajemen Rumah Sakit.',
                 'is_active' => true,
             ],
             [
                 'name' => 'Software',
-                'description' => 'Masalah terkait perangkat lunak, sistem operasi, dan aplikasi.',
+                'description' => 'Masalah pada sistem operasi, aplikasi perkantoran, dan perangkat lunak lainnya.',
                 'is_active' => true,
             ],
             [
-                'name' => 'Network',
-                'description' => 'Masalah terkait koneksi internet, wifi, dan jaringan internal.',
+                'name' => 'Hardware',
+                'description' => 'Kerusakan atau kendala pada perangkat fisik seperti komputer, printer, monitor, dll.',
                 'is_active' => true,
             ],
             [
-                'name' => 'Account & Access',
-                'description' => 'Masalah terkait akun pengguna, password, dan hak akses sistem.',
+                'name' => 'Access dan Account',
+                'description' => 'Lupa password, permintaan hak akses, atau masalah login akun.',
                 'is_active' => true,
             ],
             [
-                'name' => 'Others',
-                'description' => 'Masalah umum lainnya yang tidak termasuk dalam kategori di atas.',
+                'name' => 'Lain-lain',
+                'description' => 'Kendala umum lainnya yang tidak termasuk dalam kategori di atas.',
                 'is_active' => true,
             ],
         ];
