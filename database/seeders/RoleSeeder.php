@@ -26,6 +26,11 @@ class RoleSeeder extends Seeder
         $role = Role::firstOrCreate(['name' => 'admin']);
         $role->givePermissionTo(Permission::all());
 
+        $role = Role::firstOrCreate(['name' => 'management']);
+        // Management has same permissions as admin except for user management
+        // For now we'll just give it everything and restrict in policies
+        $role->givePermissionTo(Permission::all());
+
         $role = Role::firstOrCreate(['name' => 'client']);
         $role->givePermissionTo('access helpdesk');
         

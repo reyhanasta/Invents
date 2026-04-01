@@ -49,24 +49,20 @@ class AssetController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(Asset $asset)
     {
-        $assetList = Asset::findOrFail($id);
-        // $categoryName = Category::find($assetList->category_id, 'category_name')->get('category_name');
-        $categoryName = Category::where('id', $assetList->category_id)->value('category_name');
-        $locationName = Location::where('id', $assetList->location_id)->value('location_name');
+        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
+        $locationName = Location::where('id', $asset->location_id)->value('location_name');
       
         return Inertia::render('Asset/AssetDetail', [
-            'asset' => $assetList,
+            'asset' => $asset,
             'categoryName' => $categoryName,
             'locationName' => $locationName,
         ]);
     }
 
-    public function edit($id)
+    public function edit(Asset $asset)
     {
-        $asset = Asset::findOrFail($id);
-
         return Inertia::render('Asset/AssetEdit', [
             'asset' => $asset,
             'categories' => Category::all(),
@@ -101,7 +97,7 @@ class AssetController extends Controller
         return to_route('assets')->with('success', 'Asset berhasil ditambahkan!');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Asset $asset)
     {
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
@@ -114,29 +110,27 @@ class AssetController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $asset = Asset::findOrFail($id);
         $asset->update($validated);
 
         return to_route('assets')->with('success', 'Aset berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy(Asset $asset)
     {
-        $asset = Asset::findOrFail($id);
         $asset->delete();
 
         return to_route('assets')->with('success', 'Aset berhasil dihapus.');
     }
 
-    public function qrcodeDetail($id)
+    public function qrcodeDetail(Asset $asset)
     {
-        $asset = Asset::with([
+        $asset->load([
             'category:id,category_name',
             'location:id,location_name',
             'maintenances' => function ($q) {
                 $q->orderByDesc('maintenance_date')->limit(10);
             }
-        ])->findOrFail($id);
+        ]);
         return Inertia::render('Asset/AssetQrcodeDetail', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,
@@ -145,12 +139,12 @@ class AssetController extends Controller
         ]);
     }
 
-    public function printLabel($id)
+    public function printLabel(Asset $asset)
     {
-        $asset = Asset::with([
+        $asset->load([
             'category:id,category_name',
             'location:id,location_name',
-        ])->findOrFail($id);
+        ]);
 
         $company = Company::first()->complete_company_name;
         

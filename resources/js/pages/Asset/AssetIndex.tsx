@@ -43,8 +43,8 @@ import {
     assetsPrintLabel,
     assetsQrcodeDetail,
 } from '@/routes';
-import { Asset, BreadcrumbItem } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
+import { Asset, BreadcrumbItem, SharedData } from '@/types';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Eye,
     Loader2,
@@ -109,6 +109,11 @@ export const conditionConfig = {
 };
 
 export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
+    const { auth } = usePage<SharedData>().props;
+    const isStaff = auth.user.role_names?.some((role: string) =>
+        ['admin', 'management'].includes(role),
+    );
+
     const [searchQuery, setSearchQuery] = useState(search);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -213,17 +218,19 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                             </InputGroupAddon>
                         </InputGroup>
                     </div>
-                    <Button
-                        size="lg"
-                        className="bg-primary hover:bg-primary/90 sm:w-auto"
-                        aria-label="Add Asset"
-                        asChild
-                    >
-                        <Link href={assetsCreate().url}>
-                            <Plus className="h-4 w-4" />
-                            <span className="ml-2">Tambah Asset</span>
-                        </Link>
-                    </Button>
+                    {isStaff && (
+                        <Button
+                            size="lg"
+                            className="bg-primary hover:bg-primary/90 sm:w-auto"
+                            aria-label="Add Asset"
+                            asChild
+                        >
+                            <Link href={assetsCreate().url}>
+                                <Plus className="h-4 w-4" />
+                                <span className="ml-2">Tambah Asset</span>
+                            </Link>
+                        </Button>
+                    )}
                 </div>
 
                 {/* Table */}

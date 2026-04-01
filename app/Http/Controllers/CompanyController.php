@@ -32,13 +32,12 @@ class CompanyController extends Controller
         return to_route('company')->with('success','Perusahaan berhasil dibuat!');
        
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, Company $company){
        
        $validate = $request->validate([
            'complete_company_name' => 'required|string|max:255',
        ]);
        
-       $company = Company::findOrFail($id);
        $company->update(
             [
                 'complete_company_name' => $validate['complete_company_name'],
@@ -48,9 +47,8 @@ class CompanyController extends Controller
         return to_route('company')->with('success','Perusahaan berhasil diupdate!');
        
     }
-    public function delete(Request $request, $id){
+    public function delete(Company $company){
        
-        $company = Company::findOrFail($id);
         $company->delete();
 
         return to_route('company')->with('success','Perusahaan berhasil dihapus!');
