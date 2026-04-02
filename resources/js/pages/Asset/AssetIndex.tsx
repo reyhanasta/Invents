@@ -45,7 +45,10 @@ import {
 import { Asset, BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
+    Download,
     Eye,
+    FileSpreadsheet,
+    FileText,
     Loader2,
     MoreHorizontalIcon,
     Pencil,
@@ -217,19 +220,51 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                             </InputGroupAddon>
                         </InputGroup>
                     </div>
-                    {isStaff && (
-                        <Button
-                            size="lg"
-                            className="bg-primary hover:bg-primary/90 sm:w-auto"
-                            aria-label="Add Asset"
-                            asChild
-                        >
-                            <Link href={assetsCreate().url}>
-                                <Plus className="h-4 w-4" />
-                                <span className="ml-2">Tambah Asset</span>
-                            </Link>
-                        </Button>
-                    )}
+                    <div className="flex items-center gap-2">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="lg">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Export
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Pilih Format</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        window.open('/assets/export?format=excel')
+                                    }
+                                >
+                                    <FileSpreadsheet className="mr-2 h-4 w-4" />
+                                    Export Excel
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        window.open('/assets/export?format=pdf')
+                                    }
+                                >
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    Export PDF
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        {isStaff && (
+                            <Button
+                                size="lg"
+                                className="bg-primary hover:bg-primary/90 sm:w-auto"
+                                aria-label="Add Asset"
+                                asChild
+                            >
+                                <Link href={assetsCreate().url}>
+                                    <Plus className="h-4 w-4" />
+                                    <span className="ml-2 text-white">
+                                        Tambah Asset
+                                    </span>
+                                </Link>
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 {/* Table */}
