@@ -1,9 +1,7 @@
-buatkan sebuah planning baru ke dalam issue.md yaitu fokus debuging dan pembuatan test untuk semua fitur yang sudah ada 
+okey now i realy want to redesign the assets detail of our projects.
 
-aku ingin kau baca seluruh file test yang ada di project ini dan pastikan tidak ada error atau bug yang terlewatkan.
+now make a implementation plan to our current issues is to merge @assetIndex& @assetPrintLabel, instead of using seperated pages, i want to make users can do the labels print inside on assets detail, make the asset detail interactive and user-friendly, and  users can see all the information about the asset, and also can do the labels print inside on assets detail, i like to seperated the qr label print and assets detail with Tabs feature in ShadcnUI .
 
-pastikan menggunakan laravel best practice (pest)
+ive make some design in stitch i think you can use it as the references and make it more better.
 
-make sure do test every 1 feature test have developed. if not, create it. and make sure the test is working properly.
-
-pastikan implementasi digunakan dengan bahasa yang dapat dimengerti oleh junior programmer dan AI yang murah
+like usual please make the plan, implementation and code ease to understand by junior programmer and low cost model AI,

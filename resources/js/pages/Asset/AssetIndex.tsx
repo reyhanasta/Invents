@@ -39,9 +39,8 @@ import {
     assets,
     assetsCreate,
     assetsDelete,
+    assetsDetail,
     assetsEdit,
-    assetsPrintLabel,
-    assetsQrcodeDetail,
 } from '@/routes';
 import { Asset, BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
@@ -343,7 +342,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                               className="cursor-pointer"
                                                               onSelect={() => {
                                                                   router.visit(
-                                                                      assetsQrcodeDetail(
+                                                                      assetsDetail(
                                                                           asset.id,
                                                                       ).url,
                                                                   );
@@ -357,9 +356,12 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                           <DropdownMenuItem
                                                               className="cursor-pointer"
                                                               onSelect={() => {
+                                                                  // Navigasi ke halaman detail
+                                                                  // dengan tab QR Label aktif
                                                                   router.visit(
-                                                                      assetsPrintLabel(
+                                                                      assetsDetail(
                                                                           asset.id,
+                                                                          { query: { tab: 'label' } },
                                                                       ).url,
                                                                   );
                                                               }}
