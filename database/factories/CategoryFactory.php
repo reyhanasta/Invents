@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends Factory<Category>
  */
 class CategoryFactory extends Factory
 {
@@ -16,8 +17,8 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $prefix = strtoupper($this->faker->lexify('???'));
         $words = $this->faker->words(2);
-        $prefix = strtoupper(substr($words[0], 0, 3));
 
         return [
             'category_name' => ucfirst(implode(' ', $words)),

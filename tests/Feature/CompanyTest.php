@@ -2,9 +2,11 @@
 
 use App\Models\Company;
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->seed(RoleSeeder::class);
+    $this->user = User::factory()->create()->assignRole('admin');
     $this->actingAs($this->user);
 });
 

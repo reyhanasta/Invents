@@ -19,11 +19,10 @@ class AssetController extends Controller
 
         $query = Asset::query()->with([
             'category:id,category_name',
-            'location:id,location_name'
+            'location:id,location_name',
         ])->orderByDesc('created_at');
-        
+
         // $query   = Asset::with(['category', 'location'])->latest()->paginate(10);
-      
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -35,6 +34,7 @@ class AssetController extends Controller
             });
         }
         $assets = $query->paginate(8)->withQueryString();
+
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'search' => $search,
@@ -53,7 +53,7 @@ class AssetController extends Controller
     {
         $categoryName = Category::where('id', $asset->category_id)->value('category_name');
         $locationName = Location::where('id', $asset->location_id)->value('location_name');
-      
+
         return Inertia::render('Asset/AssetDetail', [
             'asset' => $asset,
             'categoryName' => $categoryName,
@@ -129,8 +129,9 @@ class AssetController extends Controller
             'location:id,location_name',
             'maintenances' => function ($q) {
                 $q->orderByDesc('maintenance_date')->limit(10);
-            }
+            },
         ]);
+
         return Inertia::render('Asset/AssetQrcodeDetail', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,
@@ -146,8 +147,8 @@ class AssetController extends Controller
             'location:id,location_name',
         ]);
 
-        $company = Company::first()->complete_company_name;
-        
+        $company = Company::first()?->complete_company_name ?? 'N/A';
+
         return Inertia::render('Asset/AssetPrintLabel', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,

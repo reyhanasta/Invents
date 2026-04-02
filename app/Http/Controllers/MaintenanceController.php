@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\Maintenance;
 use App\Models\Ticket;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -46,7 +47,6 @@ class MaintenanceController extends Controller
         ]);
     }
 
-    
     // public function index(Request $request)
     // {
     //     // Validate inputs (opsional tapi recommended)
@@ -63,18 +63,18 @@ class MaintenanceController extends Controller
     //         $query->where(function ($q) use ($search) {
     //             $q->where('technician', 'like', "%{$search}%")
     //             ->orWhere('description', 'like', "%{$search}%")
-    //             ->orWhereHas('asset', fn($q) => 
+    //             ->orWhereHas('asset', fn($q) =>
     //                 $q->where('asset_name', 'like', "%{$search}%")
     //             );
     //         });
     //     }
 
     //     // Filters
-    //     $query->when($request->input('type'), fn($q, $type) => 
+    //     $query->when($request->input('type'), fn($q, $type) =>
     //         $q->where('type', $type)
     //     );
-        
-    //     $query->when($request->input('status'), fn($q, $status) => 
+
+    //     $query->when($request->input('status'), fn($q, $status) =>
     //         $q->where('status', $status)
     //     );
 
@@ -83,7 +83,7 @@ class MaintenanceController extends Controller
     //         'filters' => $request->only(['search', 'type', 'status']),
     //     ]);
     // }
-    
+
     public function create(Request $request)
     {
         $ticketId = $request->query('ticket_id');
@@ -107,7 +107,7 @@ class MaintenanceController extends Controller
         ]);
     }
 
-    public function show(int $id): \Illuminate\Http\JsonResponse
+    public function show(int $id): JsonResponse
     {
         $maint = Maintenance::with('asset')->findOrFail($id);
 
@@ -176,6 +176,10 @@ class MaintenanceController extends Controller
             'type' => [
                 'required',
                 Rule::in(['routine', 'repair', 'inspection', 'calibration']),
+            ],
+            'condition' => [
+                'required',
+                Rule::in(['good', 'minor_damage', 'major_damage']),
             ],
             'maintenance_date' => ['required', 'date'],
             'maintenance_done_date' => [
