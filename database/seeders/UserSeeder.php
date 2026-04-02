@@ -32,5 +32,15 @@ class UserSeeder extends Seeder
             ]
         );
         $client->syncRoles(['client']);
+
+        $management = User::updateOrCreate(
+            ['email' => 'management@example.com'],
+            [
+                'name' => 'Management User',
+                'password' => 'password',
+                'email_verified_at' => now(),
+            ]
+        );
+        $management->syncRoles(['management']);
     }
 }

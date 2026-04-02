@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user() ? array_merge($request->user()->toArray(), [
-                    'roles' => $request->user()->getRoleNames(),
+                    'role_names' => $request->user()->getRoleNames(),
                 ]) : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

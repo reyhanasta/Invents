@@ -20,6 +20,7 @@ import {
     maintenances,
     tickets,
 } from '@/routes';
+import { index as userIndex } from '@/actions/App/Http/Controllers/Admin/UserController';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
@@ -29,45 +30,41 @@ import {
     Folder,
     LifeBuoy,
     MapPin,
+    Users,
     Wrench,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
-    // {
-    //     title: 'Dashboard',
-    //     href: dashboard(),
-    //     icon: LayoutGrid,
-    // },
     {
         title: 'Aset',
-        href: assets(),
+        href: assets().url,
         icon: Box,
     },
     {
         title: 'Kategori',
-        href: categories(),
+        href: categories().url,
         icon: Folder,
     },
     {
         title: 'Lokasi',
-        href: locations(),
+        href: locations().url,
         icon: MapPin,
     },
     {
         title: 'Pemeliharaan',
-        href: maintenances(),
+        href: maintenances().url,
         icon: Wrench,
     },
 
     {
         title: 'Ticketing',
-        href: tickets(),
+        href: tickets().url,
         icon: FileText,
     },
     {
         title: 'Pusat Bantuan',
-        href: helpdeskIndex(),
+        href: helpdeskIndex().url,
         icon: LifeBuoy,
     },
 ];
@@ -75,25 +72,32 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Perusahaan',
-        href: company(),
+        href: company().url,
         icon: Building2,
+    },
+    {
+        title: 'User Management',
+        href: userIndex().url,
+        icon: Users,
     },
 ];
 
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
 
-    // Check if user has admin role (assuming roles array contains 'admin')
-    const isAdmin = auth.user.roles?.includes('admin');
+    const isStaff = auth.user.role_names?.some(role => ['admin', 'management'].includes(role));
+    const isClient = auth.user.role_names?.includes('client');
+    const isAdmin = auth.user.role_names?.includes('admin');
 
     const filteredMainNavItems = mainNavItems.filter((item) => {
-        if (item.title === 'Ticketing' && !isAdmin) return false;
-        if (item.title === 'Pusat Bantuan' && isAdmin) return false;
+        if (item.title === 'Ticketing' && !isStaff) return false;
+        if (item.title === 'Pusat Bantuan' && !isClient) return false;
         return true;
     });
 
     const filteredFooterNavItems = footerNavItems.filter((item) => {
-        if (item.title === 'Perusahaan' && !isAdmin) return false;
+        if (item.title === 'Perusahaan' && !isStaff) return false;
+        if (item.title === 'User Management' && !isAdmin) return false;
         return true;
     });
 

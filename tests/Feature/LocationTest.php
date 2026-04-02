@@ -2,13 +2,12 @@
 
 use App\Models\Location;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\RoleSeeder;
 use Inertia\Testing\AssertableInertia as Assert;
 
-uses(RefreshDatabase::class);
-
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->seed(RoleSeeder::class);
+    $this->user = User::factory()->create()->assignRole('admin');
     $this->actingAs($this->user);
 });
 

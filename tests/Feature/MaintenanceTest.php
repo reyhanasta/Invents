@@ -3,20 +3,18 @@
 use App\Models\Asset;
 use App\Models\Maintenance;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\RoleSeeder;
 use Inertia\Testing\AssertableInertia as Assert;
 
-uses(RefreshDatabase::class);
-
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->seed(RoleSeeder::class);
+    $this->user = User::factory()->create()->assignRole('admin');
     $this->actingAs($this->user);
 });
 
 describe('Maintenance Index', function () {
 
     it('can display maintenances index page', function () {
-        Maintenance::truncate();
         Maintenance::factory()->count(3)->create();
 
         $response = $this->get(route('maintenances'));
@@ -39,7 +37,6 @@ describe('Maintenance Index', function () {
     });
 
     it('includes asset relationship data', function () {
-        Maintenance::truncate();
         $maintenance = Maintenance::factory()->create();
 
         $response = $this->get(route('maintenances'));
@@ -53,7 +50,6 @@ describe('Maintenance Index', function () {
     });
 
     it('can search maintenances by technician', function () {
-        Maintenance::truncate();
         Maintenance::factory()->create(['technician' => 'John Doe']);
         Maintenance::factory()->create(['technician' => 'Jane Smith']);
 
@@ -68,7 +64,6 @@ describe('Maintenance Index', function () {
     });
 
     it('can search maintenances by asset name', function () {
-        Maintenance::truncate();
         $asset1 = Asset::factory()->create(['asset_name' => 'Dell Laptop']);
         $asset2 = Asset::factory()->create(['asset_name' => 'HP Desktop']);
 
@@ -86,7 +81,6 @@ describe('Maintenance Index', function () {
     });
 
     it('can filter by type', function () {
-        Maintenance::truncate();
         Maintenance::factory()->create(['type' => 'routine']);
         Maintenance::factory()->create(['type' => 'repair']);
 
@@ -101,7 +95,6 @@ describe('Maintenance Index', function () {
     });
 
     it('can filter by status', function () {
-        Maintenance::truncate();
         Maintenance::factory()->create(['status' => 'pending']);
         Maintenance::factory()->create(['status' => 'completed']);
 
@@ -116,7 +109,6 @@ describe('Maintenance Index', function () {
     });
 
     it('paginates maintenances', function () {
-        Maintenance::truncate();
         Maintenance::factory()->count(10)->create();
 
         $response = $this->get(route('maintenances'));
@@ -180,6 +172,7 @@ describe('Maintenance Store', function () {
             'note' => 'Replaced keyboard membrane',
             'technician' => 'John Doe',
             'cost' => 150.50,
+            'condition' => 'good',
         ];
 
         $response = $this->post(route('maintenances-store'), $data);
@@ -208,6 +201,7 @@ describe('Maintenance Store', function () {
             'type' => 'routine',
             'maintenance_date' => '2023-01-15',
             'description' => 'Monthly checkup',
+            'condition' => 'good',
         ];
 
         $response = $this->post(route('maintenances-store'), $data);
@@ -382,6 +376,7 @@ describe('Maintenance Update', function () {
             'note' => 'Updated note',
             'technician' => 'Jane Smith',
             'cost' => 200.00,
+            'condition' => 'minor_damage',
         ];
 
         $response = $this->put(route('maintenances-update', $maintenance), $data);
@@ -403,7 +398,7 @@ describe('Maintenance Update', function () {
 
         $response = $this->put(route('maintenances-update', $maintenance), []);
 
-        $response->assertSessionHasErrors(['asset_id', 'type', 'maintenance_date', 'description']);
+        $response->assertSessionHasErrors(['asset_id', 'type', 'maintenance_date', 'description', 'condition']);
     });
 
     it('returns 404 when updating non-existent maintenance', function () {

@@ -4,6 +4,8 @@ use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
+use Carbon\Carbon;
+use Database\Seeders\RoleSeeder;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -14,7 +16,8 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\put;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->seed(RoleSeeder::class);
+    $this->user = User::factory()->create()->assignRole('admin');
     actingAs($this->user);
 });
 
@@ -67,6 +70,20 @@ describe('Asset Index', function () {
             ->component('Asset/AssetIndex')
             ->has('assets.data', 8) // per_page is 8 in controller
             ->where('assets.total', 20)
+        );
+    });
+
+    it('can search assets by name', function () {
+        Asset::factory()->create(['asset_name' => 'Matching Asset']);
+        Asset::factory()->create(['asset_name' => 'Other Asset']);
+
+        $response = get(route('assets', ['search' => 'Matching']));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetIndex')
+            ->has('assets.data', 1)
+            ->where('assets.data.0.asset_name', 'Matching Asset')
         );
     });
 });
@@ -474,7 +491,7 @@ describe('Asset Factory', function () {
         $asset = Asset::factory()->recent()->create();
 
         $sixMonthsAgo = now()->subMonths(6)->startOfDay();
-        $acquisitionDate = \Carbon\Carbon::parse($asset->acquisition_date);
+        $acquisitionDate = Carbon::parse($asset->acquisition_date);
 
         expect($acquisitionDate->isAfter($sixMonthsAgo))->toBeTrue();
     });
@@ -483,5 +500,48 @@ describe('Asset Factory', function () {
         Asset::factory()->count(10)->create();
 
         expect(Asset::count())->toBe(10);
+    });
+});
+describe('Asset Special Actions', function () {
+    it('can view asset detail page', function () {
+        $asset = Asset::factory()->create();
+
+        $response = get(route('assets-detail', $asset->id));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetDetail')
+            ->has('asset')
+            ->has('categoryName')
+            ->has('locationName')
+            ->where('asset.id', $asset->id)
+        );
+    });
+
+    it('can view qrcode detail page', function () {
+        $asset = Asset::factory()->create();
+
+        $response = get(route('assets-qrcode-detail', $asset->id));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetQrcodeDetail')
+            ->has('asset')
+            ->where('asset.id', $asset->id)
+        );
+    });
+
+    it('can view print label page', function () {
+        $asset = Asset::factory()->create();
+
+        $response = get(route('assets-print-label', $asset->id));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetPrintLabel')
+            ->has('asset')
+            ->has('company')
+            ->where('asset.id', $asset->id)
+        );
     });
 });

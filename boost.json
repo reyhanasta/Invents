@@ -1,12 +1,11 @@
 {
     "agents": [
-        "copilot",
-        "cursor"
+        "gemini"
     ],
     "editors": [
-        "vscode"
+        "gemini"
     ],
     "guidelines": [
-        "laravel/fortify"
+        "laravel/wayfinder"
     ]
 }

@@ -10,6 +10,11 @@ export interface BreadcrumbItem {
     href: string;
 }
 
+export interface Role {
+    id: number;
+    name: string;
+}
+
 export interface NavGroup {
     title: string;
     items: NavItem[];
@@ -39,8 +44,9 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
-    roles?: string[]; // Added roles property
-    [key: string]: unknown; // This allows for additional properties...
+    roles?: Role[];
+    role_names?: string[];
+    [key: string]: unknown;
 }
 
 export type CategoryProps = {
