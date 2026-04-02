@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\AssetsExport;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Location;
@@ -7,6 +8,7 @@ use App\Models\Maintenance;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\RoleSeeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -563,5 +565,45 @@ describe('Asset Special Actions', function () {
         $response = get("/assets/{$asset->id}/print-label");
 
         $response->assertNotFound();
+    });
+});
+
+describe('Asset Export', function () {
+    it('can export assets to excel', function () {
+        Excel::fake();
+        Asset::factory()->count(3)->create();
+
+        $response = get(route('assets-export', ['format' => 'excel']));
+
+        $response->assertSuccessful();
+        Excel::assertDownloaded('assets-export-'.date('Ymd').'.xlsx', function (AssetsExport $export) {
+            return true;
+        });
+    });
+
+    it('can export assets to pdf', function () {
+        Asset::factory()->count(3)->create();
+
+        $response = get(route('assets-export', ['format' => 'pdf']));
+
+        $response->assertSuccessful();
+        $response->assertHeader('Content-Type', 'application/pdf');
+        $response->assertHeader('Content-Disposition', 'attachment; filename=assets-export-'.date('Ymd').'.pdf');
+    });
+
+    it('returns error for invalid format', function () {
+        $response = get(route('assets-export', ['format' => 'invalid']));
+
+        $response->assertStatus(400);
+        $response->assertJson(['message' => 'Format tidak valid.']);
+    });
+
+    it('allows management users to export', function () {
+        $user = User::factory()->create()->assignRole('management');
+        actingAs($user);
+
+        $response = get(route('assets-export', ['format' => 'excel']));
+
+        $response->assertSuccessful();
     });
 });

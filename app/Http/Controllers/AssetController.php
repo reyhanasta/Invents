@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AssetsExport;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Location;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
 {
@@ -167,5 +170,23 @@ class AssetController extends Controller
             'locationName' => $asset->location?->location_name,
             'company' => $company,
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $format = $request->query('format');
+
+        if ($format === 'excel') {
+            return Excel::download(new AssetsExport, 'assets-export-'.date('Ymd').'.xlsx');
+        }
+
+        if ($format === 'pdf') {
+            $assets = Asset::with(['category', 'location'])->get();
+            $pdf = Pdf::loadView('exports.assets-pdf', compact('assets'))->setPaper('a4', 'portrait');
+
+            return $pdf->download('assets-export-'.date('Ymd').'.pdf');
+        }
+
+        return response()->json(['message' => 'Format tidak valid.'], 400);
     }
 }

@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Asset Routes
+    Route::get('assets/export', [AssetController::class, 'export'])->name('assets-export')->can('viewAny', Asset::class);
     Route::get('assets', [AssetController::class, 'index'])->name('assets')->can('viewAny', Asset::class);
     Route::get('assets/create', [AssetController::class, 'create'])->name('assets-create')->can('create', Asset::class);
     Route::post('assets', [AssetController::class, 'store'])->name('assets-store')->can('create', Asset::class);
