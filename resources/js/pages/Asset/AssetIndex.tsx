@@ -229,11 +229,15 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Pilih Format</DropdownMenuLabel>
+                                <DropdownMenuLabel>
+                                    Pilih Format
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
                                     onClick={() =>
-                                        window.open('/assets/export?format=excel')
+                                        window.open(
+                                            '/assets/export?format=excel',
+                                        )
                                     }
                                 >
                                     <FileSpreadsheet className="mr-2 h-4 w-4" />
@@ -258,9 +262,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                             >
                                 <Link href={assetsCreate().url}>
                                     <Plus className="h-4 w-4" />
-                                    <span className="ml-2 text-white">
-                                        Tambah Asset
-                                    </span>
+                                    <span className="ml-2">Tambah Asset</span>
                                 </Link>
                             </Button>
                         )}
@@ -396,7 +398,11 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                                                   router.visit(
                                                                       assetsDetail(
                                                                           asset.id,
-                                                                          { query: { tab: 'label' } },
+                                                                          {
+                                                                              query: {
+                                                                                  tab: 'label',
+                                                                              },
+                                                                          },
                                                                       ).url,
                                                                   );
                                                               }}
