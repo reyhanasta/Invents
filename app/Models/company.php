@@ -11,4 +11,9 @@ class Company extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $fillable = [
+        'complete_company_name',
+    ];
+
+    protected $table = 'companies';
 }
