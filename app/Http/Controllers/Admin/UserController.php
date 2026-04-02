@@ -30,7 +30,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required|array',
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         $user = User::create([
@@ -39,7 +39,7 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        $user->assignRole($validated['roles']);
+        $user->assignRole($validated['role']);
 
         return to_route('users.index')->with('success', 'User created successfully.');
     }
@@ -58,7 +58,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'required|array',
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         $user->update([
@@ -70,7 +70,7 @@ class UserController extends Controller
             $user->update(['password' => bcrypt($validated['password'])]);
         }
 
-        $user->syncRoles($validated['roles']);
+        $user->syncRoles($validated['role']);
 
         return to_route('users.index')->with('success', 'User updated successfully.');
     }

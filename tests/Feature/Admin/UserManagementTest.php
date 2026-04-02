@@ -31,7 +31,7 @@ test('admin can store new user with roles', function () {
         'email' => 'newuser@example.com',
         'password' => 'password123',
         'password_confirmation' => 'password123',
-        'roles' => ['management']
+        'role' => 'management'
     ]);
 
     $response->assertRedirect('/users');
@@ -54,7 +54,7 @@ test('admin can update user and roles', function () {
     $response = $this->actingAs($this->admin)->put("/users/{$user->id}", [
         'name' => 'Updated Name',
         'email' => $user->email,
-        'roles' => ['admin']
+        'role' => 'admin'
     ]);
 
     $response->assertRedirect('/users');
