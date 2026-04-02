@@ -1,130 +1,139 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
-
 import { assets } from '@/routes';
-import { Asset, BreadcrumbItem } from '@/types';
+import { Asset, BreadcrumbItem, Maintenance } from '@/types';
 import { router } from '@inertiajs/react';
-import { ArrowLeft, Pencil, Printer } from 'lucide-react';
-import { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
+import { ArrowLeft, Info, Pencil, QrCode } from 'lucide-react';
 import AssetInformation from './AssetInformation';
-import AssetQrCodeLabel from './AssetQrCodeLabel';
+import AssetLabelTab from './AssetLabelTab';
+import AssetMaintenance from './AssetMaintenance';
+
+// ============================================================
+// AssetDetail — Halaman Detail Aset (Tabbed)
+// ============================================================
+// Halaman ini menggabungkan 2 fitur yang sebelumnya terpisah:
+//   1. Informasi Umum (detail aset + riwayat maintenance)
+//   2. QR Code Label (konfigurasi + preview + print label)
+//
+// Menggunakan ShadcnUI Tabs untuk navigasi antar fitur.
+// ============================================================
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets Detail',
+        title: 'Assets',
         href: assets().url,
+    },
+    {
+        title: 'Detail',
+        href: '#',
     },
 ];
 
-type AssetsShowProps = {
+// Tipe props yang diterima dari AssetController@show
+type AssetDetailProps = {
     asset: Asset;
     categoryName: string;
     locationName: string;
+    maintenance: Maintenance[];
+    company: string;
 };
 
 export default function AssetDetail({
     asset,
     categoryName,
     locationName,
-}: AssetsShowProps) {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const reactToPrintFn = useReactToPrint({
-        contentRef,
-        documentTitle: `${asset.asset_name} - ${asset.asset_code}`,
-        pageStyle: `
-            @page {
-                size: 60mm 40mm;
-                margin: 0;
-            }
-            @media print {
-                body {
-                    margin: 0;
-                    padding: 0;
-                }
-                * {
-                    -webkit-print-color-adjust: exact;
-                    print-color-adjust: exact;
-                }
-            }
-        `,
-    });
+    maintenance,
+    company,
+}: AssetDetailProps) {
+    // Baca query param ?tab=label dari URL
+    // Ini dipakai ketika user klik "Cetak Label" dari halaman index
+    const urlParams = new URLSearchParams(window.location.search);
+    const defaultTab = urlParams.get('tab') === 'label' ? 'label' : 'info';
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="container mx-auto space-y-6 p-2 md:p-4 lg:p-6">
-                <div aria-label="header" className="flex justify-between">
+                {/* === Header: Back button + action buttons === */}
+                <div className="flex items-center justify-between">
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="hover:no gap-3 text-sm text-muted-foreground"
+                        className="gap-2 text-sm text-muted-foreground"
                         onClick={() => router.visit(assets().url)}
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Back
                     </Button>
 
-                    <div
-                        aria-label="buttons"
-                        className="flex justify-between gap-2"
+                    <Button
+                        onClick={() =>
+                            router.visit(`/assets/${asset.id}/edit`)
+                        }
                     >
-                        <Button
-                            variant="outline"
-                            className="text-accent-foreground"
-                            // onClick={() =>
-                            //     router.visit(`/assets/${asset.id}/print-label`)
-                            // }
-                            onClick={reactToPrintFn}
-                        >
-                            <Printer />
-                            Print Label
-                        </Button>
-                        <Button
-                            onClick={() =>
-                                router.visit(`/assets/${asset.id}/edit`)
-                            }
-                        >
-                            <Pencil />
-                            Edit Assets
-                        </Button>
-                    </div>
+                        <Pencil className="mr-1 h-4 w-4" />
+                        Edit Asset
+                    </Button>
                 </div>
-                <div
-                    aria-label="content"
-                    className="grid grid-cols-1 gap-2 xl:grid-cols-4"
-                >
-                    <div
-                        id="content-information"
-                        className="space-y-2 md:col-span-3"
-                    >
-                        <AssetInformation
+
+                {/* === Asset Header Card (tetap terlihat di semua tab) === */}
+                <AssetInformation
+                    asset={asset}
+                    categoryName={categoryName}
+                    locationName={locationName}
+                    headerOnly
+                />
+
+                {/* === Tabs: Informasi Umum | QR Code Label === */}
+                <Tabs defaultValue={defaultTab} className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 md:w-auto md:inline-grid">
+                        <TabsTrigger
+                            value="info"
+                            className="gap-2"
+                        >
+                            <Info className="h-4 w-4" />
+                            Informasi Umum
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="label"
+                            className="gap-2"
+                        >
+                            <QrCode className="h-4 w-4" />
+                            QR Code Label
+                        </TabsTrigger>
+                    </TabsList>
+
+                    {/* --- Tab 1: Informasi Umum + Maintenance --- */}
+                    <TabsContent value="info" className="mt-6">
+                        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                            {/* Info aset (kolom kiri, 2/3 layar) */}
+                            <div className="xl:col-span-2">
+                                <AssetInformation
+                                    asset={asset}
+                                    categoryName={categoryName}
+                                    locationName={locationName}
+                                    detailOnly
+                                />
+                            </div>
+
+                            {/* Riwayat Maintenance (kolom kanan, 1/3 layar) */}
+                            <div className="xl:col-span-1">
+                                <AssetMaintenance
+                                    maintenance={maintenance ?? []}
+                                />
+                            </div>
+                        </div>
+                    </TabsContent>
+
+                    {/* --- Tab 2: QR Code Label --- */}
+                    <TabsContent value="label" className="mt-6">
+                        <AssetLabelTab
                             asset={asset}
-                            categoryName={categoryName}
+                            company={company}
                             locationName={locationName}
                         />
-                    </div>
-                    <div id="content-label">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="border-b-2 pb-4 text-lg">
-                                    Asset Label Preview
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex justify-center">
-                                <div ref={contentRef}>
-                                    <AssetQrCodeLabel
-                                        asset={asset}
-                                        company="Klinik Utama Bukit Raya"
-                                    />
-                                </div>
-                                {/* <AssetLabel
-                                    asset={asset}
-                                    location={locationName}
-                                /> */}
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                    </TabsContent>
+                </Tabs>
             </div>
         </AppLayout>
     );

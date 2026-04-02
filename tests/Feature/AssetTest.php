@@ -3,6 +3,7 @@
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Location;
+use App\Models\Maintenance;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\RoleSeeder;
@@ -503,7 +504,10 @@ describe('Asset Factory', function () {
     });
 });
 describe('Asset Special Actions', function () {
-    it('can view asset detail page', function () {
+    it('can view asset detail page with all tab data', function () {
+        // Test bahwa halaman detail mengirim semua data yang dibutuhkan
+        // untuk kedua tab: info umum (categoryName, locationName, maintenance)
+        // dan QR label (company)
         $asset = Asset::factory()->create();
 
         $response = get(route('assets-detail', $asset->id));
@@ -514,7 +518,27 @@ describe('Asset Special Actions', function () {
             ->has('asset')
             ->has('categoryName')
             ->has('locationName')
+            ->has('maintenance')  // data untuk tab Informasi Umum
+            ->has('company')      // data untuk tab QR Label
             ->where('asset.id', $asset->id)
+        );
+    });
+
+    it('loads maintenance records in asset detail', function () {
+        // Pastikan data maintenance ter-load di halaman detail
+        $asset = Asset::factory()->create();
+
+        // Buat beberapa maintenance record untuk aset ini
+        Maintenance::factory()->count(3)->create([
+            'asset_id' => $asset->id,
+        ]);
+
+        $response = get(route('assets-detail', $asset->id));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetDetail')
+            ->has('maintenance', 3)
         );
     });
 
@@ -531,17 +555,13 @@ describe('Asset Special Actions', function () {
         );
     });
 
-    it('can view print label page', function () {
+    it('print label route no longer exists (merged into detail tabs)', function () {
+        // Route print-label sudah dihapus karena fiturnya sudah
+        // digabungkan ke tab QR Code Label di halaman detail
         $asset = Asset::factory()->create();
 
-        $response = get(route('assets-print-label', $asset->id));
+        $response = get("/assets/{$asset->id}/print-label");
 
-        $response->assertSuccessful();
-        $response->assertInertia(fn ($page) => $page
-            ->component('Asset/AssetPrintLabel')
-            ->has('asset')
-            ->has('company')
-            ->where('asset.id', $asset->id)
-        );
+        $response->assertNotFound();
     });
 });

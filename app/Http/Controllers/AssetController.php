@@ -51,13 +51,25 @@ class AssetController extends Controller
 
     public function show(Asset $asset)
     {
-        $categoryName = Category::where('id', $asset->category_id)->value('category_name');
-        $locationName = Location::where('id', $asset->location_id)->value('location_name');
+        // Load semua relasi yang dibutuhkan untuk kedua tab
+        // Tab 1 (Info Umum): category, location, maintenances
+        // Tab 2 (QR Label): company name
+        $asset->load([
+            'category:id,category_name',
+            'location:id,location_name',
+            'maintenances' => function ($q) {
+                $q->orderByDesc('maintenance_date')->limit(10);
+            },
+        ]);
+
+        $company = Company::first()?->complete_company_name ?? 'N/A';
 
         return Inertia::render('Asset/AssetDetail', [
             'asset' => $asset,
-            'categoryName' => $categoryName,
-            'locationName' => $locationName,
+            'categoryName' => $asset->category?->category_name,
+            'locationName' => $asset->location?->location_name,
+            'maintenance' => $asset->maintenances,
+            'company' => $company,
         ]);
     }
 
