@@ -33,7 +33,12 @@ class AssetsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMappi
             $asset->asset_name,
             $asset->category?->category_name ?? 'N/A',
             $asset->location?->location_name ?? 'N/A',
-            ucwords(str_replace('_', ' ', $asset->condition)),
+            match ($asset->condition) {
+                'good' => 'Baik',
+                'minor_damage' => 'Rusak Ringan',
+                'major_damage' => 'Rusak Berat',
+                default => $asset->condition,
+            },
         ];
     }
 

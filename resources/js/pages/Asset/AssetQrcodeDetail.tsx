@@ -9,7 +9,7 @@ import { default as AssetMaintenance } from './AssetMaintenance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Qr Code Detail',
+        title: 'Detail Kode QR',
         href: maintenances().url,
     },
 ];
@@ -35,7 +35,7 @@ export const statusConfig = {
         color: 'bg-blue-600',
     },
     maintenance: {
-        label: 'Maintenance',
+        label: 'Pemeliharaan',
         variant: 'warning' as const,
         icon: <Wrench />,
         color: 'bg-yellow-600',

@@ -21,7 +21,7 @@ import AssetMaintenance from './AssetMaintenance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets',
+        title: 'Aset',
         href: assets().url,
     },
     {
@@ -63,7 +63,7 @@ export default function AssetDetail({
                         onClick={() => router.visit(assets().url)}
                     >
                         <ArrowLeft className="h-4 w-4" />
-                        Back
+                        Kembali
                     </Button>
 
                     <Button
@@ -72,7 +72,7 @@ export default function AssetDetail({
                         }
                     >
                         <Pencil className="mr-1 h-4 w-4" />
-                        Edit Asset
+                        Ubah Aset
                     </Button>
                 </div>
 

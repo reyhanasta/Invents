@@ -56,7 +56,7 @@
 <body>
     <div class="header">
         <h2>Laporan Data Aset</h2>
-        <p>Tanggal Export: {{ date('F d, Y') }}</p>
+        <p>Tanggal Ekspor: {{ date('d/m/Y') }}</p>
     </div>
  
     <table>
@@ -80,7 +80,12 @@
                 <td>{{ $asset->location?->location_name ?? 'N/A' }}</td>
                 <td>
                     @php
-                        $conditionLabel = ucwords(str_replace('_', ' ', $asset->condition));
+                        $conditionLabel = match($asset->condition) {
+                            'good' => 'Baik',
+                            'minor_damage' => 'Rusak Ringan',
+                            'major_damage' => 'Rusak Berat',
+                            default => ucwords(str_replace('_', ' ', $asset->condition))
+                        };
                     @endphp
                     <span class="{{ $asset->condition }}">{{ $conditionLabel }}</span>
                 </td>
