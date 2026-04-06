@@ -182,7 +182,7 @@ class AssetController extends Controller
 
         if ($format === 'pdf') {
             $assets = Asset::with(['category', 'location'])->get();
-            $pdf = Pdf::loadView('exports.assets-pdf', compact('assets'))->setPaper('a4', 'portrait');
+            $pdf = Pdf::loadView('exports.assets-pdf', compact('assets'))->setPaper('a4', 'landscape');
 
             return $pdf->download('assets-export-'.date('Ymd').'.pdf');
         }

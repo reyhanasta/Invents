@@ -25,11 +25,11 @@ import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets',
+        title: 'Aset',
         href: assets().url,
     },
     {
-        title: 'Edit Asset',
+        title: 'Ubah Aset',
         href: '#',
     },
 ];
@@ -67,7 +67,7 @@ export default function AssetEdit({
 }: AssetsEditProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Edit ${asset.asset_name}`} />
+            <Head title={`Ubah ${asset.asset_name}`} />
 
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
@@ -81,10 +81,10 @@ export default function AssetEdit({
                     </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Edit Asset
+                            Ubah Aset
                         </h1>
                         <p className="text-muted-foreground">
-                            Update the information for {asset.asset_name} (
+                            Perbarui informasi untuk {asset.asset_name} (
                             {asset.asset_code})
                         </p>
                     </div>
@@ -93,9 +93,9 @@ export default function AssetEdit({
                 {/* Form Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Asset Information</CardTitle>
+                        <CardTitle>Informasi Aset</CardTitle>
                         <CardDescription>
-                            Update the details of the asset
+                            Perbarui detail aset ini
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -103,11 +103,11 @@ export default function AssetEdit({
                             method="put"
                             action={assetsUpdate(asset.id).url}
                             onSuccess={() => {
-                                toast.success('Asset updated successfully!');
+                                toast.success('Aset berhasil diperbarui!');
                             }}
                             onError={() => {
                                 toast.error(
-                                    'Failed to update asset. Please check the form.',
+                                    'Gagal memperbarui aset. Silakan periksa formulir.',
                                 );
                             }}
                         >
@@ -116,7 +116,7 @@ export default function AssetEdit({
                                     {/* Asset Code (Read-only) */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_code">
-                                            Asset Code
+                                            Kode Aset
                                         </Label>
                                         <Input
                                             id="asset_code"
@@ -126,15 +126,15 @@ export default function AssetEdit({
                                             readOnly
                                         />
                                         <p className="text-xs text-muted-foreground">
-                                            Asset code is automatically
-                                            generated and cannot be changed
+                                            Kode aset dibuat secara otomatis dan
+                                            tidak dapat diubah
                                         </p>
                                     </div>
 
                                     {/* Asset Name */}
                                     <div className="space-y-2">
                                         <Label htmlFor="asset_name">
-                                            Asset Name{' '}
+                                            Nama Aset{' '}
                                             <span className="text-destructive">
                                                 *
                                             </span>
@@ -160,7 +160,7 @@ export default function AssetEdit({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="category_id">
-                                                Category{' '}
+                                                Kategori{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -176,7 +176,7 @@ export default function AssetEdit({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select category" />
+                                                    <SelectValue placeholder="Pilih kategori" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {categories.map(
@@ -209,7 +209,7 @@ export default function AssetEdit({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="location_id">
-                                                Location{' '}
+                                                Lokasi{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -225,7 +225,7 @@ export default function AssetEdit({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select location" />
+                                                    <SelectValue placeholder="Pilih lokasi" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {locations.map(
@@ -274,7 +274,7 @@ export default function AssetEdit({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="serial_number">
-                                                Serial Number
+                                                Nomor Seri
                                             </Label>
                                             <Input
                                                 id="serial_number"
@@ -302,7 +302,7 @@ export default function AssetEdit({
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <Label htmlFor="condition">
-                                                Condition{' '}
+                                                Kondisi{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
@@ -318,17 +318,17 @@ export default function AssetEdit({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select condition" />
+                                                    <SelectValue placeholder="Pilih kondisi" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="good">
-                                                        Good
+                                                        Baik
                                                     </SelectItem>
                                                     <SelectItem value="minor_damage">
-                                                        Minor Damage
+                                                        Rusak Ringan
                                                     </SelectItem>
                                                     <SelectItem value="major_damage">
-                                                        Major Damage
+                                                        Rusak Berat
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -341,7 +341,7 @@ export default function AssetEdit({
 
                                         <div className="space-y-2">
                                             <Label htmlFor="acquisition_date">
-                                                Acquisition Date
+                                                Tanggal Pembelian
                                             </Label>
                                             <Input
                                                 id="acquisition_date"
@@ -365,16 +365,16 @@ export default function AssetEdit({
 
                                     {/* Description */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="description">
-                                            Description
-                                        </Label>
+                                            <Label htmlFor="description">
+                                                Deskripsi
+                                            </Label>
                                         <Textarea
                                             id="description"
                                             name="description"
                                             defaultValue={
                                                 asset.description || ''
                                             }
-                                            placeholder="Additional notes or description about the asset..."
+                                            placeholder="Catatan tambahan atau deskripsi tentang aset..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
                                             disabled={processing}
@@ -385,8 +385,8 @@ export default function AssetEdit({
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Optional: Add any additional
-                                            information about this asset
+                                            Opsional: Tambahkan informasi
+                                            tambahan mengenai aset ini
                                         </p>
                                     </div>
 
@@ -400,15 +400,15 @@ export default function AssetEdit({
                                                 router.visit(assets().url)
                                             }
                                         >
-                                            Cancel
+                                            Batal
                                         </Button>
                                         <Button
                                             type="submit"
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Saving...'
-                                                : 'Save Changes'}
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
                                 </div>

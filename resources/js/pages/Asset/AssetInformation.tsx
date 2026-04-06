@@ -112,7 +112,7 @@ function DetailInfoCard({
                             />
                             <div className="flex flex-col gap-1">
                                 <CardDescription className="text-xs">
-                                    Serial Number
+                                    Nomor Seri
                                 </CardDescription>
                                 <CardTitle className="text-sm">
                                     {asset.serial_number
@@ -128,7 +128,7 @@ function DetailInfoCard({
                             />
                             <div className="flex flex-col gap-1">
                                 <CardDescription className="text-xs">
-                                    Category
+                                    Kategori
                                 </CardDescription>
                                 <CardTitle className="text-sm">
                                     {categoryName}
@@ -144,7 +144,7 @@ function DetailInfoCard({
                             />
                             <div className="flex flex-col gap-1">
                                 <CardDescription className="text-xs">
-                                    Location
+                                    Lokasi
                                 </CardDescription>
                                 <CardTitle className="text-sm text-wrap">
                                     {locationName}
@@ -158,7 +158,7 @@ function DetailInfoCard({
                             />
                             <div className="flex flex-col gap-1">
                                 <CardDescription className="text-xs">
-                                    Purchase Date
+                                    Tanggal Pembelian
                                 </CardDescription>
                                 <CardTitle className="text-sm">
                                     {formatDate(

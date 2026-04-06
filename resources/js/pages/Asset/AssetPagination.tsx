@@ -47,17 +47,17 @@ export const AssetPagination = ({ assets }: { assets: PaginationProps }) => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Info */}
             <div className="text-sm text-muted-foreground">
-                Showing{' '}
+                Menampilkan{' '}
                 <span className="font-medium text-foreground">
                     {assets.from}
                 </span>{' '}
-                to{' '}
+                sampai{' '}
                 <span className="font-medium text-foreground">{assets.to}</span>{' '}
-                of{' '}
+                dari{' '}
                 <span className="font-medium text-foreground">
                     {assets.total}
                 </span>{' '}
-                results
+                hasil
             </div>
 
             {/* Pagination */}

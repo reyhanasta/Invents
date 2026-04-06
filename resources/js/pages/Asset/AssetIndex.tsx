@@ -64,7 +64,7 @@ import { AssetPagination } from './AssetPagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets',
+        title: 'Aset',
         href: assets().url,
     },
 ];
@@ -94,17 +94,17 @@ type AssetsIndexProps = {
 
 export const conditionConfig = {
     good: {
-        label: 'Good' as string,
+        label: 'Baik' as string,
         variant: 'default' as const,
         color: 'bg-emerald-50 text-emerald-700 border-emerald-200' as string,
     },
     minor_damage: {
-        label: 'Minor Damage' as string,
+        label: 'Rusak Ringan' as string,
         variant: 'secondary' as const,
         color: '' as string,
     },
     major_damage: {
-        label: 'Major Damage' as string,
+        label: 'Rusak Berat' as string,
         variant: 'destructive' as const,
         color: '' as string,
     },
@@ -163,15 +163,15 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
 
         router.delete(assetsDelete(selectedAsset.id).url, {
             onStart: () => {
-                toast.loading('Deleting asset...');
+                toast.loading('Menghapus aset...');
             },
             onSuccess: () => {
                 setShowDeleteDialog(false);
                 setSelectedAsset(null);
-                toast.success('Asset deleted successfully!');
+                toast.success('Aset berhasil dihapus!');
             },
             onError: () => {
-                toast.error('Failed to delete asset. Please try again.');
+                toast.error('Gagal menghapus aset. Silakan coba lagi.');
             },
             onFinish: () => {
                 toast.dismiss();
@@ -181,7 +181,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Assets" />
+            <Head title="Aset" />
             <div className="container mx-auto space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header Section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -225,7 +225,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" size="lg">
                                     <Download className="mr-2 h-4 w-4" />
-                                    Export
+                                    Ekspor
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
@@ -241,7 +241,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                     }
                                 >
                                     <FileSpreadsheet className="mr-2 h-4 w-4" />
-                                    Export Excel
+                                    Ekspor Excel
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() =>
@@ -249,7 +249,7 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                     }
                                 >
                                     <FileText className="mr-2 h-4 w-4" />
-                                    Export PDF
+                                    Ekspor PDF
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -281,13 +281,13 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Kode Asset</TableHead>
-                                    <TableHead>Nama Asset</TableHead>
+                                    <TableHead>Kode Aset</TableHead>
+                                    <TableHead>Nama Aset</TableHead>
                                     <TableHead>Kategori</TableHead>
                                     <TableHead>Lokasi</TableHead>
                                     <TableHead>Kondisi</TableHead>
                                     <TableHead className="text-right">
-                                        Actions
+                                        Aksi
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -465,29 +465,29 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Are you sure you want to delete this asset?
+                            Apakah Anda yakin ingin menghapus aset ini?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            You are about to delete{' '}
+                            Anda akan menghapus{' '}
                             <span className="font-semibold text-foreground">
                                 "{selectedAsset?.asset_name}"
                             </span>{' '}
-                            ({selectedAsset?.asset_code}). This action cannot be
-                            undone and will permanently remove this asset from
-                            your inventory.
+                            ({selectedAsset?.asset_code}). Tindakan ini tidak
+                            dapat dibatalkan dan akan menghapus aset ini secara
+                            permanen dari inventaris Anda.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel
                             onClick={() => setShowDeleteDialog(false)}
                         >
-                            Cancel
+                            Batal
                         </AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleDelete}
                             className="bg-destructive text-white hover:bg-destructive/90"
                         >
-                            Delete
+                            Hapus
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

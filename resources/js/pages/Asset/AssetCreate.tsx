@@ -25,11 +25,11 @@ import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Assets',
+        title: 'Aset',
         href: assets().url,
     },
     {
-        title: 'Add Asset',
+        title: 'Tambah Aset',
         href: '#',
     },
 ];
@@ -52,7 +52,7 @@ export default function AssetCreate({
 }: AssetsCreateProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Asset" />
+            <Head title="Tambah Aset" />
 
             <div className="container mx-auto max-w-4xl space-y-6 p-4 md:p-6 lg:p-8">
                 {/* Header */}
@@ -66,10 +66,10 @@ export default function AssetCreate({
                     </Button>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Tambah Asset Baru
+                            Tambah Aset Baru
                         </h1>
                         <p className="text-muted-foreground">
-                            Isi informasi di bawah untuk menambhkan asset baru
+                            Isi informasi di bawah untuk menambahkan aset baru
                         </p>
                     </div>
                 </div>
@@ -77,9 +77,9 @@ export default function AssetCreate({
                 {/* Form Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Asset Information</CardTitle>
+                        <CardTitle>Informasi Aset</CardTitle>
                         <CardDescription>
-                            Enter the details of the new asset
+                            Masukkan detail aset baru
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -87,15 +87,15 @@ export default function AssetCreate({
                             method="post"
                             action={assetsStore().url}
                             onStart={() => {
-                                toast.loading('Creating asset...');
+                                toast.loading('Membuat aset...');
                             }}
                             onSuccess={() => {
                                 router.visit(assets().url);
-                                toast.success('Asset created successfully!');
+                                toast.success('Aset berhasil dibuat!');
                             }}
                             onError={() => {
                                 toast.error(
-                                    'Failed to create asset. Please check the form.',
+                                    'Gagal membuat aset. Silakan periksa formulir.',
                                 );
                             }}
                             onFinish={() => {
@@ -144,7 +144,7 @@ export default function AssetCreate({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select category" />
+                                                    <SelectValue placeholder="Pilih kategori" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {categories.map(
@@ -189,7 +189,7 @@ export default function AssetCreate({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select location" />
+                                                    <SelectValue placeholder="Pilih lokasi" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {locations.map(
@@ -274,17 +274,17 @@ export default function AssetCreate({
                                                     }
                                                     disabled={processing}
                                                 >
-                                                    <SelectValue placeholder="Select condition" />
+                                                    <SelectValue placeholder="Pilih kondisi" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="good">
-                                                        Bagus
+                                                        Baik
                                                     </SelectItem>
                                                     <SelectItem value="minor_damage">
-                                                        Sedikit Rusak
+                                                        Rusak Ringan
                                                     </SelectItem>
                                                     <SelectItem value="major_damage">
-                                                        Rusak Total
+                                                        Rusak Berat
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -324,7 +324,7 @@ export default function AssetCreate({
                                         <Textarea
                                             id="description"
                                             name="description"
-                                            placeholder="Additional notes or description about the asset..."
+                                            placeholder="Catatan tambahan atau deskripsi tentang aset..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
                                             disabled={processing}
@@ -335,8 +335,8 @@ export default function AssetCreate({
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Optional: Tambah informasi tambahan
-                                            mengenai asset ini.
+                                            Opsional: Tambahkan informasi
+                                            tambahan mengenai aset ini.
                                         </p>
                                     </div>
 
@@ -357,8 +357,8 @@ export default function AssetCreate({
                                             disabled={processing}
                                         >
                                             {processing
-                                                ? 'Membuat...'
-                                                : 'Buat Asset'}
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Aset'}
                                         </Button>
                                     </div>
                                 </div>
