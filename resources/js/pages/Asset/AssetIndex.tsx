@@ -34,6 +34,15 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import {
     assets,
@@ -42,7 +51,13 @@ import {
     assetsDetail,
     assetsEdit,
 } from '@/routes';
-import { Asset, BreadcrumbItem, SharedData } from '@/types';
+import {
+    Asset,
+    BreadcrumbItem,
+    CategoryProps,
+    LocationProps,
+    SharedData,
+} from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Download,
@@ -89,7 +104,14 @@ interface AssetPaginationProps {
 
 type AssetsIndexProps = {
     assets: AssetPaginationProps;
+    categories: CategoryProps[];
+    locations: LocationProps[];
     search?: string;
+    filters?: {
+        category?: string;
+        location?: string;
+        condition?: string;
+    };
 };
 
 export const conditionConfig = {
@@ -110,13 +132,28 @@ export const conditionConfig = {
     },
 };
 
-export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
+export default function AssetIndex({
+    assets,
+    categories,
+    locations,
+    search = '',
+    filters,
+}: AssetsIndexProps) {
     const { auth } = usePage<SharedData>().props;
     const isStaff = auth.user.role_names?.some((role: string) =>
         ['admin', 'management'].includes(role),
     );
 
     const [searchQuery, setSearchQuery] = useState(search);
+    const [filterCategory, setFilterCategory] = useState(
+        filters?.category || 'all',
+    );
+    const [filterLocation, setFilterLocation] = useState(
+        filters?.location || 'all',
+    );
+    const [filterCondition, setFilterCondition] = useState(
+        filters?.condition || 'all',
+    );
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
@@ -125,11 +162,30 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
     // Debounce search - Inertia best practice
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            if (searchQuery !== search) {
+            if (
+                searchQuery !== search ||
+                filterCategory !== (filters?.category || 'all') ||
+                filterLocation !== (filters?.location || 'all') ||
+                filterCondition !== (filters?.condition || 'all')
+            ) {
                 setIsSearching(true);
                 router.get(
                     window.location.pathname,
-                    { search: searchQuery || undefined },
+                    {
+                        search: searchQuery || undefined,
+                        category:
+                            filterCategory !== 'all'
+                                ? filterCategory
+                                : undefined,
+                        location:
+                            filterLocation !== 'all'
+                                ? filterLocation
+                                : undefined,
+                        condition:
+                            filterCondition !== 'all'
+                                ? filterCondition
+                                : undefined,
+                    },
                     {
                         preserveState: true,
                         preserveScroll: true,
@@ -142,18 +198,28 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
         }, 300);
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, search]);
+    }, [
+        searchQuery,
+        filterCategory,
+        filterLocation,
+        filterCondition,
+        search,
+        filters,
+    ]);
 
     const handleClearSearch = () => {
         setSearchQuery('');
+        setFilterCategory('all');
+        setFilterLocation('all');
+        setFilterCondition('all');
         setIsSearching(true);
         router.get(
             window.location.pathname,
-
+            {},
             {
                 preserveState: true,
                 only: ['assets'],
-                // onFinish: () => setIsSearching(false),
+                onFinish: () => setIsSearching(false),
             },
         );
     };
@@ -196,11 +262,11 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                 </div>
                 {/* Search */}
                 <div className="flex items-center justify-between">
-                    <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
-                        <InputGroup className="max-w-md flex-1">
+                    <div className="flex flex-1 flex-col gap-4 lg:flex-row lg:items-center">
+                        <InputGroup className="flex-1 lg:max-w-xs">
                             <InputGroupInput
                                 aria-label="search"
-                                placeholder="Cari berdasarkan nama, kode..."
+                                placeholder="Cari aset..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -211,6 +277,8 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                     <Button
                                         onClick={handleClearSearch}
                                         variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
                                     >
                                         <X className="h-4 w-4" />
                                     </Button>
@@ -219,6 +287,99 @@ export default function AssetIndex({ assets, search = '' }: AssetsIndexProps) {
                                 )}
                             </InputGroupAddon>
                         </InputGroup>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Select
+                                value={filterCategory}
+                                onValueChange={setFilterCategory}
+                            >
+                                <SelectTrigger className="w-35">
+                                    <SelectValue placeholder="Kategori" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Kategori</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Kategori
+                                        </SelectItem>
+                                        {categories.map((cat) => (
+                                            <SelectItem
+                                                key={cat.id}
+                                                value={cat.id.toString()}
+                                            >
+                                                {cat.category_name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            <Select
+                                value={filterLocation}
+                                onValueChange={setFilterLocation}
+                            >
+                                <SelectTrigger className="w-35">
+                                    <SelectValue placeholder="Lokasi" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Lokasi</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Lokasi
+                                        </SelectItem>
+                                        {locations.map((loc) => (
+                                            <SelectItem
+                                                key={loc.id}
+                                                value={loc.id.toString()}
+                                            >
+                                                {loc.location_name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            <Select
+                                value={filterCondition}
+                                onValueChange={setFilterCondition}
+                            >
+                                <SelectTrigger className="w-[140px]">
+                                    <SelectValue placeholder="Kondisi" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Kondisi</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Kondisi
+                                        </SelectItem>
+                                        {Object.entries(conditionConfig).map(
+                                            ([key, config]) => (
+                                                <SelectItem
+                                                    key={key}
+                                                    value={key}
+                                                >
+                                                    {config.label}
+                                                </SelectItem>
+                                            ),
+                                        )}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            {(searchQuery ||
+                                filterCategory !== 'all' ||
+                                filterLocation !== 'all' ||
+                                filterCondition !== 'all') && (
+                                <Button
+                                    variant="ghost"
+                                    onClick={handleClearSearch}
+                                    className="h-9 px-2 lg:px-3"
+                                >
+                                    Reset
+                                    <X className="ml-2 h-4 w-4" />
+                                </Button>
+                            )}
+                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <DropdownMenu>

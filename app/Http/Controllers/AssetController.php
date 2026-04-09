@@ -19,13 +19,14 @@ class AssetController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $category = $request->input('category');
+        $location = $request->input('location');
+        $condition = $request->input('condition');
 
         $query = Asset::query()->with([
             'category:id,category_name',
             'location:id,location_name',
         ])->orderByDesc('created_at');
-
-        // $query   = Asset::with(['category', 'location'])->latest()->paginate(10);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -36,11 +37,31 @@ class AssetController extends Controller
                     });
             });
         }
+
+        if ($category) {
+            $query->where('category_id', $category);
+        }
+
+        if ($location) {
+            $query->where('location_id', $location);
+        }
+
+        if ($condition) {
+            $query->where('condition', $condition);
+        }
+
         $assets = $query->paginate(8)->withQueryString();
 
         return Inertia::render('Asset/AssetIndex', [
             'assets' => $assets,
             'search' => $search,
+            'filters' => [
+                'category' => $category,
+                'location' => $location,
+                'condition' => $condition,
+            ],
+            'categories' => Category::all(),
+            'locations' => Location::all(),
         ]);
     }
 
