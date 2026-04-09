@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AssetsExport;
+use App\Imports\AssetsImport;
 use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Company;
@@ -218,5 +219,16 @@ class AssetController extends Controller
         }
 
         return response()->json(['message' => 'Format tidak valid.'], 400);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv,xls|max:5120', // Maksimal 5MB
+        ]);
+
+        Excel::import(new AssetsImport, $request->file('file'));
+
+        return to_route('assets')->with('success', 'Data aset berhasil diimpor.');
     }
 }

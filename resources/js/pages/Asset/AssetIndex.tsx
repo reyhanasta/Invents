@@ -8,6 +8,14 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
 import EmptySearch from '@/components/empty-search';
 import { Badge } from '@/components/ui/badge';
@@ -58,7 +66,7 @@ import {
     LocationProps,
     SharedData,
 } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage, useForm } from '@inertiajs/react';
 import {
     Download,
     Eye,
@@ -71,6 +79,7 @@ import {
     Printer,
     SearchIcon,
     Trash,
+    Upload,
     X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -159,9 +168,27 @@ export default function AssetIndex({
         filters?.is_used || 'all',
     );
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showImportDialog, setShowImportDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
-    // const { data, setData } = useForm({ search: search || '' });
+    
+    const { data: importData, setData: setImportData, post: postImport, processing: importProcessing, errors: importErrors, reset: resetImport, clearErrors: clearImportErrors } = useForm({
+        file: null as File | null,
+    });
+
+    const handleImport = (e: React.FormEvent) => {
+        e.preventDefault();
+        postImport('/assets/import', {
+            onSuccess: () => {
+                setShowImportDialog(false);
+                resetImport('file');
+                toast.success('Data aset berhasil diimpor!');
+            },
+            onError: () => {
+                toast.error('Gagal mengimpor aset. Silakan periksa file Anda.');
+            }
+        });
+    };
 
     // Debounce search - Inertia best practice
     useEffect(() => {
@@ -302,6 +329,17 @@ export default function AssetIndex({
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
+                        {isStaff && (
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                onClick={() => setShowImportDialog(true)}
+                                aria-label="Import Asset"
+                            >
+                                <Upload className="mr-2 h-4 w-4" />
+                                Import
+                            </Button>
+                        )}
                         {isStaff && (
                             <Button
                                 size="lg"
@@ -711,6 +749,59 @@ export default function AssetIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Import Data Aset</DialogTitle>
+                        <DialogDescription>
+                            Upload file Excel (.xlsx, .xls) atau CSV untuk mengimpor data aset secara massal.
+                            Pastikan format kolom sesuai dengan template ekspor.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleImport}>
+                        <div className="grid gap-4 py-4">
+                            <div className="flex flex-col gap-2">
+                                <input
+                                    type="file"
+                                    accept=".xlsx, .xls, .csv"
+                                    onChange={(e) => setImportData('file', e.target.files ? e.target.files[0] : null)}
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
+                                />
+                                {importErrors.file && (
+                                    <span className="text-sm text-destructive font-medium">
+                                        {importErrors.file}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    setShowImportDialog(false);
+                                    resetImport('file');
+                                    clearImportErrors();
+                                }}
+                            >
+                                Batal
+                            </Button>
+                            <Button type="submit" disabled={importProcessing}>
+                                {importProcessing ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Mengimpor...
+                                    </>
+                                ) : (
+                                    'Proses Import'
+                                )}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 }

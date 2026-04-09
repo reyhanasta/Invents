@@ -636,3 +636,30 @@ describe('Asset Export', function () {
         $response->assertSuccessful();
     });
 });
+
+describe('Asset Import', function () {
+    it('can import assets from excel', function () {
+        Excel::fake();
+        
+        $file = \Illuminate\Http\UploadedFile::fake()->create('assets.xlsx', 100, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        $response = post(route('assets-import'), [
+            'file' => $file,
+        ]);
+
+        $response->assertRedirect(route('assets'));
+        $response->assertSessionHas('success', 'Data aset berhasil diimpor.');
+        
+        Excel::assertImported('assets.xlsx');
+    });
+
+    it('validates file extension', function () {
+        $file = \Illuminate\Http\UploadedFile::fake()->create('assets.pdf', 100, 'application/pdf');
+
+        $response = post(route('assets-import'), [
+            'file' => $file,
+        ]);
+
+        $response->assertSessionHasErrors('file');
+    });
+});
