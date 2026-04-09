@@ -268,6 +268,56 @@ export default function AssetIndex({
                             Halaman untuk mengelola data aset
                         </p>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="lg">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Ekspor
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                    Pilih Format
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        window.open(
+                                            '/assets/export?format=excel',
+                                        )
+                                    }
+                                >
+                                    <FileSpreadsheet className="mr-2 h-4 w-4" />
+                                    Ekspor Excel
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        window.open('/assets/export?format=pdf')
+                                    }
+                                >
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    Ekspor PDF
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        {isStaff && (
+                            <Button
+                                size="lg"
+                                className="bg-primary hover:bg-primary/90 sm:w-auto"
+                                aria-label="Add Asset"
+                                asChild
+                            >
+                                <Link href={assetsCreate().url}>
+                                    <Plus className="h-4 w-4" />
+                                    <span className="ml-2">
+                                        Tambah Asset
+                                    </span>
+                                </Link>
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 {/* Search */}
                 <div className="flex items-center justify-between">
@@ -413,53 +463,6 @@ export default function AssetIndex({
                                 </Button>
                             )}
                         </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="lg">
-                                    <Download className="mr-2 h-4 w-4" />
-                                    Ekspor
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>
-                                    Pilih Format
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={() =>
-                                        window.open(
-                                            '/assets/export?format=excel',
-                                        )
-                                    }
-                                >
-                                    <FileSpreadsheet className="mr-2 h-4 w-4" />
-                                    Ekspor Excel
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() =>
-                                        window.open('/assets/export?format=pdf')
-                                    }
-                                >
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    Ekspor PDF
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        {isStaff && (
-                            <Button
-                                size="lg"
-                                className="bg-primary hover:bg-primary/90 sm:w-auto"
-                                aria-label="Add Asset"
-                                asChild
-                            >
-                                <Link href={assetsCreate().url}>
-                                    <Plus className="h-4 w-4" />
-                                    <span className="ml-2">Tambah Asset</span>
-                                </Link>
-                            </Button>
-                        )}
                     </div>
                 </div>
 

@@ -39,6 +39,7 @@ class AssetsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMappi
                 'major_damage' => 'Rusak Berat',
                 default => $asset->condition,
             },
+            $asset->is_used ? 'Sedang Digunakan' : 'Tidak Digunakan',
         ];
     }
 
@@ -51,6 +52,7 @@ class AssetsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMappi
             'Kategori',
             'Lokasi',
             'Kondisi',
+            'Status Pakai',
         ];
     }
 }

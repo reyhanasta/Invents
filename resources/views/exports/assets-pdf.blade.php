@@ -64,10 +64,11 @@
             <tr>
                 <th width="5%">No</th>
                 <th width="15%">Kode Aset</th>
-                <th width="30%">Nama Aset</th>
+                <th width="20%">Nama Aset</th>
                 <th width="15%">Kategori</th>
                 <th width="15%">Lokasi</th>
-                <th width="20%">Kondisi</th>
+                <th width="15%">Kondisi</th>
+                <th width="15%">Status Pakai</th>
             </tr>
         </thead>
         <tbody>
@@ -88,6 +89,9 @@
                         };
                     @endphp
                     <span class="{{ $asset->condition }}">{{ $conditionLabel }}</span>
+                </td>
+                <td>
+                    {{ $asset->is_used ? 'Sedang Digunakan' : 'Tidak Digunakan' }}
                 </td>
             </tr>
             @endforeach

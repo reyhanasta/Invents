@@ -89,6 +89,20 @@ describe('Asset Index', function () {
             ->where('assets.data.0.asset_name', 'Matching Asset')
         );
     });
+
+    it('can search assets by serial number', function () {
+        Asset::factory()->create(['asset_name' => 'Asset A', 'serial_number' => 'SN-TARGET-123']);
+        Asset::factory()->create(['asset_name' => 'Asset B', 'serial_number' => 'SN-OTHER-456']);
+
+        $response = get(route('assets', ['search' => 'TARGET']));
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetIndex')
+            ->has('assets.data', 1)
+            ->where('assets.data.0.asset_name', 'Asset A')
+        );
+    });
 });
 
 describe('Asset Create', function () {

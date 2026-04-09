@@ -30,10 +30,11 @@ class AssetController extends Controller
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('asset_name', 'like', "{$search}%")
-                    ->orWhere('asset_code', 'like', "{$search}%")
+                $q->where('asset_name', 'like', "%{$search}%")
+                    ->orWhere('asset_code', 'like', "%{$search}%")
+                    ->orWhere('serial_number', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('category_name', 'like', "{$search}%");
+                        $q->where('category_name', 'like', "%{$search}%");
                     });
             });
         }
