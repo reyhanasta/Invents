@@ -103,4 +103,27 @@ describe('Asset Filtering', function () {
             ->where('assets.data.0.asset_name', 'Target Asset')
         );
     });
+
+    it('can filter assets by basis status pakai (is_used)', function () {
+        Asset::factory()->create(['is_used' => true, 'asset_name' => 'Used Asset']);
+        Asset::factory()->create(['is_used' => false, 'asset_name' => 'Idle Asset']);
+
+        // Filter for used
+        $response = get(route('assets', ['is_used' => '1']));
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetIndex')
+            ->has('assets.data', 1)
+            ->where('assets.data.0.asset_name', 'Used Asset')
+        );
+
+        // Filter for idle
+        $response = get(route('assets', ['is_used' => '0']));
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Asset/AssetIndex')
+            ->has('assets.data', 1)
+            ->where('assets.data.0.asset_name', 'Idle Asset')
+        );
+    });
 });

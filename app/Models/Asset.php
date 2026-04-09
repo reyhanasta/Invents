@@ -23,9 +23,23 @@ class Asset extends Model
         'brand',
         'serial_number',
         'condition',
+        'is_used',
         'acquisition_date',
         'description',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_used' => 'boolean',
+            'acquisition_date' => 'date',
+        ];
+    }
 
     /**
      * Get the category that owns the asset.

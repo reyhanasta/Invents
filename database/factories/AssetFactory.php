@@ -72,6 +72,7 @@ class AssetFactory extends Factory
             'brand' => fake()->randomElement($brands),
             'serial_number' => strtoupper(fake()->bothify('SN-###???###')),
             'condition' => $condition,
+            'is_used' => fake()->boolean(),
             'acquisition_date' => fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
             'description' => fake()->optional(0.7)->sentence(),
         ];

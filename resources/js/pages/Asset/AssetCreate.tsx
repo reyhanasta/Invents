@@ -296,6 +296,41 @@ export default function AssetCreate({
                                         </div>
 
                                         <div className="space-y-2">
+                                            <Label htmlFor="is_used">
+                                                Status Pakai{' '}
+                                                <span className="text-destructive">
+                                                    *
+                                                </span>
+                                            </Label>
+                                            <Select name="is_used" required>
+                                                <SelectTrigger
+                                                    aria-invalid={
+                                                        !!errors.is_used
+                                                    }
+                                                    disabled={processing}
+                                                >
+                                                    <SelectValue placeholder="Pilih status" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="1">
+                                                        Sedang Digunakan
+                                                    </SelectItem>
+                                                    <SelectItem value="0">
+                                                        Tidak Digunakan
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            {errors.is_used && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.is_used}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Acquisition Date */}
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <div className="space-y-2">
                                             <Label htmlFor="acquisition_date">
                                                 Tanggal Pembelian
                                             </Label>

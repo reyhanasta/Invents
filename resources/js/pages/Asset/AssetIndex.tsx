@@ -111,6 +111,7 @@ type AssetsIndexProps = {
         category?: string;
         location?: string;
         condition?: string;
+        is_used?: string;
     };
 };
 
@@ -154,11 +155,14 @@ export default function AssetIndex({
     const [filterCondition, setFilterCondition] = useState(
         filters?.condition || 'all',
     );
+    const [filterIsUsed, setFilterIsUsed] = useState(
+        filters?.is_used || 'all',
+    );
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
     // const { data, setData } = useForm({ search: search || '' });
-    console.log(assets.data.length);
+
     // Debounce search - Inertia best practice
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -166,7 +170,8 @@ export default function AssetIndex({
                 searchQuery !== search ||
                 filterCategory !== (filters?.category || 'all') ||
                 filterLocation !== (filters?.location || 'all') ||
-                filterCondition !== (filters?.condition || 'all')
+                filterCondition !== (filters?.condition || 'all') ||
+                filterIsUsed !== (filters?.is_used || 'all')
             ) {
                 setIsSearching(true);
                 router.get(
@@ -185,6 +190,8 @@ export default function AssetIndex({
                             filterCondition !== 'all'
                                 ? filterCondition
                                 : undefined,
+                        is_used:
+                            filterIsUsed !== 'all' ? filterIsUsed : undefined,
                     },
                     {
                         preserveState: true,
@@ -203,6 +210,7 @@ export default function AssetIndex({
         filterCategory,
         filterLocation,
         filterCondition,
+        filterIsUsed,
         search,
         filters,
     ]);
@@ -212,6 +220,7 @@ export default function AssetIndex({
         setFilterCategory('all');
         setFilterLocation('all');
         setFilterCondition('all');
+        setFilterIsUsed('all');
         setIsSearching(true);
         router.get(
             window.location.pathname,
@@ -343,7 +352,7 @@ export default function AssetIndex({
                                 value={filterCondition}
                                 onValueChange={setFilterCondition}
                             >
-                                <SelectTrigger className="w-[140px]">
+                                <SelectTrigger className="w-35">
                                     <SelectValue placeholder="Kondisi" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -366,10 +375,34 @@ export default function AssetIndex({
                                 </SelectContent>
                             </Select>
 
+                            <Select
+                                value={filterIsUsed}
+                                onValueChange={setFilterIsUsed}
+                            >
+                                <SelectTrigger className="w-35">
+                                    <SelectValue placeholder="Status Pakai" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Status Pakai</SelectLabel>
+                                        <SelectItem value="all">
+                                            Semua Status
+                                        </SelectItem>
+                                        <SelectItem value="1">
+                                            Sedang Digunakan
+                                        </SelectItem>
+                                        <SelectItem value="0">
+                                            Tidak Digunakan
+                                        </SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
                             {(searchQuery ||
                                 filterCategory !== 'all' ||
                                 filterLocation !== 'all' ||
-                                filterCondition !== 'all') && (
+                                filterCondition !== 'all' ||
+                                filterIsUsed !== 'all') && (
                                 <Button
                                     variant="ghost"
                                     onClick={handleClearSearch}
@@ -447,6 +480,7 @@ export default function AssetIndex({
                                     <TableHead>Kategori</TableHead>
                                     <TableHead>Lokasi</TableHead>
                                     <TableHead>Kondisi</TableHead>
+                                    <TableHead>Status Pakai</TableHead>
                                     <TableHead className="text-right">
                                         Aksi
                                     </TableHead>
@@ -471,6 +505,9 @@ export default function AssetIndex({
                                                   </TableCell>
                                                   <TableCell>
                                                       <Skeleton className="h-4 w-28" />
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      <Skeleton className="h-5 w-24 rounded-full" />
                                                   </TableCell>
                                                   <TableCell>
                                                       <Skeleton className="h-5 w-24 rounded-full" />
@@ -516,6 +553,24 @@ export default function AssetIndex({
                                                               asset.condition as keyof typeof conditionConfig
                                                           ]?.label
                                                       }
+                                                  </Badge>
+                                              </TableCell>
+                                              <TableCell>
+                                                  <Badge
+                                                      variant={
+                                                          asset.is_used
+                                                              ? 'default'
+                                                              : 'secondary'
+                                                      }
+                                                      className={
+                                                          asset.is_used
+                                                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                                              : 'bg-slate-50 text-slate-700 border-slate-200'
+                                                      }
+                                                  >
+                                                      {asset.is_used
+                                                          ? 'Sedang Digunakan'
+                                                          : 'Tidak Digunakan'}
                                                   </Badge>
                                               </TableCell>
 

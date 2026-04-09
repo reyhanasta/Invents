@@ -112,6 +112,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
+            'is_used' => true,
         ];
 
         $response = post(route('assets-store'), $assetData);
@@ -134,6 +135,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
+            'is_used' => true,
         ];
 
         post(route('assets-store'), $assetData);
@@ -154,6 +156,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
+            'is_used' => true,
         ]);
 
         // Create second asset
@@ -162,6 +165,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
+            'is_used' => false,
         ]);
 
         assertDatabaseHas('assets', ['asset_code' => 'DSK0001']);
@@ -179,6 +183,7 @@ describe('Asset Create', function () {
             'brand' => 'HP',
             'serial_number' => 'SN123456789',
             'condition' => 'minor_damage',
+            'is_used' => true,
             'acquisition_date' => '2024-01-15',
             'description' => 'Company laptop for development team',
         ];
@@ -186,7 +191,12 @@ describe('Asset Create', function () {
         $response = post(route('assets-store'), $assetData);
 
         $response->assertRedirect(route('assets'));
-        assertDatabaseHas('assets', $assetData);
+        assertDatabaseHas('assets', [
+            'asset_name' => 'HP Laptop ProBook',
+            'brand' => 'HP',
+            'condition' => 'minor_damage',
+            'is_used' => true,
+        ]);
     });
 
     it('requires asset_name field', function () {
@@ -334,6 +344,7 @@ describe('Asset Update', function () {
             'location_id' => $location->id,
             'brand' => 'Updated Brand',
             'condition' => 'minor_damage',
+            'is_used' => false,
         ];
 
         $response = put(route('assets-update', $asset->id), $updateData);
@@ -359,6 +370,7 @@ describe('Asset Update', function () {
             'brand' => 'New Brand',
             'serial_number' => 'NEW-SN-123',
             'condition' => 'major_damage',
+            'is_used' => true,
             'acquisition_date' => '2024-12-01',
             'description' => 'Updated description',
         ];
@@ -384,6 +396,7 @@ describe('Asset Update', function () {
             'category_id' => $asset->category_id,
             'location_id' => $asset->location_id,
             'condition' => $asset->condition,
+            'is_used' => $asset->is_used,
         ]);
 
         $response->assertSessionHasErrors('asset_name');
@@ -397,6 +410,7 @@ describe('Asset Update', function () {
             'category_id' => $asset->category_id,
             'location_id' => $asset->location_id,
             'condition' => 'invalid',
+            'is_used' => $asset->is_used,
         ]);
 
         $response->assertSessionHasErrors('condition');
@@ -411,6 +425,7 @@ describe('Asset Update', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
+            'is_used' => true,
         ]);
 
         $response->assertNotFound();

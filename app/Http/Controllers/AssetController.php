@@ -50,6 +50,11 @@ class AssetController extends Controller
             $query->where('condition', $condition);
         }
 
+        $isUsed = $request->query('is_used');
+        if ($isUsed !== null && $isUsed !== '') {
+            $query->where('is_used', $isUsed === '1' || $isUsed === 'true');
+        }
+
         $assets = $query->paginate(8)->withQueryString();
 
         return Inertia::render('Asset/AssetIndex', [
@@ -59,6 +64,7 @@ class AssetController extends Controller
                 'category' => $category,
                 'location' => $location,
                 'condition' => $condition,
+                'is_used' => $request->query('is_used'),
             ],
             'categories' => Category::all(),
             'locations' => Location::all(),
@@ -115,6 +121,7 @@ class AssetController extends Controller
             'serial_number' => 'nullable|string|max:255',
             'location_id' => 'required|exists:locations,id',
             'condition' => 'required|in:good,minor_damage,major_damage',
+            'is_used' => 'required|boolean',
             'acquisition_date' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
@@ -142,6 +149,7 @@ class AssetController extends Controller
             'serial_number' => 'nullable|string|max:255',
             'location_id' => 'required|exists:locations,id',
             'condition' => 'required|in:good,minor_damage,major_damage',
+            'is_used' => 'required|boolean',
             'acquisition_date' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
