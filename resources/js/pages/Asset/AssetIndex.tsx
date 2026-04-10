@@ -33,15 +33,6 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
 import {
     Select,
     SelectContent,
@@ -51,6 +42,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import {
     assets,
@@ -66,7 +66,7 @@ import {
     LocationProps,
     SharedData,
 } from '@/types';
-import { Head, Link, router, usePage, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import {
     Download,
     Eye,
@@ -164,15 +164,21 @@ export default function AssetIndex({
     const [filterCondition, setFilterCondition] = useState(
         filters?.condition || 'all',
     );
-    const [filterIsUsed, setFilterIsUsed] = useState(
-        filters?.is_used || 'all',
-    );
+    const [filterIsUsed, setFilterIsUsed] = useState(filters?.is_used || 'all');
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [showImportDialog, setShowImportDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
-    
-    const { data: importData, setData: setImportData, post: postImport, processing: importProcessing, errors: importErrors, reset: resetImport, clearErrors: clearImportErrors } = useForm({
+
+    const {
+        data: importData,
+        setData: setImportData,
+        post: postImport,
+        processing: importProcessing,
+        errors: importErrors,
+        reset: resetImport,
+        clearErrors: clearImportErrors,
+    } = useForm({
         file: null as File | null,
     });
 
@@ -186,7 +192,7 @@ export default function AssetIndex({
             },
             onError: () => {
                 toast.error('Gagal mengimpor aset. Silakan periksa file Anda.');
-            }
+            },
         });
     };
 
@@ -349,9 +355,7 @@ export default function AssetIndex({
                             >
                                 <Link href={assetsCreate().url}>
                                     <Plus className="h-4 w-4" />
-                                    <span className="ml-2">
-                                        Tambah Asset
-                                    </span>
+                                    <span className="ml-2">Tambah Asset</span>
                                 </Link>
                             </Button>
                         )}
@@ -359,7 +363,7 @@ export default function AssetIndex({
                 </div>
                 {/* Search */}
                 <div className="flex items-center justify-between">
-                    <div className="flex flex-1 flex-col gap-4 lg:flex-row lg:items-center">
+                    <div className="flex flex-1 flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <InputGroup className="flex-1 lg:max-w-xs">
                             <InputGroupInput
                                 aria-label="search"
@@ -385,7 +389,7 @@ export default function AssetIndex({
                             </InputGroupAddon>
                         </InputGroup>
 
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex flex-row items-center gap-2">
                             <Select
                                 value={filterCategory}
                                 onValueChange={setFilterCategory}
@@ -605,8 +609,8 @@ export default function AssetIndex({
                                                       }
                                                       className={
                                                           asset.is_used
-                                                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                                                              : 'bg-slate-50 text-slate-700 border-slate-200'
+                                                              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                                                              : 'border-slate-200 bg-slate-50 text-slate-700'
                                                       }
                                                   >
                                                       {asset.is_used
@@ -755,8 +759,9 @@ export default function AssetIndex({
                     <DialogHeader>
                         <DialogTitle>Import Data Aset</DialogTitle>
                         <DialogDescription>
-                            Upload file Excel (.xlsx, .xls) atau CSV untuk mengimpor data aset secara massal.
-                            Pastikan format kolom sesuai dengan template ekspor.
+                            Upload file Excel (.xlsx, .xls) atau CSV untuk
+                            mengimpor data aset secara massal. Pastikan format
+                            kolom sesuai dengan template ekspor.
                         </DialogDescription>
                     </DialogHeader>
                     <form onSubmit={handleImport}>
@@ -765,12 +770,19 @@ export default function AssetIndex({
                                 <input
                                     type="file"
                                     accept=".xlsx, .xls, .csv"
-                                    onChange={(e) => setImportData('file', e.target.files ? e.target.files[0] : null)}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    onChange={(e) =>
+                                        setImportData(
+                                            'file',
+                                            e.target.files
+                                                ? e.target.files[0]
+                                                : null,
+                                        )
+                                    }
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     required
                                 />
                                 {importErrors.file && (
-                                    <span className="text-sm text-destructive font-medium">
+                                    <span className="text-sm font-medium text-destructive">
                                         {importErrors.file}
                                     </span>
                                 )}

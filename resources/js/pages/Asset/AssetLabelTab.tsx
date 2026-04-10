@@ -65,9 +65,7 @@ export default function AssetLabelTab({
                 <CardContent className="space-y-4">
                     {/* Ukuran Label (fixed 60x40mm) */}
                     <div className="space-y-2">
-                        <span className="text-sm font-medium">
-                            Label Size
-                        </span>
+                        <span className="text-sm font-medium">Label Size</span>
                         <div className="flex items-center rounded-md border bg-muted/50 px-3 py-2 text-sm">
                             60mm x 40mm
                         </div>
@@ -77,25 +75,19 @@ export default function AssetLabelTab({
                     <div className="rounded-lg border bg-muted/50 p-4 text-sm">
                         <div className="space-y-2">
                             <div>
-                                <strong>Asset Code:</strong>{' '}
-                                {asset.asset_code}
+                                <strong>Nama Aset:</strong> {asset.asset_name}
                             </div>
                             <div>
-                                <strong>Asset Name:</strong>{' '}
-                                {asset.asset_name}
+                                <strong>Kode Aset:</strong> {asset.asset_code}
                             </div>
                             <div>
-                                <strong>Location:</strong>{' '}
-                                {locationName}
+                                <strong>Lokasi:</strong> {locationName}
                             </div>
                         </div>
                     </div>
 
                     {/* Tombol Print */}
-                    <Button
-                        className="w-full"
-                        onClick={handlePrint}
-                    >
+                    <Button className="w-full" onClick={handlePrint}>
                         <Printer className="mr-2 h-4 w-4" />
                         Cetak Label
                     </Button>
@@ -108,15 +100,16 @@ export default function AssetLabelTab({
                     <CardHeader>
                         <CardTitle>Preview Label</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex justify-center rounded-lg bg-muted/30 p-8">
+                    <CardContent className="flex justify-center overflow-auto rounded-lg bg-muted/30 p-8">
                         {/* Area yang akan di-print */}
                         <div
                             ref={printRef}
-                            className="flex items-center justify-center"
+                            className="flex items-center justify-center bg-white shadow-sm"
                         >
                             <AssetQrCodeLabel
                                 asset={asset}
                                 company={company}
+                                locationName={locationName}
                             />
                         </div>
                     </CardContent>
