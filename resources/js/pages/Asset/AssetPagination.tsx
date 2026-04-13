@@ -30,17 +30,29 @@ export const AssetPagination = ({ assets }: { assets: PaginationProps }) => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Info */}
             <div className="text-sm text-muted-foreground">
-                Menampilkan <span className="font-medium text-foreground">{assets.from}</span> sampai{' '}
-                <span className="font-medium text-foreground">{assets.to}</span> dari{' '}
-                <span className="font-medium text-foreground">{assets.total}</span> hasil
+                Menampilkan{' '}
+                <span className="font-medium text-foreground">
+                    {assets.from}
+                </span>{' '}
+                sampai{' '}
+                <span className="font-medium text-foreground">{assets.to}</span>{' '}
+                dari{' '}
+                <span className="font-medium text-foreground">
+                    {assets.total}
+                </span>{' '}
+                hasil
             </div>
 
             {/* Pagination */}
             <Pagination>
                 <PaginationContent>
                     {assets.links.map((link, index) => {
-                        const isPrevious = link.label.includes('Previous') || link.label.includes('pagination.previous');
-                        const isNext = link.label.includes('Next') || link.label.includes('pagination.next');
+                        const isPrevious =
+                            link.label.includes('Previous') ||
+                            link.label.includes('pagination.previous');
+                        const isNext =
+                            link.label.includes('Next') ||
+                            link.label.includes('pagination.next');
 
                         // Handle Previous Button
                         if (isPrevious) {
@@ -87,12 +99,23 @@ export const AssetPagination = ({ assets }: { assets: PaginationProps }) => {
                                 {link.url ? (
                                     <Link href={link.url} preserveScroll>
                                         <PaginationLink isActive={link.active}>
-                                            <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                            <span
+                                                dangerouslySetInnerHTML={{
+                                                    __html: link.label,
+                                                }}
+                                            />
                                         </PaginationLink>
                                     </Link>
                                 ) : (
-                                    <PaginationLink isActive={link.active} className="pointer-events-none opacity-50">
-                                        <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    <PaginationLink
+                                        isActive={link.active}
+                                        className="pointer-events-none opacity-50"
+                                    >
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: link.label,
+                                            }}
+                                        />
                                     </PaginationLink>
                                 )}
                             </PaginationItem>

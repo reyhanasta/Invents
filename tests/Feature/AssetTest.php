@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -453,7 +454,7 @@ describe('Asset Delete', function () {
         $response = delete(route('assets-delete', $asset->id));
 
         $response->assertRedirect(route('assets'));
-        assertDatabaseMissing('assets', ['id' => $asset->id]);
+        assertSoftDeleted('assets', ['id' => $asset->id]);
     });
 
     it('returns 404 when deleting non-existent asset', function () {
@@ -468,7 +469,7 @@ describe('Asset Delete', function () {
 
         delete(route('assets-delete', $asset1->id));
 
-        assertDatabaseMissing('assets', ['id' => $asset1->id]);
+        assertSoftDeleted('assets', ['id' => $asset1->id]);
         assertDatabaseHas('assets', ['id' => $asset2->id]);
     });
 });

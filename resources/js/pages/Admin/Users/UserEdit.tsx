@@ -16,7 +16,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, User, Role } from '@/types';
+import { type BreadcrumbItem, Role, User } from '@/types';
 import { Form, Head, router } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
@@ -64,7 +64,7 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                     </div>
                 </div>
 
-                <Card className="border-none shadow-xl bg-card/50 backdrop-blur-sm">
+                <Card className="border-none bg-card/50 shadow-xl backdrop-blur-sm">
                     <CardHeader>
                         <CardTitle>Informasi Akun</CardTitle>
                         <CardDescription>
@@ -83,7 +83,9 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                 toast.success('User berhasil diperbarui!');
                             }}
                             onError={() => {
-                                toast.error('Gagal memperbarui user. Cek kembali form Anda.');
+                                toast.error(
+                                    'Gagal memperbarui user. Cek kembali form Anda.',
+                                );
                             }}
                             onFinish={() => {
                                 toast.dismiss();
@@ -92,7 +94,12 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="name">Nama Lengkap <span className="text-destructive">*</span></Label>
+                                        <Label htmlFor="name">
+                                            Nama Lengkap{' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
                                         <Input
                                             id="name"
                                             name="name"
@@ -101,11 +108,20 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                             required
                                             disabled={processing}
                                         />
-                                        {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+                                        {errors.name && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.name}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="email">Email <span className="text-destructive">*</span></Label>
+                                        <Label htmlFor="email">
+                                            Email{' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
                                         <Input
                                             id="email"
                                             name="email"
@@ -114,12 +130,18 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                             required
                                             disabled={processing}
                                         />
-                                        {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                                        {errors.email && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.email}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label htmlFor="password">Password (Opsional)</Label>
+                                            <Label htmlFor="password">
+                                                Password (Opsional)
+                                            </Label>
                                             <Input
                                                 id="password"
                                                 name="password"
@@ -127,11 +149,17 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                                 placeholder="Biarkan kosong untuk tetap"
                                                 disabled={processing}
                                             />
-                                            {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+                                            {errors.password && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.password}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="password_confirmation">Konfirmasi Password Baru</Label>
+                                            <Label htmlFor="password_confirmation">
+                                                Konfirmasi Password Baru
+                                            </Label>
                                             <Input
                                                 id="password_confirmation"
                                                 name="password_confirmation"
@@ -142,20 +170,41 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="role">Peran (Role) <span className="text-destructive">*</span></Label>
-                                        <Select name="role" defaultValue={initialRole} required>
-                                            <SelectTrigger disabled={processing} id="role">
+                                        <Label htmlFor="role">
+                                            Peran (Role){' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
+                                        <Select
+                                            name="role"
+                                            defaultValue={initialRole}
+                                            required
+                                        >
+                                            <SelectTrigger
+                                                disabled={processing}
+                                                id="role"
+                                            >
                                                 <SelectValue placeholder="Pilih Peran" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {roles.map((role) => (
-                                                    <SelectItem key={role.id} value={role.name}>
-                                                        <span className="capitalize">{role.name}</span>
+                                                    <SelectItem
+                                                        key={role.id}
+                                                        value={role.name}
+                                                    >
+                                                        <span className="capitalize">
+                                                            {role.name}
+                                                        </span>
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                        {errors.role && <p className="text-sm text-destructive">{errors.role}</p>}
+                                        {errors.role && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.role}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4">
@@ -163,12 +212,19 @@ export default function UserEdit({ user, roles }: UserEditProps) {
                                             type="button"
                                             variant="outline"
                                             disabled={processing}
-                                            onClick={() => router.visit('/users')}
+                                            onClick={() =>
+                                                router.visit('/users')
+                                            }
                                         >
                                             Batal
                                         </Button>
-                                        <Button type="submit" disabled={processing}>
-                                            {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
+                                            {processing
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
                                 </div>

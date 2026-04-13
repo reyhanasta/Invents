@@ -55,12 +55,13 @@ export default function UserCreate({ roles }: UserCreateProps) {
                             Tambah User Baru
                         </h1>
                         <p className="text-muted-foreground">
-                            Isi informasi di bawah untuk menambahkan pengguna baru ke sistem.
+                            Isi informasi di bawah untuk menambahkan pengguna
+                            baru ke sistem.
                         </p>
                     </div>
                 </div>
 
-                <Card className="border-none shadow-xl bg-card/50 backdrop-blur-sm">
+                <Card className="border-none bg-card/50 shadow-xl backdrop-blur-sm">
                     <CardHeader>
                         <CardTitle>Informasi Akun</CardTitle>
                         <CardDescription>
@@ -79,7 +80,9 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                 toast.success('User berhasil dibuat!');
                             }}
                             onError={() => {
-                                toast.error('Gagal membuat user. Cek kembali form Anda.');
+                                toast.error(
+                                    'Gagal membuat user. Cek kembali form Anda.',
+                                );
                             }}
                             onFinish={() => {
                                 toast.dismiss();
@@ -88,7 +91,12 @@ export default function UserCreate({ roles }: UserCreateProps) {
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="name">Nama Lengkap <span className="text-destructive">*</span></Label>
+                                        <Label htmlFor="name">
+                                            Nama Lengkap{' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
                                         <Input
                                             id="name"
                                             name="name"
@@ -97,11 +105,20 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                             required
                                             disabled={processing}
                                         />
-                                        {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+                                        {errors.name && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.name}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="email">Email <span className="text-destructive">*</span></Label>
+                                        <Label htmlFor="email">
+                                            Email{' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
                                         <Input
                                             id="email"
                                             name="email"
@@ -110,12 +127,21 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                             required
                                             disabled={processing}
                                         />
-                                        {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                                        {errors.email && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.email}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label htmlFor="password">Password <span className="text-destructive">*</span></Label>
+                                            <Label htmlFor="password">
+                                                Password{' '}
+                                                <span className="text-destructive">
+                                                    *
+                                                </span>
+                                            </Label>
                                             <Input
                                                 id="password"
                                                 name="password"
@@ -123,11 +149,20 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                                 required
                                                 disabled={processing}
                                             />
-                                            {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+                                            {errors.password && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.password}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="password_confirmation">Konfirmasi Password <span className="text-destructive">*</span></Label>
+                                            <Label htmlFor="password_confirmation">
+                                                Konfirmasi Password{' '}
+                                                <span className="text-destructive">
+                                                    *
+                                                </span>
+                                            </Label>
                                             <Input
                                                 id="password_confirmation"
                                                 name="password_confirmation"
@@ -139,20 +174,37 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="role">Peran (Role) <span className="text-destructive">*</span></Label>
+                                        <Label htmlFor="role">
+                                            Peran (Role){' '}
+                                            <span className="text-destructive">
+                                                *
+                                            </span>
+                                        </Label>
                                         <Select name="role" required>
-                                            <SelectTrigger disabled={processing} id="role">
+                                            <SelectTrigger
+                                                disabled={processing}
+                                                id="role"
+                                            >
                                                 <SelectValue placeholder="Pilih Peran" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {roles.map((role) => (
-                                                    <SelectItem key={role.id} value={role.name}>
-                                                        <span className="capitalize">{role.name}</span>
+                                                    <SelectItem
+                                                        key={role.id}
+                                                        value={role.name}
+                                                    >
+                                                        <span className="capitalize">
+                                                            {role.name}
+                                                        </span>
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                        {errors.role && <p className="text-sm text-destructive">{errors.role}</p>}
+                                        {errors.role && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.role}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4">
@@ -160,12 +212,19 @@ export default function UserCreate({ roles }: UserCreateProps) {
                                             type="button"
                                             variant="outline"
                                             disabled={processing}
-                                            onClick={() => router.visit('/users')}
+                                            onClick={() =>
+                                                router.visit('/users')
+                                            }
                                         >
                                             Batal
                                         </Button>
-                                        <Button type="submit" disabled={processing}>
-                                            {processing ? 'Menyimpan...' : 'Simpan User'}
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
+                                            {processing
+                                                ? 'Menyimpan...'
+                                                : 'Simpan User'}
                                         </Button>
                                     </div>
                                 </div>

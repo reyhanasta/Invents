@@ -407,9 +407,9 @@ export default function AssetEdit({
 
                                     {/* Description */}
                                     <div className="space-y-2">
-                                            <Label htmlFor="description">
-                                                Deskripsi
-                                            </Label>
+                                        <Label htmlFor="description">
+                                            Deskripsi
+                                        </Label>
                                         <Textarea
                                             id="description"
                                             name="description"

@@ -64,8 +64,8 @@ export type Asset = {
     id: number;
     asset_name: string;
     asset_code: string;
-    category : CategoryProps;
-    location : LocationProps;
+    category: CategoryProps;
+    location: LocationProps;
     brand?: string;
     serial_number?: string;
     condition: string;
@@ -90,13 +90,13 @@ export type Maintenance = {
 };
 
 export type Company = {
-    id:number;
-    complete_company_name:string;
-    short_company_name?:string;
-    address?:string;
-    created_at?:string;
-    updated_at?:string;
-}
+    id: number;
+    complete_company_name: string;
+    short_company_name?: string;
+    address?: string;
+    created_at?: string;
+    updated_at?: string;
+};
 
 export type TicketCategory = {
     id: number;
@@ -171,7 +171,14 @@ export type Ticket = {
     department?: Department;
     asset_id?: number; // Added
     asset?: Asset; // Added
-    status: 'open' | 'triaged' | 'in_progress' | 'pending' | 'resolved' | 'closed' | 'rejected';
+    status:
+        | 'open'
+        | 'triaged'
+        | 'in_progress'
+        | 'pending'
+        | 'resolved'
+        | 'closed'
+        | 'rejected';
     source: string;
     due_at?: string | null;
     resolved_at?: string | null;

@@ -93,7 +93,8 @@ export default function MaintenanceEdit({
                             Edit Maintenance
                         </h1>
                         <p className="text-muted-foreground">
-                            Perbarui informasi untuk data maintenance #{maintenance.id}
+                            Perbarui informasi untuk data maintenance #
+                            {maintenance.id}
                         </p>
                     </div>
                 </div>
@@ -210,7 +211,9 @@ export default function MaintenanceEdit({
                                             </Label>
                                             <Select
                                                 name="status"
-                                                defaultValue={maintenance.status}
+                                                defaultValue={
+                                                    maintenance.status
+                                                }
                                             >
                                                 <SelectTrigger
                                                     aria-invalid={
@@ -296,8 +299,8 @@ export default function MaintenanceEdit({
                                                 </p>
                                             )}
                                             <p className="text-xs text-muted-foreground">
-                                                Opsional: Tanggal ketika maintenance
-                                                selesai dilakukan
+                                                Opsional: Tanggal ketika
+                                                maintenance selesai dilakukan
                                             </p>
                                         </div>
                                     </div>
@@ -362,7 +365,9 @@ export default function MaintenanceEdit({
                                         <Textarea
                                             id="description"
                                             name="description"
-                                            defaultValue={maintenance.description}
+                                            defaultValue={
+                                                maintenance.description
+                                            }
                                             placeholder="Jelaskan pekerjaan maintenance yang perlu dilakukan..."
                                             rows={4}
                                             aria-invalid={!!errors.description}
@@ -382,7 +387,9 @@ export default function MaintenanceEdit({
                                         <Textarea
                                             id="note"
                                             name="note"
-                                            defaultValue={maintenance.note || ''}
+                                            defaultValue={
+                                                maintenance.note || ''
+                                            }
                                             placeholder="Catatan tambahan, temuan, atau hasil..."
                                             rows={3}
                                             aria-invalid={!!errors.note}
@@ -394,8 +401,8 @@ export default function MaintenanceEdit({
                                             </p>
                                         )}
                                         <p className="text-xs text-muted-foreground">
-                                            Opsional: Tambahkan temuan atau hasil
-                                            dari maintenance
+                                            Opsional: Tambahkan temuan atau
+                                            hasil dari maintenance
                                         </p>
                                     </div>
 
@@ -429,4 +436,3 @@ export default function MaintenanceEdit({
         </AppLayout>
     );
 }
-

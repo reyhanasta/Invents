@@ -161,9 +161,7 @@ function DetailInfoCard({
                                     Tanggal Pembelian
                                 </CardDescription>
                                 <CardTitle className="text-sm">
-                                    {formatDate(
-                                        asset.acquisition_date ?? '',
-                                    )}
+                                    {formatDate(asset.acquisition_date ?? '')}
                                 </CardTitle>
                             </div>
                         </div>

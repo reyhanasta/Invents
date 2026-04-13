@@ -23,10 +23,10 @@ export default function AssetQrCodeLabel({
             style={{ color: 'black' }}
         >
             {/* Header: Logo + Property Of */}
-            <div className="mb-1 flex items-center justify-center gap-2 px-1">
+            <div className="mb-1 flex items-center gap-2 px-1">
                 <AppLogoIcon className="h-6 w-6" />
-                <span className="text-[10px] font-bold tracking-tight uppercase">
-                    PROPERTY OF {company}
+                <span className="text-[12px] font-bold tracking-tight uppercase">
+                    {company}
                 </span>
             </div>
 
@@ -45,7 +45,7 @@ export default function AssetQrCodeLabel({
                             viewBox="0 0 256 256"
                         />
                     </div>
-                    <div className="mt-2 text-center text-[6px] leading-tight font-bold uppercase">
+                    <div className="mt-1 text-center text-[6px] leading-tight font-bold uppercase">
                         PINDAI UNTUK DETAIL ASET
                     </div>
                 </div>

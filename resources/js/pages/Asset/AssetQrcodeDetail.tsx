@@ -1,18 +1,10 @@
-import AppLayout from '@/layouts/app-layout';
-import { Maintenance, type BreadcrumbItem } from '@/types';
+import PublicLayout from '@/layouts/public-layout';
+import { Maintenance } from '@/types';
 
-import { maintenances } from '@/routes';
 import { Asset } from '@/types';
 import { AlertCircle, CheckCircle2, Clock, Wrench } from 'lucide-react';
 import AssetInformation from './AssetInformation';
 import { default as AssetMaintenance } from './AssetMaintenance';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Detail Kode QR',
-        href: maintenances().url,
-    },
-];
 
 export type AssetQrCodeDetailProps = {
     asset: Asset;
@@ -57,8 +49,8 @@ export default function AssetQrcodeDetail({
     // const StatusIcon = statusConfig[asset.status].icon;
     // Di bagian bawah component, sebelum export default
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="outer-container space-y-6 p-2 md:p-4 lg:p-6">
+        <PublicLayout title={`Detail Aset: ${asset.asset_name}`}>
+            <div className="outer-container space-y-6">
                 <div className="container grid grid-cols-1 gap-4 sm:mx-auto lg:grid-cols-2">
                     <div id="asset-information" className="col-span-1">
                         <AssetInformation
@@ -74,6 +66,6 @@ export default function AssetQrcodeDetail({
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </PublicLayout>
     );
 }

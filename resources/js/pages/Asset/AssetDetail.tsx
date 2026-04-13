@@ -67,9 +67,7 @@ export default function AssetDetail({
                     </Button>
 
                     <Button
-                        onClick={() =>
-                            router.visit(`/assets/${asset.id}/edit`)
-                        }
+                        onClick={() => router.visit(`/assets/${asset.id}/edit`)}
                     >
                         <Pencil className="mr-1 h-4 w-4" />
                         Ubah Aset
@@ -86,18 +84,12 @@ export default function AssetDetail({
 
                 {/* === Tabs: Informasi Umum | QR Code Label === */}
                 <Tabs defaultValue={defaultTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 md:w-auto md:inline-grid">
-                        <TabsTrigger
-                            value="info"
-                            className="gap-2"
-                        >
+                    <TabsList className="grid w-full grid-cols-2 md:inline-grid md:w-auto">
+                        <TabsTrigger value="info" className="gap-2">
                             <Info className="h-4 w-4" />
                             Informasi Umum
                         </TabsTrigger>
-                        <TabsTrigger
-                            value="label"
-                            className="gap-2"
-                        >
+                        <TabsTrigger value="label" className="gap-2">
                             <QrCode className="h-4 w-4" />
                             QR Code Label
                         </TabsTrigger>
