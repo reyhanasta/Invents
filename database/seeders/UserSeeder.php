@@ -24,23 +24,23 @@ class UserSeeder extends Seeder
         $admin->syncRoles(['admin']);
 
         $client = User::updateOrCreate(
-            ['email' => 'client@example.com'],
+            ['email' => 'widya@gmail.com'],
             [
-                'name' => 'Client User',
+                'name' => 'Widya',
                 'password' => 'password',
                 'email_verified_at' => now(),
             ]
         );
-        $client->syncRoles(['client']);
+        $client->syncRoles(['management']);
 
         $management = User::updateOrCreate(
-            ['email' => 'management@example.com'],
+            ['email' => 'reyhan@gmail.com'],
             [
-                'name' => 'Management User',
+                'name' => 'Reyhan Asta',
                 'password' => 'password',
                 'email_verified_at' => now(),
             ]
         );
-        $management->syncRoles(['management']);
+        $management->syncRoles(['admin']);
     }
 }

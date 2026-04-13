@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
-            CompanySeeder::class,
+            // CompanySeeder::class,
             CategorySeeder::class,
-            LocationSeeder::class,
-            AssetSeeder::class,
-            MaintenanceSeeder::class,
-            DepartmentSeeder::class,
+            // LocationSeeder::class,
+            // AssetSeeder::class,
+            // MaintenanceSeeder::class,
+            // DepartmentSeeder::class,
             PrioritySeeder::class,
             TicketCategorySeeder::class,
         ]);
