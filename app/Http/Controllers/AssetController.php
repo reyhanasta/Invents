@@ -94,14 +94,17 @@ class AssetController extends Controller
             },
         ]);
 
-        $company = Company::first()?->complete_company_name ?? 'N/A';
+        $companyData = Company::first();
+        $companyName = $companyData?->complete_company_name ?? 'N/A';
+        $companyLogo = $companyData?->logo_path ? \Illuminate\Support\Facades\Storage::url($companyData->logo_path) : null;
 
         return Inertia::render('Asset/AssetDetail', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,
             'locationName' => $asset->location?->location_name,
             'maintenance' => $asset->maintenances,
-            'company' => $company,
+            'company' => $companyName,
+            'companyLogo' => $companyLogo,
         ]);
     }
 
@@ -193,13 +196,16 @@ class AssetController extends Controller
             'location:id,location_name',
         ]);
 
-        $company = Company::first()?->complete_company_name ?? 'N/A';
+        $companyData = Company::first();
+        $companyName = $companyData?->complete_company_name ?? 'N/A';
+        $companyLogo = $companyData?->logo_path ? \Illuminate\Support\Facades\Storage::url($companyData->logo_path) : null;
 
         return Inertia::render('Asset/AssetPrintLabel', [
             'asset' => $asset,
             'categoryName' => $asset->category?->category_name,
             'locationName' => $asset->location?->location_name,
-            'company' => $company,
+            'company' => $companyName,
+            'companyLogo' => $companyLogo,
         ]);
     }
 

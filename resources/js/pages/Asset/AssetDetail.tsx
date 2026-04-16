@@ -37,6 +37,7 @@ type AssetDetailProps = {
     locationName: string;
     maintenance: Maintenance[];
     company: string;
+    companyLogo?: string | null;
 };
 
 export default function AssetDetail({
@@ -45,6 +46,7 @@ export default function AssetDetail({
     locationName,
     maintenance,
     company,
+    companyLogo,
 }: AssetDetailProps) {
     // Baca query param ?tab=label dari URL
     // Ini dipakai ketika user klik "Cetak Label" dari halaman index
@@ -122,6 +124,7 @@ export default function AssetDetail({
                         <AssetLabelTab
                             asset={asset}
                             company={company}
+                            companyLogo={companyLogo}
                             locationName={locationName}
                         />
                     </TabsContent>

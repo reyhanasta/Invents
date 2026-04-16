@@ -21,12 +21,14 @@ import AssetQrCodeLabel from './AssetQrCodeLabel';
 type AssetLabelTabProps = {
     asset: Asset;
     company: string;
+    companyLogo?: string | null;
     locationName: string;
 };
 
 export default function AssetLabelTab({
     asset,
     company,
+    companyLogo = null,
     locationName,
 }: AssetLabelTabProps) {
     // Ref untuk area yang akan di-print
@@ -109,6 +111,7 @@ export default function AssetLabelTab({
                             <AssetQrCodeLabel
                                 asset={asset}
                                 company={company}
+                                companyLogo={companyLogo}
                                 locationName={locationName}
                             />
                         </div>

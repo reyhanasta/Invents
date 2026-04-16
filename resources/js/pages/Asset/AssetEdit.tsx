@@ -66,6 +66,7 @@ export default function AssetEdit({
     categories,
     locations,
 }: AssetsEditProps) {
+    console.log(asset.acquisition_date);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Ubah ${asset.asset_name}`} />
@@ -390,7 +391,9 @@ export default function AssetEdit({
                                                 name="acquisition_date"
                                                 type="date"
                                                 defaultValue={
-                                                    asset.acquisition_date || ''
+                                                    asset.acquisition_date
+                                                        ? String(asset.acquisition_date).split('T')[0]
+                                                        : ''
                                                 }
                                                 aria-invalid={
                                                     !!errors.acquisition_date

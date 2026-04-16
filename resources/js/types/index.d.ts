@@ -94,6 +94,7 @@ export type Company = {
     complete_company_name: string;
     short_company_name?: string;
     address?: string;
+    logo_path?: string;
     created_at?: string;
     updated_at?: string;
 };

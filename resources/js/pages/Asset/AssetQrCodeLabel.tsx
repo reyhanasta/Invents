@@ -6,12 +6,14 @@ import QRCode from 'react-qr-code';
 type BarcodeLabelProps = {
     asset: Asset;
     company: string;
+    companyLogo?: string | null;
     locationName: string;
 };
 
 export default function AssetQrCodeLabel({
     asset,
     company = '',
+    companyLogo = null,
     locationName = '',
 }: BarcodeLabelProps) {
     const assetQrdetailUrl =
@@ -24,7 +26,15 @@ export default function AssetQrCodeLabel({
         >
             {/* Header: Logo + Property Of */}
             <div className="mb-1 flex items-center gap-2 px-1">
-                <AppLogoIcon className="h-6 w-6" />
+                {companyLogo ? (
+                    <img
+                        src={companyLogo}
+                        alt="Logo"
+                        className="h-6 w-6 object-contain"
+                    />
+                ) : (
+                    <AppLogoIcon className="h-6 w-6" />
+                )}
                 <span className="text-[12px] font-bold tracking-tight uppercase">
                     {company}
                 </span>

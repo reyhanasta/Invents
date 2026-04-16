@@ -30,11 +30,15 @@ type LabelSize = '60x40';
 type AssetPrintLabelProps = {
     asset: Asset;
     company: string;
+    companyLogo?: string | null;
+    locationName: string;
 };
 
 export default function AssetPrintLabel({
     asset,
     company,
+    companyLogo = null,
+    locationName = '',
 }: AssetPrintLabelProps) {
     console.log(asset, company);
     const [selectedSize, setSelectedSize] = useState<LabelSize>('60x40');
@@ -164,6 +168,8 @@ export default function AssetPrintLabel({
                                     <AssetQrCodeLabel
                                         asset={asset}
                                         company={company}
+                                        companyLogo={companyLogo}
+                                        locationName={locationName}
                                     />
                                 </div>
                             </CardContent>
