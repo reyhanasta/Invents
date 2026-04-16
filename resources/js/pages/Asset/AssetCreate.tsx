@@ -116,7 +116,7 @@ export default function AssetCreate({
                                             id="asset_name"
                                             name="asset_name"
                                             type="text"
-                                            placeholder="e.g. Dell Laptop XPS 15"
+                                            placeholder="contoh: Dell Laptop XPS 15"
                                             aria-invalid={!!errors.asset_name}
                                             disabled={processing}
                                             required
@@ -224,7 +224,7 @@ export default function AssetCreate({
                                                 id="brand"
                                                 name="brand"
                                                 type="text"
-                                                placeholder="e.g. Dell, HP, Logitech"
+                                                placeholder="contoh: Dell, HP, Logitech"
                                                 aria-invalid={!!errors.brand}
                                                 disabled={processing}
                                             />
@@ -243,7 +243,7 @@ export default function AssetCreate({
                                                 id="serial_number"
                                                 name="serial_number"
                                                 type="text"
-                                                placeholder="e.g. SN123456789"
+                                                placeholder="contoh: SN123456789"
                                                 aria-invalid={
                                                     !!errors.serial_number
                                                 }
@@ -302,7 +302,11 @@ export default function AssetCreate({
                                                     *
                                                 </span>
                                             </Label>
-                                            <Select name="status" defaultValue="available" required>
+                                            <Select
+                                                name="status"
+                                                defaultValue="available"
+                                                required
+                                            >
                                                 <SelectTrigger
                                                     aria-invalid={
                                                         !!errors.status
@@ -313,7 +317,8 @@ export default function AssetCreate({
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="available">
-                                                        Tersedia (Tidak Digunakan)
+                                                        Tersedia (Tidak
+                                                        Digunakan)
                                                     </SelectItem>
                                                     <SelectItem value="in-use">
                                                         Sedang Digunakan

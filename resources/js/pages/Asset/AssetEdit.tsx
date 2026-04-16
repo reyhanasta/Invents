@@ -146,7 +146,7 @@ export default function AssetEdit({
                                             name="asset_name"
                                             type="text"
                                             defaultValue={asset.asset_name}
-                                            placeholder="e.g. Dell Laptop XPS 15"
+                                            placeholder="contoh: Dell Laptop XPS 15"
                                             aria-invalid={!!errors.asset_name}
                                             disabled={processing}
                                             required
@@ -263,7 +263,7 @@ export default function AssetEdit({
                                                 name="brand"
                                                 type="text"
                                                 defaultValue={asset.brand || ''}
-                                                placeholder="e.g. Dell, HP, Logitech"
+                                                placeholder="contoh: Dell, HP, Logitech"
                                                 aria-invalid={!!errors.brand}
                                                 disabled={processing}
                                             />
@@ -285,7 +285,7 @@ export default function AssetEdit({
                                                 defaultValue={
                                                     asset.serial_number || ''
                                                 }
-                                                placeholder="e.g. SN123456789"
+                                                placeholder="contoh: SN123456789"
                                                 aria-invalid={
                                                     !!errors.serial_number
                                                 }
@@ -363,7 +363,8 @@ export default function AssetEdit({
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="available">
-                                                        Tersedia (Tidak Digunakan)
+                                                        Tersedia (Tidak
+                                                        Digunakan)
                                                     </SelectItem>
                                                     <SelectItem value="in-use">
                                                         Sedang Digunakan
@@ -396,7 +397,9 @@ export default function AssetEdit({
                                                 type="date"
                                                 defaultValue={
                                                     asset.acquisition_date
-                                                        ? String(asset.acquisition_date).split('T')[0]
+                                                        ? String(
+                                                              asset.acquisition_date,
+                                                          ).split('T')[0]
                                                         : ''
                                                 }
                                                 aria-invalid={
