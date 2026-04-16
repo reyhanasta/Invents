@@ -72,10 +72,50 @@ class AssetFactory extends Factory
             'brand' => fake()->randomElement($brands),
             'serial_number' => strtoupper(fake()->bothify('SN-###???###')),
             'condition' => $condition,
-            'is_used' => fake()->boolean(),
+            'status' => fake()->randomElement(['available', 'in-use', 'maintenance', 'retired']),
             'acquisition_date' => fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
             'description' => fake()->optional(0.7)->sentence(),
         ];
+    }
+
+    /**
+     * Indicate that the asset is available.
+     */
+    public function available(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'available',
+        ]);
+    }
+
+    /**
+     * Indicate that the asset is in use.
+     */
+    public function inUse(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'in-use',
+        ]);
+    }
+
+    /**
+     * Indicate that the asset is in maintenance.
+     */
+    public function maintenance(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'maintenance',
+        ]);
+    }
+
+    /**
+     * Indicate that the asset is retired.
+     */
+    public function retired(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'retired',
+        ]);
     }
 
     /**

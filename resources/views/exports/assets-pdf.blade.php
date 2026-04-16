@@ -68,7 +68,7 @@
                 <th width="15%">Kategori</th>
                 <th width="15%">Lokasi</th>
                 <th width="15%">Kondisi</th>
-                <th width="15%">Status Pakai</th>
+                <th width="15%">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -91,7 +91,16 @@
                     <span class="{{ $asset->condition }}">{{ $conditionLabel }}</span>
                 </td>
                 <td>
-                    {{ $asset->is_used ? 'Sedang Digunakan' : 'Tidak Digunakan' }}
+                    @php
+                        $statusLabel = match($asset->status) {
+                            'available' => 'Tersedia',
+                            'in-use' => 'Sedang Digunakan',
+                            'maintenance' => 'Dalam Perbaikan',
+                            'retired' => 'Sudah Dihapus/Afkir',
+                            default => ucwords(str_replace('-', ' ', $asset->status))
+                        };
+                    @endphp
+                    {{ $statusLabel }}
                 </td>
             </tr>
             @endforeach

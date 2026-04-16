@@ -13,10 +13,8 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class AssetsImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         // Temukan atau buat kategori berdasarkan nama
@@ -38,17 +36,24 @@ class AssetsImport implements ToModel, WithHeadingRow, WithValidation
         );
 
         // Map kondisi format lokal ke format database
-        $condition = match(strtolower(trim($row['kondisi']))) {
+        $condition = match (strtolower(trim($row['kondisi']))) {
             'baik' => 'good',
             'rusak ringan' => 'minor_damage',
             'rusak berat' => 'major_damage',
             default => 'good',
         };
 
-        // Map status pakai
-        $isUsed = (strtolower(trim($row['status_pakai'] ?? '')) === 'sedang digunakan') ? true : false;
-        
-        $assetCode = $row['kode_aset'] ?? ($category->prefix_code . '-' . strtoupper(Str::random(5)));
+        // Map status
+        $statusValue = strtolower(trim($row['status'] ?? ($row['status_pakai'] ?? '')));
+        $status = match ($statusValue) {
+            'sedang digunakan', 'in-use', 'in use' => 'in-use',
+            'tersedia', 'available', 'tidak digunakan', 'idle' => 'available',
+            'dalam perbaikan', 'maintenance', 'perbaikan' => 'maintenance',
+            'afkir', 'retired', 'dihapus', 'non-aktif' => 'retired',
+            default => 'available',
+        };
+
+        $assetCode = $row['kode_aset'] ?? ($category->prefix_code.'-'.strtoupper(Str::random(5)));
 
         return new Asset([
             'category_id' => $category->id,
@@ -57,10 +62,10 @@ class AssetsImport implements ToModel, WithHeadingRow, WithValidation
             'asset_name' => $row['nama_aset'],
             'serial_number' => $row['serial_number'] ?? null,
             'condition' => $condition,
-            'is_used' => $isUsed,
+            'status' => $status,
         ]);
     }
-    
+
     public function rules(): array
     {
         return [

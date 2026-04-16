@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
@@ -127,7 +126,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
-            'is_used' => true,
+            'status' => 'in-use',
         ];
 
         $response = post(route('assets-store'), $assetData);
@@ -150,7 +149,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
-            'is_used' => true,
+            'status' => 'in-use',
         ];
 
         post(route('assets-store'), $assetData);
@@ -171,7 +170,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
-            'is_used' => true,
+            'status' => 'in-use',
         ]);
 
         // Create second asset
@@ -180,7 +179,7 @@ describe('Asset Create', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
-            'is_used' => false,
+            'status' => 'available',
         ]);
 
         assertDatabaseHas('assets', ['asset_code' => 'DSK0001']);
@@ -198,7 +197,7 @@ describe('Asset Create', function () {
             'brand' => 'HP',
             'serial_number' => 'SN123456789',
             'condition' => 'minor_damage',
-            'is_used' => true,
+            'status' => 'in-use',
             'acquisition_date' => '2024-01-15',
             'description' => 'Company laptop for development team',
         ];
@@ -210,7 +209,7 @@ describe('Asset Create', function () {
             'asset_name' => 'HP Laptop ProBook',
             'brand' => 'HP',
             'condition' => 'minor_damage',
-            'is_used' => true,
+            'status' => 'in-use',
         ]);
     });
 
@@ -359,7 +358,7 @@ describe('Asset Update', function () {
             'location_id' => $location->id,
             'brand' => 'Updated Brand',
             'condition' => 'minor_damage',
-            'is_used' => false,
+            'status' => 'available',
         ];
 
         $response = put(route('assets-update', $asset->id), $updateData);
@@ -385,7 +384,7 @@ describe('Asset Update', function () {
             'brand' => 'New Brand',
             'serial_number' => 'NEW-SN-123',
             'condition' => 'major_damage',
-            'is_used' => true,
+            'status' => 'in-use',
             'acquisition_date' => '2024-12-01',
             'description' => 'Updated description',
         ];
@@ -411,7 +410,7 @@ describe('Asset Update', function () {
             'category_id' => $asset->category_id,
             'location_id' => $asset->location_id,
             'condition' => $asset->condition,
-            'is_used' => $asset->is_used,
+            'status' => $asset->status,
         ]);
 
         $response->assertSessionHasErrors('asset_name');
@@ -425,7 +424,7 @@ describe('Asset Update', function () {
             'category_id' => $asset->category_id,
             'location_id' => $asset->location_id,
             'condition' => 'invalid',
-            'is_used' => $asset->is_used,
+            'status' => $asset->status,
         ]);
 
         $response->assertSessionHasErrors('condition');
@@ -440,7 +439,7 @@ describe('Asset Update', function () {
             'category_id' => $category->id,
             'location_id' => $location->id,
             'condition' => 'good',
-            'is_used' => true,
+            'status' => 'in-use',
         ]);
 
         $response->assertNotFound();
@@ -518,6 +517,30 @@ describe('Asset Factory', function () {
         $asset = Asset::factory()->majorDamage()->create();
 
         expect($asset->condition)->toBe('major_damage');
+    });
+
+    it('creates asset with available state', function () {
+        $asset = Asset::factory()->available()->create();
+
+        expect($asset->status)->toBe('available');
+    });
+
+    it('creates asset with in-use state', function () {
+        $asset = Asset::factory()->inUse()->create();
+
+        expect($asset->status)->toBe('in-use');
+    });
+
+    it('creates asset with maintenance state', function () {
+        $asset = Asset::factory()->maintenance()->create();
+
+        expect($asset->status)->toBe('maintenance');
+    });
+
+    it('creates asset with retired state', function () {
+        $asset = Asset::factory()->retired()->create();
+
+        expect($asset->status)->toBe('retired');
     });
 
     it('creates recent asset with recent state', function () {
@@ -641,7 +664,7 @@ describe('Asset Export', function () {
 describe('Asset Import', function () {
     it('can import assets from excel', function () {
         Excel::fake();
-        
+
         $file = \Illuminate\Http\UploadedFile::fake()->create('assets.xlsx', 100, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
         $response = post(route('assets-import'), [
@@ -650,7 +673,7 @@ describe('Asset Import', function () {
 
         $response->assertRedirect(route('assets'));
         $response->assertSessionHas('success', 'Data aset berhasil diimpor.');
-        
+
         Excel::assertImported('assets.xlsx');
     });
 

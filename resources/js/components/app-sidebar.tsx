@@ -18,15 +18,18 @@ import {
     helpdeskIndex,
     locations,
     maintenances,
+    reports,
     tickets,
 } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
+    BarChart3,
     Box,
     Building2,
     FileText,
     Folder,
+    Home,
     LifeBuoy,
     MapPin,
     Users,
@@ -36,10 +39,16 @@ import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
+        title: 'Dashboard',
+        href: dashboard().url,
+        icon: Home,
+    },
+    {
         title: 'Aset',
         href: assets().url,
         icon: Box,
     },
+
     {
         title: 'Kategori',
         href: categories().url,
@@ -50,6 +59,9 @@ const mainNavItems: NavItem[] = [
         href: locations().url,
         icon: MapPin,
     },
+];
+
+const navTicket: NavItem[] = [
     {
         title: 'Pemeliharaan',
         href: maintenances().url,
@@ -65,6 +77,13 @@ const mainNavItems: NavItem[] = [
         title: 'Pusat Bantuan',
         href: helpdeskIndex().url,
         icon: LifeBuoy,
+    },
+];
+const navAdmin: NavItem[] = [
+    {
+        title: 'Laporan',
+        href: reports().url,
+        icon: BarChart3,
     },
     {
         title: 'User Management',
@@ -107,6 +126,20 @@ export function AppSidebar() {
         if (item.title === 'User Management' && !isAdmin) return false;
         return true;
     });
+    const filteredNavTicket = navTicket.filter((item) => {
+        if (item.title === 'Ticketing' && !isStaff) return false;
+        if (item.title === 'Pusat Bantuan' && !isClient) return false;
+        if (item.title === 'Perusahaan' && !isStaff) return false;
+        if (item.title === 'User Management' && !isAdmin) return false;
+        return true;
+    });
+    const filteredNavAdmin = navAdmin.filter((item) => {
+        if (item.title === 'Ticketing' && !isStaff) return false;
+        if (item.title === 'Pusat Bantuan' && !isClient) return false;
+        if (item.title === 'Perusahaan' && !isStaff) return false;
+        if (item.title === 'User Management' && !isAdmin) return false;
+        return true;
+    });
 
     // const filteredFooterNavItems = footerNavItems.filter((item) => {
     //     if (item.title === 'Perusahaan' && !isStaff) return false;
@@ -129,7 +162,9 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={filteredMainNavItems} />
+                <NavMain items={filteredMainNavItems} title={'Beranda'} />
+                <NavMain items={filteredNavTicket} title={'Maintenance'} />
+                <NavMain items={filteredNavAdmin} title={'Master'} />
             </SidebarContent>
 
             <SidebarFooter>

@@ -45,7 +45,7 @@ type Asset = {
     condition: string;
     acquisition_date?: string;
     description?: string;
-    is_used: boolean;
+    status: 'available' | 'in-use' | 'maintenance' | 'retired';
 };
 
 type AssetsEditProps = {
@@ -342,39 +342,43 @@ export default function AssetEdit({
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="is_used">
-                                                Status Pakai{' '}
+                                            <Label htmlFor="status">
+                                                Status Ketersediaan{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
                                             </Label>
                                             <Select
-                                                name="is_used"
-                                                defaultValue={
-                                                    asset.is_used ? '1' : '0'
-                                                }
+                                                name="status"
+                                                defaultValue={asset.status}
                                                 required
                                             >
                                                 <SelectTrigger
                                                     aria-invalid={
-                                                        !!errors.is_used
+                                                        !!errors.status
                                                     }
                                                     disabled={processing}
                                                 >
                                                     <SelectValue placeholder="Pilih status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="1">
+                                                    <SelectItem value="available">
+                                                        Tersedia (Tidak Digunakan)
+                                                    </SelectItem>
+                                                    <SelectItem value="in-use">
                                                         Sedang Digunakan
                                                     </SelectItem>
-                                                    <SelectItem value="0">
-                                                        Tidak Digunakan
+                                                    <SelectItem value="maintenance">
+                                                        Dalam Perbaikan
+                                                    </SelectItem>
+                                                    <SelectItem value="retired">
+                                                        Sudah Dihapus/Afkir
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            {errors.is_used && (
+                                            {errors.status && (
                                                 <p className="text-sm text-destructive">
-                                                    {errors.is_used}
+                                                    {errors.status}
                                                 </p>
                                             )}
                                         </div>
