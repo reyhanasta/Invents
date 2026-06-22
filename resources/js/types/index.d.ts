@@ -69,7 +69,6 @@ export type Asset = {
     brand?: string;
     serial_number?: string;
     condition: string;
-    is_used: boolean;
     status: 'available' | 'in-use' | 'maintenance' | 'retired';
     acquisition_date?: string;
     description?: string;

@@ -5,7 +5,6 @@ namespace Tests\Feature\Admin;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
@@ -31,11 +30,11 @@ test('admin can store new user with roles', function () {
         'email' => 'newuser@example.com',
         'password' => 'password123',
         'password_confirmation' => 'password123',
-        'role' => 'management'
+        'role' => 'management',
     ]);
 
     $response->assertRedirect('/users');
-    
+
     $user = User::where('email', 'newuser@example.com')->first();
     expect($user)->not->toBeNull()
         ->and($user->hasRole('management'))->toBeTrue();
@@ -54,11 +53,11 @@ test('admin can update user and roles', function () {
     $response = $this->actingAs($this->admin)->put("/users/{$user->id}", [
         'name' => 'Updated Name',
         'email' => $user->email,
-        'role' => 'admin'
+        'role' => 'admin',
     ]);
 
     $response->assertRedirect('/users');
-    
+
     $user->refresh();
     expect($user->name)->toBe('Updated Name')
         ->and($user->hasRole('admin'))->toBeTrue()
@@ -67,7 +66,7 @@ test('admin can update user and roles', function () {
 
 test('admin can delete user', function () {
     $user = User::factory()->create();
-    
+
     $response = $this->actingAs($this->admin)->delete("/users/{$user->id}");
 
     $response->assertRedirect('/users');

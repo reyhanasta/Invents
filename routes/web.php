@@ -4,9 +4,11 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TicketController;
 use App\Models\Asset;
 use App\Models\Category;
@@ -26,9 +28,8 @@ Route::get('/', function () {
 Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('reports', [ReportController::class, 'index'])->name('reports');
 
     // Category Routes
     Route::get('categories', [CategoryController::class, 'index'])->name('categories')->can('viewAny', Category::class);

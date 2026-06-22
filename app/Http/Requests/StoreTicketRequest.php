@@ -22,14 +22,14 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'         => 'required|string|max:255',
-            'description'   => 'required|string',
-            'category_id'   => 'required|exists:ticket_categories,id',
-            'priority_id'   => 'required|exists:priorities,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:ticket_categories,id',
+            'priority_id' => 'required|exists:priorities,id',
             'department_id' => 'nullable|exists:departments,id',
-            'asset_id'      => 'nullable|exists:assets,id',
-            'due_at'        => 'nullable|date',
-            'attachments'   => 'nullable|array',
+            'asset_id' => 'nullable|exists:assets,id',
+            'due_at' => 'nullable|date',
+            'attachments' => 'nullable|array',
             'attachments.*' => 'file|max:10240', // 10MB
         ];
     }

@@ -24,9 +24,4 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
-    // server: {
-    //     cors: {
-    //         origin: 'http://invents.kubr.id/',
-    //     },
-    // },
 });

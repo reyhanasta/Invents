@@ -37,11 +37,17 @@ class Ticket extends Model
     // ===== STATUS CONST =====
 
     public const STATUS_OPEN = 'open';
+
     public const STATUS_TRIAGED = 'triaged';
+
     public const STATUS_IN_PROGRESS = 'in_progress';
+
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_RESOLVED = 'resolved';
+
     public const STATUS_CLOSED = 'closed';
+
     public const STATUS_REJECTED = 'rejected';
 
     // ===== RELATIONS =====

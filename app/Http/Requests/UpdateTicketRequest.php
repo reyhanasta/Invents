@@ -22,13 +22,13 @@ class UpdateTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'         => 'sometimes|required|string|max:255',
-            'description'   => 'sometimes|required|string',
-            'category_id'   => 'sometimes|required|exists:ticket_categories,id',
-            'priority_id'   => 'sometimes|required|exists:priorities,id',
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'category_id' => 'sometimes|required|exists:ticket_categories,id',
+            'priority_id' => 'sometimes|required|exists:priorities,id',
             'department_id' => 'nullable|exists:departments,id',
-            'asset_id'      => 'nullable|exists:assets,id',
-            'due_at'        => 'nullable|date',
+            'asset_id' => 'nullable|exists:assets,id',
+            'due_at' => 'nullable|date',
         ];
     }
 }

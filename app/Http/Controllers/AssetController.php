@@ -52,9 +52,9 @@ class AssetController extends Controller
             $query->where('condition', $condition);
         }
 
-        $isUsed = $request->query('is_used');
-        if ($isUsed !== null && $isUsed !== '') {
-            $query->where('is_used', $isUsed === '1' || $isUsed === 'true');
+        $status = $request->query('status');
+        if ($status !== null && $status !== '') {
+            $query->where('status', $status);
         }
 
         $assets = $query->paginate(8)->withQueryString();
@@ -66,7 +66,7 @@ class AssetController extends Controller
                 'category' => $category,
                 'location' => $location,
                 'condition' => $condition,
-                'is_used' => $request->query('is_used'),
+                'status' => $request->query('status'),
             ],
             'categories' => Category::all(),
             'locations' => Location::all(),
@@ -126,7 +126,7 @@ class AssetController extends Controller
             'serial_number' => 'nullable|string|max:255',
             'location_id' => 'required|exists:locations,id',
             'condition' => 'required|in:good,minor_damage,major_damage',
-            'is_used' => 'required|boolean',
+            'status' => 'required|in:available,in-use,maintenance,retired',
             'acquisition_date' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
@@ -154,7 +154,7 @@ class AssetController extends Controller
             'serial_number' => 'nullable|string|max:255',
             'location_id' => 'required|exists:locations,id',
             'condition' => 'required|in:good,minor_damage,major_damage',
-            'is_used' => 'required|boolean',
+            'status' => 'required|in:available,in-use,maintenance,retired',
             'acquisition_date' => 'nullable|date',
             'description' => 'nullable|string',
         ]);

@@ -168,6 +168,24 @@ export default function MaintenanceIndex({
         useState<Maintenance | null>(null);
     const [isSearching, setIsSearching] = useState(false);
 
+    // Keep track of the last props we rendered with to update state on browser back/forward navigation
+    const [prevSearch, setPrevSearch] = useState(search);
+    const [prevType, setPrevType] = useState(type);
+    const [prevStatus, setPrevStatus] = useState(status);
+
+    if (search !== prevSearch) {
+        setPrevSearch(search);
+        setSearchQuery(search);
+    }
+    if (type !== prevType) {
+        setPrevType(type);
+        setSelectedType(type);
+    }
+    if (status !== prevStatus) {
+        setPrevStatus(status);
+        setSelectedStatus(status);
+    }
+
     const handleDelete = () => {
         if (!selectedMaintenance) return;
 
@@ -190,13 +208,6 @@ export default function MaintenanceIndex({
             },
         });
     };
-
-    // Sync state with props when they change (e.g., browser back/forward)
-    useEffect(() => {
-        if (search !== undefined) setSearchQuery(search);
-        if (type !== undefined) setSelectedType(type);
-        if (status !== undefined) setSelectedStatus(status);
-    }, [search, type, status]);
 
     // Debounce search - Inertia best practice
     useEffect(() => {

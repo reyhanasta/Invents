@@ -24,7 +24,7 @@ class Asset extends Model
         'brand',
         'serial_number',
         'condition',
-        'is_used',
+        'status',
         'acquisition_date',
         'description',
     ];
@@ -37,7 +37,6 @@ class Asset extends Model
     protected function casts(): array
     {
         return [
-            'is_used' => 'boolean',
             'acquisition_date' => 'date',
         ];
     }

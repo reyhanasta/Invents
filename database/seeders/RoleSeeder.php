@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder
 
         $role = Role::firstOrCreate(['name' => 'client']);
         $role->givePermissionTo('access helpdesk');
-        
+
         // Roles and permissions are now created.
         // User role assignments are handled in UserSeeder.
     }

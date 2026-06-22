@@ -120,7 +120,7 @@ type AssetsIndexProps = {
         category?: string;
         location?: string;
         condition?: string;
-        is_used?: string;
+        status?: string;
     };
 };
 
@@ -139,6 +139,29 @@ export const conditionConfig = {
         label: 'Rusak Berat' as string,
         variant: 'destructive' as const,
         color: '' as string,
+    },
+};
+
+export const statusConfig = {
+    available: {
+        label: 'Tersedia',
+        variant: 'default' as const,
+        color: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    },
+    'in-use': {
+        label: 'Sedang Digunakan',
+        variant: 'secondary' as const,
+        color: 'border-slate-200 bg-slate-50 text-slate-700',
+    },
+    maintenance: {
+        label: 'Dalam Perbaikan',
+        variant: 'outline' as const,
+        color: 'border-amber-200 bg-amber-50 text-amber-700',
+    },
+    retired: {
+        label: 'Dihapus/Afkir',
+        variant: 'destructive' as const,
+        color: '',
     },
 };
 
@@ -164,14 +187,13 @@ export default function AssetIndex({
     const [filterCondition, setFilterCondition] = useState(
         filters?.condition || 'all',
     );
-    const [filterIsUsed, setFilterIsUsed] = useState(filters?.is_used || 'all');
+    const [filterStatus, setFilterStatus] = useState(filters?.status || 'all');
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [showImportDialog, setShowImportDialog] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
     const [isSearching, setIsSearching] = useState(false);
 
     const {
-        data: importData,
         setData: setImportData,
         post: postImport,
         processing: importProcessing,
@@ -204,7 +226,7 @@ export default function AssetIndex({
                 filterCategory !== (filters?.category || 'all') ||
                 filterLocation !== (filters?.location || 'all') ||
                 filterCondition !== (filters?.condition || 'all') ||
-                filterIsUsed !== (filters?.is_used || 'all')
+                filterStatus !== (filters?.status || 'all')
             ) {
                 setIsSearching(true);
                 router.get(
@@ -223,8 +245,8 @@ export default function AssetIndex({
                             filterCondition !== 'all'
                                 ? filterCondition
                                 : undefined,
-                        is_used:
-                            filterIsUsed !== 'all' ? filterIsUsed : undefined,
+                        status:
+                            filterStatus !== 'all' ? filterStatus : undefined,
                     },
                     {
                         preserveState: true,
@@ -243,7 +265,7 @@ export default function AssetIndex({
         filterCategory,
         filterLocation,
         filterCondition,
-        filterIsUsed,
+        filterStatus,
         search,
         filters,
     ]);
@@ -253,7 +275,7 @@ export default function AssetIndex({
         setFilterCategory('all');
         setFilterLocation('all');
         setFilterCondition('all');
-        setFilterIsUsed('all');
+        setFilterStatus('all');
         setIsSearching(true);
         router.get(
             window.location.pathname,
@@ -468,24 +490,28 @@ export default function AssetIndex({
                             </Select>
 
                             <Select
-                                value={filterIsUsed}
-                                onValueChange={setFilterIsUsed}
+                                value={filterStatus}
+                                onValueChange={setFilterStatus}
                             >
                                 <SelectTrigger className="w-35">
-                                    <SelectValue placeholder="Status Pakai" />
+                                    <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectLabel>Status Pakai</SelectLabel>
+                                        <SelectLabel>Status</SelectLabel>
                                         <SelectItem value="all">
                                             Semua Status
                                         </SelectItem>
-                                        <SelectItem value="1">
-                                            Sedang Digunakan
-                                        </SelectItem>
-                                        <SelectItem value="0">
-                                            Tidak Digunakan
-                                        </SelectItem>
+                                        {Object.entries(statusConfig).map(
+                                            ([key, config]) => (
+                                                <SelectItem
+                                                    key={key}
+                                                    value={key}
+                                                >
+                                                    {config.label}
+                                                </SelectItem>
+                                            ),
+                                        )}
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -494,7 +520,7 @@ export default function AssetIndex({
                                 filterCategory !== 'all' ||
                                 filterLocation !== 'all' ||
                                 filterCondition !== 'all' ||
-                                filterIsUsed !== 'all') && (
+                                filterStatus !== 'all') && (
                                 <Button
                                     variant="ghost"
                                     onClick={handleClearSearch}
@@ -525,7 +551,7 @@ export default function AssetIndex({
                                     <TableHead>Kategori</TableHead>
                                     <TableHead>Lokasi</TableHead>
                                     <TableHead>Kondisi</TableHead>
-                                    <TableHead>Status Pakai</TableHead>
+                                    <TableHead>Status</TableHead>
                                     <TableHead className="text-right">
                                         Aksi
                                     </TableHead>
@@ -603,19 +629,21 @@ export default function AssetIndex({
                                               <TableCell>
                                                   <Badge
                                                       variant={
-                                                          asset.is_used
-                                                              ? 'default'
-                                                              : 'secondary'
+                                                          statusConfig[
+                                                              asset.status as keyof typeof statusConfig
+                                                          ]?.variant
                                                       }
                                                       className={
-                                                          asset.is_used
-                                                              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                                                              : 'border-slate-200 bg-slate-50 text-slate-700'
+                                                          statusConfig[
+                                                              asset.status as keyof typeof statusConfig
+                                                          ]?.color
                                                       }
                                                   >
-                                                      {asset.is_used
-                                                          ? 'Sedang Digunakan'
-                                                          : 'Tidak Digunakan'}
+                                                      {
+                                                          statusConfig[
+                                                              asset.status as keyof typeof statusConfig
+                                                          ]?.label
+                                                      }
                                                   </Badge>
                                               </TableCell>
 

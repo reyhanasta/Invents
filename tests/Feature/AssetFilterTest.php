@@ -104,12 +104,12 @@ describe('Asset Filtering', function () {
         );
     });
 
-    it('can filter assets by basis status pakai (is_used)', function () {
-        Asset::factory()->create(['is_used' => true, 'asset_name' => 'Used Asset']);
-        Asset::factory()->create(['is_used' => false, 'asset_name' => 'Idle Asset']);
+    it('can filter assets by status', function () {
+        Asset::factory()->create(['status' => 'in-use', 'asset_name' => 'Used Asset']);
+        Asset::factory()->create(['status' => 'available', 'asset_name' => 'Idle Asset']);
 
-        // Filter for used
-        $response = get(route('assets', ['is_used' => '1']));
+        // Filter for in-use
+        $response = get(route('assets', ['status' => 'in-use']));
         $response->assertSuccessful();
         $response->assertInertia(fn ($page) => $page
             ->component('Asset/AssetIndex')
@@ -117,8 +117,8 @@ describe('Asset Filtering', function () {
             ->where('assets.data.0.asset_name', 'Used Asset')
         );
 
-        // Filter for idle
-        $response = get(route('assets', ['is_used' => '0']));
+        // Filter for available
+        $response = get(route('assets', ['status' => 'available']));
         $response->assertSuccessful();
         $response->assertInertia(fn ($page) => $page
             ->component('Asset/AssetIndex')

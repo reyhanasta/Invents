@@ -27,9 +27,9 @@ class HelpdeskController extends Controller
             ->where('reporter_id', Auth::id())
             ->with(['reporter', 'assignee', 'category', 'priority'])
             ->when($request->search, function ($query) use ($request) {
-                $query->where(function($q) use ($request) {
+                $query->where(function ($q) use ($request) {
                     $q->where('ticket_code', 'like', "%{$request->search}%")
-                      ->orWhere('title', 'like', "%{$request->search}%");
+                        ->orWhere('title', 'like', "%{$request->search}%");
                 });
             })
             ->latest()
@@ -38,7 +38,7 @@ class HelpdeskController extends Controller
 
         return Inertia::render('Helpdesk/Index', [
             'tickets' => $tickets,
-            'search' => $request->input('search')
+            'search' => $request->input('search'),
         ]);
     }
 
@@ -70,7 +70,7 @@ class HelpdeskController extends Controller
             abort(403);
         }
 
-        $ticket->load(['reporter', 'assignee', 'category', 'priority', 'asset', 'comments' => function($q) {
+        $ticket->load(['reporter', 'assignee', 'category', 'priority', 'asset', 'comments' => function ($q) {
             $q->where('is_internal', false)->with('user');
         }, 'attachments']);
 

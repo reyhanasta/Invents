@@ -19,6 +19,7 @@ export const statusConfig = {
         variant: 'success' as const,
         icon: <CheckCircle2 />,
         color: 'bg-green-600',
+        size: 12,
     },
     'in-use': {
         label: 'Sedang Digunakan',

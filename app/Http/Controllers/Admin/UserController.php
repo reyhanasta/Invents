@@ -56,7 +56,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string|exists:roles,name',
         ]);
@@ -78,6 +78,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return to_route('users.index')->with('success', 'User deleted successfully.');
     }
 }

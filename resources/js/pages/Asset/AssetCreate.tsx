@@ -116,7 +116,7 @@ export default function AssetCreate({
                                             id="asset_name"
                                             name="asset_name"
                                             type="text"
-                                            placeholder="e.g. Dell Laptop XPS 15"
+                                            placeholder="contoh: Dell Laptop XPS 15"
                                             aria-invalid={!!errors.asset_name}
                                             disabled={processing}
                                             required
@@ -224,7 +224,7 @@ export default function AssetCreate({
                                                 id="brand"
                                                 name="brand"
                                                 type="text"
-                                                placeholder="e.g. Dell, HP, Logitech"
+                                                placeholder="contoh: Dell, HP, Logitech"
                                                 aria-invalid={!!errors.brand}
                                                 disabled={processing}
                                             />
@@ -243,7 +243,7 @@ export default function AssetCreate({
                                                 id="serial_number"
                                                 name="serial_number"
                                                 type="text"
-                                                placeholder="e.g. SN123456789"
+                                                placeholder="contoh: SN123456789"
                                                 aria-invalid={
                                                     !!errors.serial_number
                                                 }
@@ -296,33 +296,44 @@ export default function AssetCreate({
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="is_used">
-                                                Status Pakai{' '}
+                                            <Label htmlFor="status">
+                                                Status Ketersediaan{' '}
                                                 <span className="text-destructive">
                                                     *
                                                 </span>
                                             </Label>
-                                            <Select name="is_used" required>
+                                            <Select
+                                                name="status"
+                                                defaultValue="available"
+                                                required
+                                            >
                                                 <SelectTrigger
                                                     aria-invalid={
-                                                        !!errors.is_used
+                                                        !!errors.status
                                                     }
                                                     disabled={processing}
                                                 >
                                                     <SelectValue placeholder="Pilih status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="1">
+                                                    <SelectItem value="available">
+                                                        Tersedia (Tidak
+                                                        Digunakan)
+                                                    </SelectItem>
+                                                    <SelectItem value="in-use">
                                                         Sedang Digunakan
                                                     </SelectItem>
-                                                    <SelectItem value="0">
-                                                        Tidak Digunakan
+                                                    <SelectItem value="maintenance">
+                                                        Dalam Perbaikan
+                                                    </SelectItem>
+                                                    <SelectItem value="retired">
+                                                        Sudah Dihapus/Afkir
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            {errors.is_used && (
+                                            {errors.status && (
                                                 <p className="text-sm text-destructive">
-                                                    {errors.is_used}
+                                                    {errors.status}
                                                 </p>
                                             )}
                                         </div>
