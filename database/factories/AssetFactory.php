@@ -24,7 +24,8 @@ class AssetFactory extends Factory
 
         // Initialize counter for this category if not exists
         if (! isset($counters[$category->id])) {
-            $lastAsset = \App\Models\Asset::where('category_id', $category->id)
+            $lastAsset = \App\Models\Asset::withTrashed()
+                ->where('category_id', $category->id)
                 ->orderBy('asset_code', 'desc')
                 ->first();
 

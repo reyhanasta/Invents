@@ -186,6 +186,38 @@ describe('Asset Create', function () {
         assertDatabaseHas('assets', ['asset_code' => 'DSK0002']);
     });
 
+    it('generates unique asset code including soft deleted assets', function () {
+        $category = Category::factory()->create(['prefix_code' => 'DSK']);
+        $location = Location::factory()->create();
+
+        // Create first asset
+        post(route('assets-store'), [
+            'asset_name' => 'Desktop 1',
+            'category_id' => $category->id,
+            'location_id' => $location->id,
+            'condition' => 'good',
+            'status' => 'in-use',
+        ]);
+
+        $asset = Asset::where('asset_code', 'DSK0001')->first();
+        expect($asset)->not->toBeNull();
+
+        // Soft delete the first asset
+        $asset->delete();
+        assertSoftDeleted('assets', ['id' => $asset->id]);
+
+        // Create second asset
+        post(route('assets-store'), [
+            'asset_name' => 'Desktop 2',
+            'category_id' => $category->id,
+            'location_id' => $location->id,
+            'condition' => 'good',
+            'status' => 'available',
+        ]);
+
+        assertDatabaseHas('assets', ['asset_code' => 'DSK0002']);
+    });
+
     it('can create asset with all optional fields', function () {
         $category = Category::factory()->create();
         $location = Location::factory()->create();

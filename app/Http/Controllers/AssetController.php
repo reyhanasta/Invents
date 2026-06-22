@@ -133,7 +133,8 @@ class AssetController extends Controller
 
         // Generate asset code based on category prefix
         $category = Category::findOrFail($validated['category_id']);
-        $lastAsset = Asset::where('category_id', $validated['category_id'])
+        $lastAsset = Asset::withTrashed()
+            ->where('category_id', $validated['category_id'])
             ->orderBy('id', 'desc')
             ->first();
 
