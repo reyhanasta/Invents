@@ -24,10 +24,4 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
-    server: {
-        cors: {
-            origin: 'http://invents.klinikbukitraya.or.id',
-            allowedHeaders: ['Content-Type', 'Authorization'],
-        },
-    },
 });

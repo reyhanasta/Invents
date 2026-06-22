@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 
 class TestBatchDownload extends Command
 {
@@ -34,7 +33,7 @@ class TestBatchDownload extends Command
 
         // Create test user if not exists
         $user = User::find($this->option('user_id'));
-        if (!$user) {
+        if (! $user) {
             $user = User::factory()->create();
             $this->info("Created test user with ID: {$user->id}");
         }
@@ -52,13 +51,13 @@ class TestBatchDownload extends Command
         $assets = collect();
         for ($i = 1; $i <= 6; $i++) {
             $assets->push(Asset::create([
-                'asset_name' => 'Test Asset ' . $i,
-                'asset_code' => 'TST' . now()->format('His') . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'asset_name' => 'Test Asset '.$i,
+                'asset_code' => 'TST'.now()->format('His').str_pad($i, 3, '0', STR_PAD_LEFT),
                 'category_id' => $category->id,
                 'location_id' => $location->id,
                 'condition' => 'good',
                 'brand' => 'Test Brand',
-                'serial_number' => 'SN' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'serial_number' => 'SN'.str_pad($i, 3, '0', STR_PAD_LEFT),
             ]));
         }
 
@@ -67,18 +66,18 @@ class TestBatchDownload extends Command
         // Simulate the request
         $assetIds = $assets->pluck('id')->toArray();
 
-        $this->info("Testing PDF generation with asset IDs: " . implode(', ', $assetIds));
+        $this->info('Testing PDF generation with asset IDs: '.implode(', ', $assetIds));
 
         try {
             // Create a test request to the controller method
-            $request = new \Illuminate\Http\Request();
+            $request = new \Illuminate\Http\Request;
             $request->merge([
                 'asset_ids' => json_encode($assetIds), // Send as JSON string like frontend
                 'label_size' => '60x40',
             ]);
 
             // Call the controller method directly
-            $controller = new \App\Http\Controllers\AssetController();
+            $controller = new \App\Http\Controllers\AssetController;
             $response = $controller->batchDownloadLabels($request);
 
             $this->info('PDF generation successful');
@@ -90,8 +89,8 @@ class TestBatchDownload extends Command
 
                 $this->info("Response status: {$response->getStatusCode()}");
                 $this->info("Content length: {$contentLength} bytes");
-                $this->info("Content-Type: " . $response->headers->get('Content-Type'));
-                $this->info("Content-Disposition: " . $response->headers->get('Content-Disposition'));
+                $this->info('Content-Type: '.$response->headers->get('Content-Type'));
+                $this->info('Content-Disposition: '.$response->headers->get('Content-Disposition'));
 
                 // Check if content starts with PDF header
                 if (strpos($content, '%PDF-') === 0) {
@@ -104,18 +103,18 @@ class TestBatchDownload extends Command
 
                 } else {
                     $this->error('❌ PDF content does not appear valid');
-                    $this->error('First 100 characters: ' . substr($content, 0, 100));
+                    $this->error('First 100 characters: '.substr($content, 0, 100));
                 }
 
             } else {
                 $this->error("❌ Unexpected response status: {$response->getStatusCode()}");
-                $this->error('Response: ' . $response->getContent());
+                $this->error('Response: '.$response->getContent());
             }
 
         } catch (\Exception $e) {
             $this->error('❌ Error during PDF generation:');
             $this->error($e->getMessage());
-            $this->error('File: ' . $e->getFile() . ':' . $e->getLine());
+            $this->error('File: '.$e->getFile().':'.$e->getLine());
         }
 
         return Command::SUCCESS;

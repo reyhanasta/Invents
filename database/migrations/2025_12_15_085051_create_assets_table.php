@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('last_maintanance_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            
+
             $table->index('created_at');
         });
     }

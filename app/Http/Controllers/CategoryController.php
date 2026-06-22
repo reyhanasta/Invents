@@ -12,6 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount('assets')->get();
+
         return Inertia::render('Category/CategoryIndex', [
             'categories' => $categories,
         ]);
@@ -27,7 +28,7 @@ class CategoryController extends Controller
             'serial_number_needed' => 'nullable|boolean',
         ]);
         $validateSerialNumber = $request->has('serial_number_needed') ? true : false;
-        
+
         // Create a new category
         try {
             $cats = Category::create([

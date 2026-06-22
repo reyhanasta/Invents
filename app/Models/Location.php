@@ -18,7 +18,6 @@ class Location extends Model
 
     public function assets()
     {
-        return $this->hasMany(Asset::class,'location_id');
+        return $this->hasMany(Asset::class, 'location_id');
     }
-
 }

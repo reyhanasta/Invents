@@ -194,7 +194,6 @@ export default function AssetIndex({
     const [isSearching, setIsSearching] = useState(false);
 
     const {
-        data: importData,
         setData: setImportData,
         post: postImport,
         processing: importProcessing,

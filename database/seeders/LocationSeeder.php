@@ -12,8 +12,8 @@ class LocationSeeder extends Seeder
     public function run()
     {
         $locations = [
-            ['location_name' => 'Ruang Pemeriksaan', 'location_code' => 'PRK1' ],
-            ['location_name' => 'Ruang Pemeriksaan 1', 'location_code' => 'PRK2' ],
+            ['location_name' => 'Ruang Pemeriksaan', 'location_code' => 'PRK1'],
+            ['location_name' => 'Ruang Pemeriksaan 1', 'location_code' => 'PRK2'],
             ['location_name' => 'Ruang Pemeriksaan 2', 'location_code' => 'PRK3'],
             ['location_name' => 'Laboratorium', 'location_code' => 'LAB'],
             ['location_name' => 'Apotek', 'location_code' => 'APT'],

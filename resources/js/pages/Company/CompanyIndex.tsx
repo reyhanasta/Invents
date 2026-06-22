@@ -12,7 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import { company, companyUpdate } from '@/routes';
 import { BreadcrumbItem, Company } from '@/types';
 import { Form, Head, Link, router } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -30,7 +30,6 @@ export default function CompanyIndex({ companyData }: CompanyProps) {
     const [preview, setPreview] = useState<string | null>(
         companyData?.logo_path ? `/storage/${companyData.logo_path}` : null,
     );
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

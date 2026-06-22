@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('ticket_categories');
             $table->foreignId('priority_id')->constrained('priorities');
             $table->foreignId('department_id')->nullable()->constrained('departments');
-            $table->string('status')->index(); 
+            $table->string('status')->index();
             // open, triaged, in_progress, pending, resolved, closed, rejected
             $table->string('source')->default('web');
             $table->timestamp('due_at')->nullable();

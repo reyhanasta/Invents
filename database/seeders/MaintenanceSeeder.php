@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Asset;
 use App\Models\Maintenance;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MaintenanceSeeder extends Seeder

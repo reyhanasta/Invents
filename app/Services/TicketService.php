@@ -3,11 +3,10 @@
 namespace App\Services;
 
 use App\Models\Ticket;
-use App\Models\TicketComment;
 use App\Models\TicketAttachment;
+use App\Models\TicketComment;
 use App\Models\TicketStatusLog;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class TicketService
 {
@@ -22,17 +21,17 @@ class TicketService
         return DB::transaction(function () use ($data) {
 
             $ticket = Ticket::create([
-                'ticket_code'   => $this->generateTicketCode(),
-                'title'         => $data['title'],
-                'description'   => $data['description'],
-                'reporter_id'   => $data['reporter_id'],
-                'category_id'   => $data['category_id'],
-                'priority_id'   => $data['priority_id'],
+                'ticket_code' => $this->generateTicketCode(),
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'reporter_id' => $data['reporter_id'],
+                'category_id' => $data['category_id'],
+                'priority_id' => $data['priority_id'],
                 'department_id' => $data['department_id'] ?? null,
-                'asset_id'      => $data['asset_id'] ?? null,
-                'status'        => Ticket::STATUS_OPEN,
-                'source'        => $data['source'] ?? 'web',
-                'due_at'        => $data['due_at'] ?? null,
+                'asset_id' => $data['asset_id'] ?? null,
+                'status' => Ticket::STATUS_OPEN,
+                'source' => $data['source'] ?? 'web',
+                'due_at' => $data['due_at'] ?? null,
             ]);
 
             $this->logStatus(
@@ -89,7 +88,7 @@ class TicketService
     ): Ticket {
         $from = $ticket->status;
 
-        if (!$this->isValidTransition($from, $to)) {
+        if (! $this->isValidTransition($from, $to)) {
             throw new \DomainException("Invalid status transition: $from → $to");
         }
 
@@ -126,9 +125,9 @@ class TicketService
         bool $internal = false
     ): TicketComment {
         return TicketComment::create([
-            'ticket_id'   => $ticket->id,
-            'user_id'     => $userId,
-            'message'     => $message,
+            'ticket_id' => $ticket->id,
+            'user_id' => $userId,
+            'message' => $message,
             'is_internal' => $internal,
         ]);
     }
@@ -145,12 +144,12 @@ class TicketService
         array $fileMeta
     ): TicketAttachment {
         return TicketAttachment::create([
-            'ticket_id'   => $ticket->id,
+            'ticket_id' => $ticket->id,
             'uploaded_by' => $userId,
-            'file_name'   => $fileMeta['name'],
-            'file_path'   => $fileMeta['path'],
-            'file_size'   => $fileMeta['size'] ?? null,
-            'mime_type'   => $fileMeta['mime'] ?? null,
+            'file_name' => $fileMeta['name'],
+            'file_path' => $fileMeta['path'],
+            'file_size' => $fileMeta['size'] ?? null,
+            'mime_type' => $fileMeta['mime'] ?? null,
         ]);
     }
 
@@ -168,11 +167,11 @@ class TicketService
         ?string $note
     ): void {
         TicketStatusLog::create([
-            'ticket_id'  => $ticket->id,
-            'from_status'=> $from,
-            'to_status'  => $to,
+            'ticket_id' => $ticket->id,
+            'from_status' => $from,
+            'to_status' => $to,
             'changed_by' => $userId,
-            'note'       => $note,
+            'note' => $note,
         ]);
     }
 

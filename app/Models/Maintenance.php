@@ -13,11 +13,13 @@ class Maintenance extends Model
 
     protected $guarded = ['id'];
 
-    public function asset(): BelongsTo{
+    public function asset(): BelongsTo
+    {
         return $this->belongsTo(Asset::class);
     }
 
-    public function ticket(): BelongsTo{
+    public function ticket(): BelongsTo
+    {
         return $this->belongsTo(Ticket::class);
     }
 }

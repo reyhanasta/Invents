@@ -39,7 +39,7 @@ class TicketController extends Controller
 
         return Inertia::render('Tickets/Index', [
             'tickets' => $tickets,
-            'search' => $request->input('search')
+            'search' => $request->input('search'),
         ]);
     }
 
@@ -123,6 +123,7 @@ class TicketController extends Controller
 
         try {
             $this->ticketService->changeStatus($ticket, $request->status, Auth::id(), $request->note);
+
             return back()->with('success', 'Status changed successfully.');
         } catch (\DomainException $e) {
             return back()->withErrors(['status' => $e->getMessage()]);

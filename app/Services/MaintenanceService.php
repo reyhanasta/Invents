@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Maintenance;
 use App\Models\Asset;
+use App\Models\Maintenance;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +45,7 @@ class MaintenanceService
     {
         $data['ticket_id'] = $ticket->id;
         $data['asset_id'] = $data['asset_id'] ?? $ticket->asset_id;
-        
+
         return $this->create($data);
     }
 }
