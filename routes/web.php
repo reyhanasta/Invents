@@ -30,6 +30,7 @@ Route::redirect('/', '/login');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('reports/export', [ReportController::class, 'export'])->name('reports-export');
 
     // Category Routes
     Route::get('categories', [CategoryController::class, 'index'])->name('categories')->can('viewAny', Category::class);

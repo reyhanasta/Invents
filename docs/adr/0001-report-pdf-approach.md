@@ -1,0 +1,3 @@
+# Report PDF generated server-side with DomPDF, mirroring the filtered view
+
+The Laporan Aset page gained a detailed, filterable asset table, and its PDF export is generated server-side with DomPDF from a dedicated Blade view (`exports/report-pdf.blade.php`) that mirrors the on-screen report: summary tables plus the full filtered asset listing. We chose DomPDF over browser print-to-PDF because it gives a one-click `.pdf` download consistent with the existing asset-page export, at the cost of the on-screen donut chart, which DomPDF cannot render and is therefore omitted from the PDF. The export respects the active filters (search, category, location, condition, status) and always contains all matching rows, not just the current page.
