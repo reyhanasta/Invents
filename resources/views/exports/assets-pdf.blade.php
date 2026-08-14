@@ -96,7 +96,7 @@
                             'available' => 'Tersedia',
                             'in-use' => 'Sedang Digunakan',
                             'maintenance' => 'Dalam Perbaikan',
-                            'retired' => 'Sudah Dihapus/Afkir',
+                            'retired' => 'Afkir',
                             default => ucwords(str_replace('-', ' ', $asset->status))
                         };
                     @endphp
